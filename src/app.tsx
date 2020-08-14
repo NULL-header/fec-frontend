@@ -1,4 +1,4 @@
 import React from "react";
-import { HelloWorld } from "./components/HelloWorld";
 
-export const App = () => <HelloWorld />;
+import { DisplayContainer } from "./components/DisplayContainer";
+export const App = () => <DisplayContainer />;

@@ -1,5 +1,5 @@
 interface BaseComponent {
-  className: string;
+  className?: string;
 }
 
 type ComponentMap = Map<string, React.FC<BaseComponent>>;
