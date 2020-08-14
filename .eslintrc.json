@@ -32,6 +32,7 @@
     "no-useless-constructor": "off",
     "no-process-env": "off",
     "eqeqeq": "off",
-    "@typescript-eslint/no-unused-vars":"off"
+    "@typescript-eslint/no-unused-vars":"off",
+    "react/prop-types":"off"
   }
 }

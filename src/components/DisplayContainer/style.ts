@@ -5,7 +5,11 @@ interface Props {
 }
 
 export const useStyles = makeStyles((theme) => ({
-  container: {
-    display: (props: Props) => (props.isCurrent ? "initial" : "none"),
+  root: {},
+  undisplayContainer: {
+    display: "none",
+  },
+  displayContainer: {
+    display: "initial",
   },
 }));
