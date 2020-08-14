@@ -1,0 +1,31 @@
+{
+  "compilerOptions": {
+    /* Visit https://aka.ms/tsconfig.json to read more about this file */
+    /* Basic Options */
+    // "incremental": true,                   /* Enable incremental compilation */
+    "target": "es5" /* Specify ECMAScript target version: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017', 'ES2018', 'ES2019', 'ES2020', or 'ESNEXT'. */,
+    "module": "commonjs",
+    "strict": true,
+    "rootDir": "src",
+    "esModuleInterop": true,
+    "skipLibCheck": true /* Skip type checking of declaration files. */,
+    "moduleResolution": "node",
+    "lib": ["ES6", "DOM"],
+    "types": ["node"],
+    "typeRoots": ["node_module/@types"],
+    "experimentalDecorators": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "resolveJsonModule": true,
+    "outDir": "./public",
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "downlevelIteration": true,
+    "forceConsistentCasingInFileNames": true,
+    "jsx": "react",
+    
+  },
+  "include": ["src/**/*.ts*"],
+  "exclude": ["node_modules","public","tests"]
+  }
+  
