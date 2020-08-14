@@ -1,12 +1,9 @@
 import React from "react";
 
-import { DisplayContainer } from "./components/DisplayContainer";
+import { InputPlace } from "./components/InputPlace";
 
-const aaa: React.FC<BaseComponent> = (props) => {
-  return <div className={props.className}>aaa</div>;
-};
-
-const componentMap = new Map([["aaa", aaa]]);
 export const App = () => (
-  <DisplayContainer componentMap={componentMap} currentName="bbb" />
+  <InputPlace label="mocklabel" tip="mocktip" type="TextField">
+    <div>aaa</div>
+  </InputPlace>
 );
