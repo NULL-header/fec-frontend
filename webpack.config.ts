@@ -2,7 +2,9 @@ import path from "path";
 import webpack from "webpack";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import ForkTsCheckerWebpackPlugin from "fork-ts-checker-webpack-plugin";
+import UglifyJsPlugin from "uglifyjs-webpack-plugin";
 import packageJSON from "./package.json";
+
 const webpackConfig = (env: {
   production: any;
   development: any;
@@ -50,6 +52,9 @@ const webpackConfig = (env: {
     }),
     new ForkTsCheckerWebpackPlugin(),
   ],
+  optimization: {
+    minimizer: [new UglifyJsPlugin()],
+  },
 });
 
 export default webpackConfig;
