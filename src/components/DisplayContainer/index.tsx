@@ -1,7 +1,7 @@
 import React from "react";
 
-interface DisplayContainerProps extends Component {
-  children: React.FC<Component>[];
+interface DisplayContainerProps extends BaseComponent {
+  children: React.FC<BaseComponent>[];
 }
 
 export const DisplayContainer: React.FC<DisplayContainerProps> = (props) => {

@@ -1,3 +1,3 @@
-interface Component {
+interface BaseComponent {
   className: string;
 }
