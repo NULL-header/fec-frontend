@@ -1,21 +1,18 @@
 import React from "react";
 import Eye from "@material-ui/icons/Visibility";
 import OffEye from "@material-ui/icons/VisibilityOff";
-
-import { DisplayContainer } from "../DisplayContainer";
+import { IconButton } from "@material-ui/core";
 
 interface ToggleEyeIconProps extends BaseComponent {
-  eyeState: string;
+  isShow: boolean;
   onClick: () => void;
 }
 
-const eyeMap = new Map([
-  ["show", Eye],
-  ["hidden", OffEye],
-]);
-
 export const ToggleEyeIcon: React.FC<ToggleEyeIconProps> = (props) => {
+  const icon = props.isShow ? <Eye /> : <OffEye />;
   return (
-    <DisplayContainer componentMap={eyeMap} currentName={props.eyeState} />
+    <IconButton className={props.className} onClick={props.onClick}>
+      {icon}
+    </IconButton>
   );
 };

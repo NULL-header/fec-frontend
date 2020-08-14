@@ -3,32 +3,36 @@ import { Tooltip, TextField, InputAdornment } from "@material-ui/core";
 
 interface InputPlaceProps extends BaseComponent {
   className?: string;
-  children: JSX.Element | JSX.Element[];
+  children: React.ReactNode | React.ReactNode[];
   tip: string;
   label: string;
   type: string;
 }
 
 export const InputPlace: React.FC<InputPlaceProps> = (props) => {
-  const { startIcon, endIcon } = openItemsFromArray(
+  const { startIcon, endIconOptional } = openItemsFromArray(
     {
       startIcon: undefined,
-      endIcon: undefined,
+      endIconOptional: undefined,
     },
     props.children
   );
 
+  const endIcon =
+    endIconOptional == null ? undefined : (
+      <InputAdornment position="end">{endIconOptional}</InputAdornment>
+    );
+
   return (
     <Tooltip title={props.tip} className={props.className}>
       <TextField
+        type={props.type}
         label={props.label}
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">{startIcon}</InputAdornment>
           ),
-          endAdornment: (
-            <InputAdornment position="end">{endIcon}</InputAdornment>
-          ),
+          endAdornment: endIcon,
         }}
       />
     </Tooltip>

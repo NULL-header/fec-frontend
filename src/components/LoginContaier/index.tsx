@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { FormControl } from "@material-ui/core";
 import update from "immutability-helper";
+import VpnKey from "@material-ui/icons/VpnKey";
+import Email from "@material-ui/icons/Email";
 
 import { InputPlace } from "../InputPlace";
 import { ToggleEyeIcon } from "../ToggleEyeIcon";
@@ -11,15 +13,15 @@ interface LoginContainerProps extends BaseComponent {
 
 type History = loginFormData[];
 
-type EyeStateType = "show" | "hidden";
-
 interface loginFormData {
-  eyeState: EyeStateType;
+  isShow: boolean;
 }
 
 export const LoginContainer: React.FC<LoginContainerProps> = (props) => {
-  const [history, setHistory] = useState([{ eyeState: "show" }] as History);
+  const [history, setHistory] = useState([{ isShow: false }] as History);
   const current = history[history.length - 1];
+  const isShow = current.isShow;
+  const inputType = isShow ? "text" : "password";
 
   const insertHisotry = (arg: loginFormData) => {
     const next = update(history, { $push: [arg] });
@@ -28,46 +30,22 @@ export const LoginContainer: React.FC<LoginContainerProps> = (props) => {
 
   const onClickEye = () => {
     const next = update(current, {
-      eyeState: { $set: eyeStateGen.next().value },
+      isShow: { $set: !isShow },
     });
     insertHisotry(next);
   };
 
-  const eyeState = current.eyeState;
   return (
     <div className={props.className}>
       <FormControl>
         <InputPlace tip="mocktip" label="mocklabel" type="TextField">
-          <div>mockicon</div>
+          <Email />
         </InputPlace>
-        <InputPlace tip="mocktip" label="mocklabel" type={eyeState}>
-          <div>mockicon</div>
-          <ToggleEyeIcon {...{ onClick: onClickEye, eyeState }} />
+        <InputPlace tip="mocktip" label="mocklabel" type={inputType}>
+          <VpnKey />
+          <ToggleEyeIcon {...{ onClick: onClickEye, isShow }} />
         </InputPlace>
       </FormControl>
     </div>
   );
 };
-
-const toggleEyeStete = (arg: EyeStateType): EyeStateType => {
-  let state;
-  switch (arg) {
-    case "show":
-      state = "hidden";
-      break;
-    case "hidden":
-      state = "show";
-      break;
-    default:
-      throw new Error("It may be happened some bugs");
-  }
-  return state as EyeStateType;
-};
-
-const eyeStateGen = (function* () {
-  let value = "show" as EyeStateType;
-  while (true) {
-    const arg: EyeStateType = yield value;
-    value = toggleEyeStete(arg == null ? value : arg);
-  }
-})();
