@@ -1,9 +1,5 @@
 import React from "react";
 
-import { InputPlace } from "./components/InputPlace";
+import { LoginContainer } from "./components/LoginContaier";
 
-export const App = () => (
-  <InputPlace label="mocklabel" tip="mocktip" type="TextField">
-    <div>aaa</div>
-  </InputPlace>
-);
+export const App = () => <LoginContainer />;
