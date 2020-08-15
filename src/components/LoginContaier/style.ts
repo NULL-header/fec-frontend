@@ -1,7 +1,5 @@
 import { makeStyles } from "@material-ui/core";
 
-interface Props {}
-
 export const useStyles = makeStyles((theme) => ({
   container: {
     display: "flex",
