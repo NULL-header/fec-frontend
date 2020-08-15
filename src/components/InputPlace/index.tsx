@@ -1,12 +1,12 @@
 import React from "react";
-import { Tooltip, TextField, InputAdornment } from "@material-ui/core";
+import { TextField, InputAdornment } from "@material-ui/core";
 
 interface InputPlaceProps extends BaseComponentProps {
   className?: string;
   children: React.ReactNode | React.ReactNode[];
-  tip: string;
   label: string;
   type: string;
+  error: boolean;
 }
 export const InputPlace = React.forwardRef<HTMLInputElement, InputPlaceProps>(
   (props, ref) => {
@@ -23,19 +23,19 @@ export const InputPlace = React.forwardRef<HTMLInputElement, InputPlaceProps>(
       );
 
     return (
-      <Tooltip title={props.tip} className={props.className}>
-        <TextField
-          type={props.type}
-          label={props.label}
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">{startIcon}</InputAdornment>
-            ),
-            endAdornment: endIcon,
-          }}
-          inputRef={ref}
-        />
-      </Tooltip>
+      <TextField
+        className={props.className}
+        error={props.error}
+        type={props.type}
+        label={props.label}
+        InputProps={{
+          startAdornment: (
+            <InputAdornment position="start">{startIcon}</InputAdornment>
+          ),
+          endAdornment: endIcon,
+        }}
+        inputRef={ref}
+      />
     );
   }
 );
