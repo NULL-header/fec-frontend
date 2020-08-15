@@ -1,4 +1,5 @@
 import React from "react";
+import { Paper } from "@material-ui/core";
 
 import { LoginContainer } from "../LoginContaier";
 import { ToggleDisplayContainer } from "../ToggleDisplayContainer";
@@ -13,12 +14,16 @@ export const AuthContainer: React.FC<AuthContainerProps> = (props) => {
   const classes = useStyles();
 
   return (
-    <ToggleDisplayContainer
-      className={classes.container}
-      isShowFirstChild={showFirst}
-    >
-      <LoginContainer />
-      <div>sign up</div>
-    </ToggleDisplayContainer>
+    <div className={classes.root}>
+      <Paper className={classes.cloth}>
+        <ToggleDisplayContainer
+          className={classes.container}
+          isShowFirstChild={showFirst}
+        >
+          <LoginContainer />
+          <div>sign up</div>
+        </ToggleDisplayContainer>
+      </Paper>
+    </div>
   );
 };

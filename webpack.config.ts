@@ -11,7 +11,7 @@ const webpackConfig = (env: {
 }): webpack.Configuration => ({
   entry: "./src/index.tsx",
   resolve: {
-    extensions: [".ts", ".tsx", ".js"],
+    extensions: [".ts", ".tsx", ".js", ".css"],
   },
   output: {
     path: path.join(__dirname, "/public"),
