@@ -2,4 +2,6 @@ interface BaseComponentProps {
   className?: string;
 }
 
-type ComponentMap = Map<string, React.FC<BaseComponentProps>>;
+type BaseComponent = React.FC<BaseComponentProps>;
+
+type ComponentMap = Map<string, BaseComponent>;
