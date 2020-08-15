@@ -1,5 +1,4 @@
 import React from "react";
-import { useStyles } from "./style";
 
 interface DisplayContainerProps extends BaseComponentProps {
   componentMap: ComponentMap;
@@ -7,18 +6,11 @@ interface DisplayContainerProps extends BaseComponentProps {
 }
 
 export const DisplayContainer: React.FC<DisplayContainerProps> = (props) => {
-  const classes = useStyles();
+  const ContainerOptional = props.componentMap.get(props.currentName);
+  const Container =
+    ContainerOptional == null
+      ? (props: any) => <div>error!!</div>
+      : ContainerOptional;
 
-  const nodeChildren = Array.from(props.componentMap.entries()).map((e, i) => {
-    const Element = e[1];
-    const isCurrent = e[0] === props.currentName;
-    const className = isCurrent
-      ? classes.displayContainer
-      : classes.undisplayContainer;
-    return <Element className={className} key={i} />;
-  });
-  const rootClassName =
-    classes.root + (props.className == null ? "" : " " + props.className);
-
-  return <div className={rootClassName}>{nodeChildren}</div>;
+  return <Container className={props.className} />;
 };
