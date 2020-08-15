@@ -15,8 +15,8 @@ type History = loginFormData[];
 
 interface loginFormData {
   isShow: boolean;
-  emailTip: string;
-  passwordTip: string;
+  emailLabel: string;
+  passwordLabel: string;
 }
 
 export const LoginContainer: React.FC<LoginContainerProps> = (props) => {
@@ -26,10 +26,12 @@ export const LoginContainer: React.FC<LoginContainerProps> = (props) => {
   ].map((_, i) => (el: HTMLInputElement) => (inputs.current[i] = el));
 
   const [history, setHistory] = useState([
-    { isShow: false, emailTip: "", passwordTip: "" },
+    { isShow: false, emailLabel: "Email", passwordLabel: "Password" },
   ] as History);
   const current = history[history.length - 1];
   const inputType = current.isShow ? "text" : "password";
+  const emailWarning = current.emailLabel !== "Email";
+  const passwordWarning = current.passwordLabel !== "Password";
 
   const insertHisotry = (arg: loginFormData) => {
     const next = update(history, { $push: [arg] });
@@ -43,9 +45,13 @@ export const LoginContainer: React.FC<LoginContainerProps> = (props) => {
     insertHisotry(next);
   };
   const reflectWarning = (emailDetail: string, passwordDetail: string) => {
+    const emailLabel = isLongerThan0(emailDetail) ? emailDetail : "Email";
+    const passwordLabel = isLongerThan0(passwordDetail)
+      ? passwordDetail
+      : "Password";
     const next = update(current, {
-      emailTip: { $set: emailDetail },
-      passwordTip: { $set: passwordDetail },
+      emailLabel: { $set: emailLabel },
+      passwordLabel: { $set: passwordLabel },
     });
     insertHisotry(next);
   };
@@ -55,23 +61,24 @@ export const LoginContainer: React.FC<LoginContainerProps> = (props) => {
     const [emailValidate, passwordValidate] = validateData(email, password);
     reflectWarning(emailValidate.detail, passwordValidate.detail);
     if (!(emailValidate.passCheck && passwordValidate.passCheck)) return;
+    // TODO add ajax comunicate
   };
 
   return (
     <form onSubmit={onSubmit} className={props.className}>
       <InputPlace
-        tip="mocktip"
-        label={current.emailTip}
+        label={current.emailLabel}
         type="TextField"
         ref={inputRefFuncs[0]}
+        error={emailWarning}
       >
         <Email />
       </InputPlace>
       <InputPlace
-        tip="mocktip"
-        label={current.passwordTip}
+        label={current.passwordLabel}
         type={inputType}
         ref={inputRefFuncs[1]}
+        error={passwordWarning}
       >
         <VpnKey />
         <ToggleEyeIcon onClick={onClickEye} isShow={current.isShow} />
@@ -111,3 +118,5 @@ const validatePassword = (password: string): varidationResult => {
   const detail = passCheckLength ? "" : "パスワードが短すぎます";
   return { passCheck, detail };
 };
+
+const isLongerThan0 = (arg: string) => arg.length > 0;
