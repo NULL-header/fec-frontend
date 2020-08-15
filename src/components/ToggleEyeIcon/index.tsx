@@ -2,6 +2,7 @@ import React from "react";
 import Eye from "@material-ui/icons/Visibility";
 import OffEye from "@material-ui/icons/VisibilityOff";
 import { IconButton } from "@material-ui/core";
+import { ToggleDisplayContainer } from "../ToggleDisplayContainer";
 
 interface ToggleEyeIconProps extends BaseComponentProps {
   isShow: boolean;
@@ -9,10 +10,12 @@ interface ToggleEyeIconProps extends BaseComponentProps {
 }
 
 export const ToggleEyeIcon: React.FC<ToggleEyeIconProps> = (props) => {
-  const icon = props.isShow ? <Eye /> : <OffEye />;
   return (
     <IconButton className={props.className} onClick={props.onClick}>
-      {icon}
+      <ToggleDisplayContainer isShowFirstChild={props.isShow}>
+        <Eye />
+        <OffEye />
+      </ToggleDisplayContainer>
     </IconButton>
   );
 };
