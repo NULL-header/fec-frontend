@@ -7,7 +7,7 @@ import { InputPlace } from "../InputPlace";
 import { ToggleEyeIcon } from "../ToggleEyeIcon";
 import { Button } from "@material-ui/core";
 
-interface LoginContainerProps extends BaseComponent {
+interface LoginContainerProps extends BaseComponentProps {
   className?: string;
 }
 
@@ -22,6 +22,7 @@ export const LoginContainer: React.FC<LoginContainerProps> = (props) => {
   const inputRefFuncs = [
     ...Array(2).keys(),
   ].map((_, i) => (el: HTMLInputElement) => (inputs.current[i] = el));
+
   const [history, setHistory] = useState([{ isShow: false }] as History);
   const current = history[history.length - 1];
   const isShow = current.isShow;

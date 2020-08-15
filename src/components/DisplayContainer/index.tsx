@@ -1,7 +1,7 @@
 import React from "react";
 import { useStyles } from "./style";
 
-interface DisplayContainerProps extends BaseComponent {
+interface DisplayContainerProps extends BaseComponentProps {
   componentMap: ComponentMap;
   currentName: string;
 }

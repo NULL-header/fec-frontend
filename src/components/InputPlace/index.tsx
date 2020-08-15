@@ -1,7 +1,7 @@
 import React from "react";
 import { Tooltip, TextField, InputAdornment } from "@material-ui/core";
 
-interface InputPlaceProps extends BaseComponent {
+interface InputPlaceProps extends BaseComponentProps {
   className?: string;
   children: React.ReactNode | React.ReactNode[];
   tip: string;
