@@ -1,7 +1,7 @@
 import React from "react";
 
 import { LoginContainer } from "../LoginContaier";
-import { DisplayContainer } from "../DisplayContainer";
+import { ToggleDisplayContainer } from "../ToggleDisplayContainer";
 import { useStyles } from "./style";
 
 interface AuthContainerProps {
@@ -9,15 +9,16 @@ interface AuthContainerProps {
 }
 
 export const AuthContainer: React.FC<AuthContainerProps> = (props) => {
+  const [showFirst, setShowFirst] = React.useState(true);
   const classes = useStyles();
-  const componentMap: ComponentMap = new Map([
-    ["login", <LoginContainer key="container" />],
-  ]);
+
   return (
-    <DisplayContainer
-      currentName="login"
-      componentMap={componentMap}
+    <ToggleDisplayContainer
       className={classes.container}
-    />
+      isShowFirstChild={showFirst}
+    >
+      <LoginContainer />
+      <div>sign up</div>
+    </ToggleDisplayContainer>
   );
 };
