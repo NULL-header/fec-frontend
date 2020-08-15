@@ -8,37 +8,37 @@ interface InputPlaceProps extends BaseComponent {
   label: string;
   type: string;
 }
-
-export const InputPlace: React.FC<InputPlaceProps> = (props) => {
-  const { startIcon, endIconOptional } = openItemsFromArray(
-    {
-      startIcon: undefined,
-      endIconOptional: undefined,
-    },
-    props.children
-  );
-
-  const endIcon =
-    endIconOptional == null ? undefined : (
-      <InputAdornment position="end">{endIconOptional}</InputAdornment>
+export const InputPlace = React.forwardRef<HTMLInputElement, InputPlaceProps>(
+  (props, ref) => {
+    const { startIcon, endIconOptional } = openItemsFromArray(
+      {
+        startIcon: undefined,
+        endIconOptional: undefined,
+      },
+      props.children
     );
+    const endIcon =
+      endIconOptional == null ? undefined : (
+        <InputAdornment position="end">{endIconOptional}</InputAdornment>
+      );
 
-  return (
-    <Tooltip title={props.tip} className={props.className}>
-      <TextField
-        type={props.type}
-        label={props.label}
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">{startIcon}</InputAdornment>
-          ),
-          endAdornment: endIcon,
-        }}
-      />
-    </Tooltip>
-  );
-};
-
+    return (
+      <Tooltip title={props.tip} className={props.className}>
+        <TextField
+          type={props.type}
+          label={props.label}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">{startIcon}</InputAdornment>
+            ),
+            endAdornment: endIcon,
+          }}
+          inputRef={ref}
+        />
+      </Tooltip>
+    );
+  }
+);
 // can get valiable which be Specified by key of the option object from array.
 function openItemsFromArray<T>(
   option: { [key: string]: undefined },

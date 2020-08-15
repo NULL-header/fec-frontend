@@ -1,11 +1,11 @@
-import React, { useState } from "react";
-import { FormControl } from "@material-ui/core";
+import React, { useState, useRef } from "react";
 import update from "immutability-helper";
 import VpnKey from "@material-ui/icons/VpnKey";
 import Email from "@material-ui/icons/Email";
 
 import { InputPlace } from "../InputPlace";
 import { ToggleEyeIcon } from "../ToggleEyeIcon";
+import { Button } from "@material-ui/core";
 
 interface LoginContainerProps extends BaseComponent {
   className?: string;
@@ -18,6 +18,10 @@ interface loginFormData {
 }
 
 export const LoginContainer: React.FC<LoginContainerProps> = (props) => {
+  const inputs = useRef([] as HTMLInputElement[]);
+  const inputRefFuncs = [
+    ...Array(2).keys(),
+  ].map((_, i) => (el: HTMLInputElement) => (inputs.current[i] = el));
   const [history, setHistory] = useState([{ isShow: false }] as History);
   const current = history[history.length - 1];
   const isShow = current.isShow;
@@ -35,17 +39,33 @@ export const LoginContainer: React.FC<LoginContainerProps> = (props) => {
     insertHisotry(next);
   };
 
+  const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    console.log(inputs.current.map((e) => e.value));
+  };
+
   return (
-    <div className={props.className}>
-      <FormControl>
-        <InputPlace tip="mocktip" label="mocklabel" type="TextField">
-          <Email />
-        </InputPlace>
-        <InputPlace tip="mocktip" label="mocklabel" type={inputType}>
-          <VpnKey />
-          <ToggleEyeIcon {...{ onClick: onClickEye, isShow }} />
-        </InputPlace>
-      </FormControl>
-    </div>
+    <form onSubmit={onSubmit} className={props.className}>
+      <InputPlace
+        tip="mocktip"
+        label="Email"
+        type="TextField"
+        ref={inputRefFuncs[0]}
+      >
+        <Email />
+      </InputPlace>
+      <InputPlace
+        tip="mocktip"
+        label="Password"
+        type={inputType}
+        ref={inputRefFuncs[1]}
+      >
+        <VpnKey />
+        <ToggleEyeIcon {...{ onClick: onClickEye, isShow }} />
+      </InputPlace>
+      <Button variant="outlined" type="submit">
+        送信
+      </Button>
+    </form>
   );
 };
