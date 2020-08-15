@@ -6,7 +6,7 @@
   "dependencies": {},
   "scripts": {
     "start": "node dist/index.js",
-    "tsnode": "ts-node src/index.ts",
+    "tsnode": "ts-node src/tsnode.ts",
     "exp": "ts-node src/experiment.ts",
     "watch": "tsc -p tsconfig.json -w",
     "build": "webpack --mode production --env.production --progress",
