@@ -1,11 +1,13 @@
 import React, { useState, useRef } from "react";
+import { Grid, Button } from "@material-ui/core";
 import update from "immutability-helper";
 import VpnKey from "@material-ui/icons/VpnKey";
 import Email from "@material-ui/icons/Email";
 
 import { InputPlace } from "../InputPlace";
 import { ToggleEyeIcon } from "../ToggleEyeIcon";
-import { Button } from "@material-ui/core";
+import { FecApiWrapper } from "../../FecApiWrapper";
+import { useStyles } from "./style";
 
 interface LoginContainerProps extends BaseComponentProps {
   className?: string;
@@ -32,6 +34,8 @@ export const LoginContainer: React.FC<LoginContainerProps> = (props) => {
   const inputType = current.isShow ? "text" : "password";
   const emailWarning = current.emailLabel !== "Email";
   const passwordWarning = current.passwordLabel !== "Password";
+  const api = new FecApiWrapper();
+  const classes = useStyles();
 
   const insertHisotry = (arg: loginFormData) => {
     const next = update(history, { $push: [arg] });
@@ -55,37 +59,51 @@ export const LoginContainer: React.FC<LoginContainerProps> = (props) => {
     });
     insertHisotry(next);
   };
-  const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const [email, password] = inputs.current.map((e) => e.value);
     const [emailValidate, passwordValidate] = validateData(email, password);
     reflectWarning(emailValidate.detail, passwordValidate.detail);
     if (!(emailValidate.passCheck && passwordValidate.passCheck)) return;
-    // TODO add ajax comunicate
+    const res = await api.login(email, password);
+    if (res.status === "FAILED") {
+      // TODO error message
+      console.log(res);
+    }
   };
 
   return (
     <form onSubmit={onSubmit} className={props.className}>
-      <InputPlace
-        label={current.emailLabel}
-        type="TextField"
-        ref={inputRefFuncs[0]}
-        error={emailWarning}
-      >
-        <Email />
-      </InputPlace>
-      <InputPlace
-        label={current.passwordLabel}
-        type={inputType}
-        ref={inputRefFuncs[1]}
-        error={passwordWarning}
-      >
-        <VpnKey />
-        <ToggleEyeIcon onClick={onClickEye} isShow={current.isShow} />
-      </InputPlace>
-      <Button variant="outlined" type="submit">
-        送信
-      </Button>
+      <Grid container className={classes.container}>
+        <Grid item>
+          <InputPlace
+            label={current.emailLabel}
+            type="TextField"
+            ref={inputRefFuncs[0]}
+            error={emailWarning}
+            className={classes.text}
+          >
+            <Email />
+          </InputPlace>
+        </Grid>
+        <Grid item>
+          <InputPlace
+            label={current.passwordLabel}
+            type={inputType}
+            ref={inputRefFuncs[1]}
+            error={passwordWarning}
+            className={classes.text}
+          >
+            <VpnKey />
+            <ToggleEyeIcon onClick={onClickEye} isShow={current.isShow} />
+          </InputPlace>
+        </Grid>
+        <Grid item>
+          <Button variant="outlined" type="submit" className={classes.button}>
+            送信
+          </Button>
+        </Grid>
+      </Grid>
     </form>
   );
 };

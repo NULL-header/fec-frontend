@@ -9,13 +9,16 @@ export class FecApiWrapper {
     return CONSTVALUES.baseUrl + CONSTVALUES.apiv1;
   }
 
-  postAuth(email: string, password: string) {
+  postAuth(email: string, password: string): Promise<AuthPostResponse> {
     const url = this.getApiUrl() + CONSTVALUES.auth;
     return axios.post(url, { value: { email, password } });
   }
 
   async login(email: string, password: string) {
     const res = await this.postAuth(email, password);
+    if (res.status === "SUCCESS")
+      this.setTokensCache(res.body.token.ontime, res.body.token.master);
+    return res;
   }
 
   setTokensCache(onetime: string, master?: string) {
