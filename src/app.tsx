@@ -1,5 +1,5 @@
 import React from "react";
 
-import { LoginContainer } from "./components/LoginContaier";
+import { AuthContainer } from "./components/AuthContainer";
 
-export const App = () => <LoginContainer />;
+export const App = () => <AuthContainer />;
