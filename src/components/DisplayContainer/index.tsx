@@ -6,11 +6,14 @@ interface DisplayContainerProps extends BaseComponentProps {
 }
 
 export const DisplayContainer: React.FC<DisplayContainerProps> = (props) => {
-  const ContainerOptional = props.componentMap.get(props.currentName);
-  const Container =
-    ContainerOptional == null
-      ? (props: any) => <div>error!!</div>
-      : ContainerOptional;
+  const elementOptional = props.componentMap.get(props.currentName);
+  if (elementOptional == null)
+    throw new Error(
+      "The component can be recieve a only currentName which there is in the keys ofcomponentMap"
+    );
+  const styledElement = React.cloneElement(elementOptional, {
+    className: props.className,
+  });
 
-  return <Container className={props.className} />;
+  return styledElement;
 };

@@ -8,10 +8,11 @@ interface AuthContainerProps {
   className?: string;
 }
 
-const componentMap = new Map([["login", LoginContainer]]);
-
 export const AuthContainer: React.FC<AuthContainerProps> = (props) => {
   const classes = useStyles();
+  const componentMap: ComponentMap = new Map([
+    ["login", <LoginContainer key="container" />],
+  ]);
   return (
     <DisplayContainer
       currentName="login"
