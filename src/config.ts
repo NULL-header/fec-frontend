@@ -1,5 +1,5 @@
 export const CONSTVALUES = {
-  baseUrl: "127.0.0.1:8080",
+  baseUrl: "http://localhost:3000",
   apiv1: "/api/v1",
-  auth: "auth",
+  auth: "/auth",
 } as const;

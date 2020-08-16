@@ -65,10 +65,12 @@ export const LoginContainer: React.FC<LoginContainerProps> = (props) => {
     const [emailValidate, passwordValidate] = validateData(email, password);
     reflectWarning(emailValidate.detail, passwordValidate.detail);
     if (!(emailValidate.passCheck && passwordValidate.passCheck)) return;
-    const res = await api.login(email, password);
-    if (res.status === "FAILED") {
-      // TODO error message
-      console.log(res);
+    const {
+      data: { status },
+    } = await api.login(email, password);
+    if (status == "FAILED") {
+      console.log();
+      return;
     }
   };
 
