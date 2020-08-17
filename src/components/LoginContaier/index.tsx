@@ -7,6 +7,7 @@ import Email from "@material-ui/icons/Email";
 import { InputPlace } from "../InputPlace";
 import { ToggleEyeIcon } from "../ToggleEyeIcon";
 import { FecApiWrapper } from "../../FecApiWrapper";
+import { WarningLabel } from "../WarningLabel";
 import { useStyles } from "./style";
 
 interface LoginContainerProps extends BaseComponentProps {
@@ -16,9 +17,10 @@ interface LoginContainerProps extends BaseComponentProps {
 type History = loginFormData[];
 
 interface loginFormData {
-  isShow: boolean;
+  isShowPassword: boolean;
   emailLabel: string;
   passwordLabel: string;
+  isShowLabel: boolean;
 }
 
 export const LoginContainer: React.FC<LoginContainerProps> = (props) => {
@@ -28,25 +30,30 @@ export const LoginContainer: React.FC<LoginContainerProps> = (props) => {
   ].map((_, i) => (el: HTMLInputElement) => (inputs.current[i] = el));
 
   const [history, setHistory] = useState([
-    { isShow: false, emailLabel: "Email", passwordLabel: "Password" },
+    {
+      isShowPassword: false,
+      emailLabel: "Email",
+      passwordLabel: "Password",
+      isShowLabel: false,
+    },
   ] as History);
   const current = history[history.length - 1];
-  const inputType = current.isShow ? "text" : "password";
+  const inputType = current.isShowPassword ? "text" : "password";
   const emailWarning = current.emailLabel !== "Email";
   const passwordWarning = current.passwordLabel !== "Password";
   const api = new FecApiWrapper();
   const classes = useStyles();
 
-  const insertHisotry = (arg: loginFormData) => {
+  const insertHistory = (arg: loginFormData) => {
     const next = update(history, { $push: [arg] });
     setHistory(next);
   };
 
   const onClickEye = () => {
     const next = update(current, {
-      isShow: { $set: !current.isShow },
+      isShowPassword: { $set: !current.isShowPassword },
     });
-    insertHisotry(next);
+    insertHistory(next);
   };
   const reflectWarning = (emailDetail: string, passwordDetail: string) => {
     const emailLabel = isLongerThan0(emailDetail) ? emailDetail : "Email";
@@ -57,26 +64,47 @@ export const LoginContainer: React.FC<LoginContainerProps> = (props) => {
       emailLabel: { $set: emailLabel },
       passwordLabel: { $set: passwordLabel },
     });
-    insertHisotry(next);
+    insertHistory(next);
   };
+
+  const setWarningLabel = (isShow: boolean) => {
+    const next = update(current, {
+      isShowLabel: { $set: isShow },
+    });
+    insertHistory(next);
+  };
+
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const [email, password] = inputs.current.map((e) => e.value);
     const [emailValidate, passwordValidate] = validateData(email, password);
     reflectWarning(emailValidate.detail, passwordValidate.detail);
     if (!(emailValidate.passCheck && passwordValidate.passCheck)) return;
-    const {
-      data: { status },
-    } = await api.login(email, password);
-    if (status == "FAILED") {
-      console.log();
-      return;
+    console.log(current.isShowLabel);
+    if (current.isShowLabel) {
+      setWarningLabel(false);
+      console.log("toggle1");
+    }
+    try {
+      const {
+        data: { status },
+      } = await api.login(email, password);
+      if (status == "FAILED") {
+        console.log();
+        return;
+      }
+    } catch (e) {
+      setWarningLabel(true);
+      console.log("toggle2");
     }
   };
 
   return (
     <form onSubmit={onSubmit} className={props.className}>
       <Grid container className={classes.container}>
+        <Grid item>
+          <WarningLabel isShow={current.isShowLabel} />
+        </Grid>
         <Grid item>
           <InputPlace
             label={current.emailLabel}
@@ -97,7 +125,10 @@ export const LoginContainer: React.FC<LoginContainerProps> = (props) => {
             className={classes.text}
           >
             <VpnKey />
-            <ToggleEyeIcon onClick={onClickEye} isShow={current.isShow} />
+            <ToggleEyeIcon
+              onClick={onClickEye}
+              isShow={current.isShowPassword}
+            />
           </InputPlace>
         </Grid>
         <Grid item>
