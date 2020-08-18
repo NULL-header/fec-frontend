@@ -5,7 +5,7 @@ import { useStyles } from "./style";
 interface WarningLabelProps {
   className?: string;
   isShow: boolean;
-  children: string;
+  children: BaseElement;
 }
 
 export const WarningLabel: React.FC<WarningLabelProps> = (props) => {
