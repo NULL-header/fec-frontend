@@ -2,7 +2,7 @@ import React from "react";
 
 interface DisplayContainerProps extends BaseComponentProps {
   currentKey: string;
-  children: BaseElement[];
+  children: KeyElement[];
 }
 
 export const DisplayContainer: React.FC<DisplayContainerProps> = (props) => {
