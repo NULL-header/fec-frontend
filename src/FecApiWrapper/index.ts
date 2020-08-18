@@ -9,32 +9,32 @@ import { AuthPostResponse } from "./APITypes";
 
 export class FecApiWrapper {
   private readonly tokenGuard = new TokenGuard();
+  private readonly apiUrl = CONSTVALUES.baseUrl + CONSTVALUES.apiv1;
 
-  getApiUrl() {
-    return CONSTVALUES.baseUrl + CONSTVALUES.apiv1;
+  async fetch(
+    path: string,
+    value: Record<string, unknown>,
+    option?: RequestInit
+  ) {
+    const res = await fetch(this.apiUrl + path, {
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(value),
+      ...option,
+    });
+    const httpStatus = res.status;
+    const data = { ...(await res.json()), httpStatus } as AuthPostResponse;
+    return data;
   }
 
-  postAuth(email: string, password: string): Promise<AuthPostResponse> {
-    const url = this.getApiUrl() + CONSTVALUES.auth;
-    return axios.post(
-      url,
+  login(email: string, password: string) {
+    return this.fetch(
+      CONSTVALUES.auth,
       { value: { email, password } },
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
+      { method: "POST" }
     );
-  }
-
-  async login(email: string, password: string): Promise<AuthPostResponse> {
-    const res = await this.postAuth(email, password);
-    const token = res.data.body.token;
-    if (token != null) {
-      const { master, onetime } = token;
-      this.setTokensCache(onetime, master);
-    }
-    return res;
   }
 
   // reson which ontime argument is first is to become to able to call with a onetime argument only.

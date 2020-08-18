@@ -1,25 +1,22 @@
+// F means fetch
+
 type Status = "SUCCESS" | "FAILED";
 
-interface Data {
+interface BaseResponce {
   status: Status;
   body: unknown;
-}
-interface BaseResponse {
-  data: Data;
+  httpStatus: number;
 }
 
-export interface Token {
+interface Token {
   master: string;
   onetime: string;
 }
 
-interface AuthPostResponseBody {
+interface AuthPostFBody {
   token: Token;
 }
-interface AuthPostResponseData extends Data {
-  body: AuthPostResponseBody;
-}
 
-export interface AuthPostResponse {
-  data: AuthPostResponseData;
+export interface AuthPostResponse extends BaseResponce {
+  body: AuthPostFBody;
 }
