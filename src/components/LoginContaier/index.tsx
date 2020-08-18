@@ -27,21 +27,23 @@ interface loginFormData {
   warningKey: WarningKey;
 }
 
+const defaultHistory: History = [
+  {
+    isShowPassword: false,
+    emailLabel: "Email",
+    passwordLabel: "Password",
+    isShowLabel: false,
+    warningKey: "noCommunicate",
+  },
+];
+
 export const LoginContainer: React.FC<LoginContainerProps> = (props) => {
   const inputs = useRef([] as HTMLInputElement[]);
   const inputRefFuncs = [
     ...Array(2).keys(),
   ].map((_, i) => (el: HTMLInputElement) => (inputs.current[i] = el));
 
-  const [history, setHistory] = useState([
-    {
-      isShowPassword: false,
-      emailLabel: "Email",
-      passwordLabel: "Password",
-      isShowLabel: false,
-      warningKey: "noCommunicate",
-    },
-  ] as History);
+  const [history, setHistory] = useState(defaultHistory);
   const current = history[history.length - 1];
   const inputType = current.isShowPassword ? "text" : "password";
   const emailWarning = current.emailLabel !== "Email";
@@ -60,6 +62,7 @@ export const LoginContainer: React.FC<LoginContainerProps> = (props) => {
     });
     insertHistory(next);
   };
+
   const reflectWarning = (emailDetail: string, passwordDetail: string) => {
     const emailLabel = isLongerThan0(emailDetail) ? emailDetail : "Email";
     const passwordLabel = isLongerThan0(passwordDetail)
@@ -72,7 +75,7 @@ export const LoginContainer: React.FC<LoginContainerProps> = (props) => {
     insertHistory(next);
   };
 
-  const setWarningLabel = (isShow: boolean) => {
+  const setIsShowWarningLabel = (isShow: boolean) => {
     const next = update(current, {
       isShowLabel: { $set: isShow },
     });
@@ -86,13 +89,13 @@ export const LoginContainer: React.FC<LoginContainerProps> = (props) => {
     insertHistory(next);
   };
 
-  const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const [email, password] = inputs.current.map((e) => e.value);
+  const validate = (email: string, password: string) => {
     const [emailValidate, passwordValidate] = validateData(email, password);
     reflectWarning(emailValidate.detail, passwordValidate.detail);
-    if (!(emailValidate.passCheck && passwordValidate.passCheck)) return;
-    setWarningLabel(false);
+    return emailValidate.passCheck && passwordValidate.passCheck;
+  };
+
+  const login = async (email: string, password: string) => {
     try {
       const {
         data: { status },
@@ -102,8 +105,16 @@ export const LoginContainer: React.FC<LoginContainerProps> = (props) => {
       }
     } catch (e) {
       setWarningKey("noCommunicate");
-      setWarningLabel(true);
+      setIsShowWarningLabel(true);
     }
+  };
+
+  const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const [email, password] = inputs.current.map((e) => e.value);
+    if (!validate(email, password)) return;
+    setIsShowWarningLabel(false);
+    await login(email, password);
   };
 
   return (
