@@ -14,6 +14,7 @@ export class FecApiWrapper {
     value: Record<string, unknown>,
     option?: RequestInit
   ) {
+    console.log("before");
     const res = await fetch(this.apiUrl + path, {
       mode: "cors",
       headers: {
@@ -26,6 +27,7 @@ export class FecApiWrapper {
     const data = { ...(await res.json()), httpStatus } as
       | AuthPostResponse
       | BadResponse;
+    console.log("after");
     return data;
   }
 

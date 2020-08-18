@@ -1,13 +1,13 @@
-import React, { useState, useRef } from "react";
+import React, { useRef, useState, useCallback, useMemo } from "react";
 import { Grid, Button } from "@material-ui/core";
 import update from "immutability-helper";
-import VpnKey from "@material-ui/icons/VpnKey";
-import Email from "@material-ui/icons/Email";
 
-import { InputPlace } from "../InputPlace";
-import { ToggleEyeIcon } from "../ToggleEyeIcon";
-import { WarningLabel } from "../WarningLabel";
-import { DisplayContainer } from "../DisplayContainer";
+// eslint-disable-next-line no-unused-vars
+import { RisedData } from "./BaseInput";
+import { useDoesMountEffect } from "../../costomhook/doesMountEffect";
+import { EmailInput } from "./EmailInput";
+import { PasswordInput } from "./PasswordInput";
+import { WarningState } from "./WarningState";
 import { FecApiWrapper } from "../../FecApiWrapper";
 import { useStyles } from "./style";
 
@@ -15,146 +15,119 @@ interface LoginContainerProps extends BaseComponentProps {
   className?: string;
 }
 
-type History = loginFormData[];
-
 type WarningKey = "noCommunicate" | "missAuth";
 
-interface loginFormData {
-  isShowPassword: boolean;
-  emailLabel: string;
-  passwordLabel: string;
-  isShowLabel: boolean;
-  warningKey: WarningKey;
+export type GetRisedData = () => RisedData;
+
+interface GetMethods extends Record<string, GetRisedData> {
+  email: GetRisedData;
+  password: GetRisedData;
 }
 
-const defaultHistory: History = [
-  {
-    isShowPassword: false,
-    emailLabel: "Email",
-    passwordLabel: "Password",
-    isShowLabel: false,
-    warningKey: "noCommunicate",
-  },
-];
+interface Info {
+  email: string;
+  password: string;
+}
+
+export interface LoginFormData {
+  isShowLabel: boolean;
+  warningKey: WarningKey;
+  info: Info;
+}
+
+type SetGetMethod = (f: GetRisedData) => void;
+
+interface SetGetMethods extends Record<string, SetGetMethod> {
+  email: SetGetMethod;
+  password: SetGetMethod;
+}
+
+const defaultRisedData: RisedData = {
+  isRegular: true,
+  value: "",
+};
+
+const defaultGetMethods: GetMethods = {
+  email: () => defaultRisedData,
+  password: () => defaultRisedData,
+};
+
+const api = new FecApiWrapper();
 
 export const LoginContainer: React.FC<LoginContainerProps> = (props) => {
-  const inputs = useRef([] as HTMLInputElement[]);
-  const inputRefFuncs = [
-    ...Array(2).keys(),
-  ].map((_, i) => (el: HTMLInputElement) => (inputs.current[i] = el));
+  const getMethods = useRef(defaultGetMethods);
+  const setGetMethods = useMemo(() => {
+    const tmp = {} as SetGetMethods;
+    Object.keys(getMethods.current).forEach(
+      (e) => (tmp[e] = (f: GetRisedData) => (getMethods.current[e] = f))
+    );
+    return tmp;
+  }, []);
 
-  const [history, setHistory] = useState(defaultHistory);
-  const current = history[history.length - 1];
-  const inputType = current.isShowPassword ? "text" : "password";
-  const emailWarning = current.emailLabel !== "Email";
-  const passwordWarning = current.passwordLabel !== "Password";
-  const api = new FecApiWrapper();
+  const [history, setHistory] = useState([
+    {
+      isShowLabel: false,
+      warningKey: "noCommunicate",
+      info: { email: "", password: "" },
+    } as LoginFormData,
+  ]);
+  const current = useMemo(() => history[history.length - 1], [history]);
+
   const classes = useStyles();
 
-  const insertHistory = (arg: loginFormData) => {
-    const next = update(history, { $push: [arg] });
-    setHistory(next);
-  };
+  const insertHistory = useCallback(
+    (arg: LoginFormData) => {
+      const newCurrent = { ...current, ...arg };
+      const next = update(history, { $push: [newCurrent] });
+      setHistory(next);
+    },
+    [history, current]
+  );
 
-  const onClickEye = () => {
-    const next = update(current, {
-      isShowPassword: { $set: !current.isShowPassword },
-    });
-    insertHistory(next);
-  };
+  const varidate = useCallback((email: RisedData, password: RisedData) => {
+    return email.isRegular && password.isRegular;
+  }, []);
 
-  const reflectWarning = (emailDetail: string, passwordDetail: string) => {
-    const emailLabel = isLongerThan0(emailDetail) ? emailDetail : "Email";
-    const passwordLabel = isLongerThan0(passwordDetail)
-      ? passwordDetail
-      : "Password";
-    const next = update(current, {
-      emailLabel: { $set: emailLabel },
-      passwordLabel: { $set: passwordLabel },
-    });
-    insertHistory(next);
-  };
+  const onSubmit = useCallback(
+    (event: React.FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+      const currentInfo = getMethods.current;
+      const email = currentInfo.email();
+      const password = currentInfo.password();
+      if (!varidate(email, password)) return;
+      const next = {
+        isShowLabel: false,
+        info: { email: email.value, password: password.value },
+      } as LoginFormData;
+      insertHistory(next);
+    },
+    [insertHistory, varidate]
+  );
 
-  const setIsShowWarningLabel = (isShow: boolean) => {
-    const next = update(current, {
-      isShowLabel: { $set: isShow },
-    });
-    insertHistory(next);
-  };
-
-  const setWarningKey = (key: WarningKey) => {
-    const next = update(current, {
-      warningKey: { $set: key },
-    });
-    insertHistory(next);
-  };
-
-  const validate = (email: string, password: string) => {
-    const [emailValidate, passwordValidate] = validateData(email, password);
-    reflectWarning(emailValidate.detail, passwordValidate.detail);
-    return emailValidate.passCheck && passwordValidate.passCheck;
-  };
-
-  const login = async (email: string, password: string) => {
-    try {
-      const {
-        data: { status },
-      } = await api.login(email, password);
-      if (status == "FAILED") {
-        return;
-      }
-    } catch (e) {
-      setWarningKey("noCommunicate");
-      setIsShowWarningLabel(true);
+  useDoesMountEffect(async () => {
+    const { email, password } = current.info;
+    const res = await api.login(email, password).catch((e) => undefined);
+    console.log(res);
+    const next = { isShowLabel: true } as LoginFormData;
+    if (res == null) {
+      next.warningKey = "noCommunicate";
+    } else {
+      next.warningKey = "missAuth";
     }
-  };
-
-  const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const [email, password] = inputs.current.map((e) => e.value);
-    if (!validate(email, password)) return;
-    setIsShowWarningLabel(false);
-    await login(email, password);
-  };
+    insertHistory(next);
+  }, [current.info]);
 
   return (
     <form onSubmit={onSubmit} className={props.className}>
       <Grid container className={classes.container}>
         <Grid item>
-          <WarningLabel isShow={current.isShowLabel}>
-            <DisplayContainer currentKey={current.warningKey}>
-              <div key="noCommunicate">サーバーとの通信が失敗しました。</div>
-              <div key="missAuth">
-                認証に失敗しました。入力された情報が間違っています。
-              </div>
-            </DisplayContainer>
-          </WarningLabel>
+          <WarningState loginFormData={current} />
         </Grid>
         <Grid item>
-          <InputPlace
-            label={current.emailLabel}
-            type="TextField"
-            ref={inputRefFuncs[0]}
-            error={emailWarning}
-            className={classes.text}
-          >
-            <Email />
-          </InputPlace>
+          <EmailInput ref={setGetMethods.email} />
         </Grid>
         <Grid item>
-          <InputPlace
-            label={current.passwordLabel}
-            type={inputType}
-            ref={inputRefFuncs[1]}
-            error={passwordWarning}
-            className={classes.text}
-          >
-            <VpnKey />
-            <ToggleEyeIcon
-              onClick={onClickEye}
-              isShow={current.isShowPassword}
-            />
-          </InputPlace>
+          <PasswordInput ref={setGetMethods.password} />
         </Grid>
         <Grid item>
           <Button variant="outlined" type="submit" className={classes.button}>
@@ -165,34 +138,3 @@ export const LoginContainer: React.FC<LoginContainerProps> = (props) => {
     </form>
   );
 };
-
-interface varidationResult {
-  detail: string;
-  passCheck: boolean;
-}
-
-const validateData = (email: string, password: string) => {
-  return [validateEmail(email), validatePassword(password)];
-};
-
-const validateEmail = (email: string): varidationResult => {
-  const reg = /^[\w+-.]+@[a-z\d-]+(.[a-z\d-]+)*.[a-z]+$/i;
-  const passCheckLength = email.length <= 255;
-  const passCheckRegular = reg.test(email);
-  const passCheck = passCheckLength && passCheckRegular;
-  const detail = passCheckLength
-    ? passCheckRegular
-      ? ""
-      : "メールアドレスの形式が不正です"
-    : "メールアドレスが長すぎます";
-  return { passCheck, detail };
-};
-
-const validatePassword = (password: string): varidationResult => {
-  const passCheckLength = password.length >= 6;
-  const passCheck = passCheckLength;
-  const detail = passCheckLength ? "" : "パスワードが短すぎます";
-  return { passCheck, detail };
-};
-
-const isLongerThan0 = (arg: string) => arg.length > 0;
