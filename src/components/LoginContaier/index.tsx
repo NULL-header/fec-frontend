@@ -6,8 +6,9 @@ import Email from "@material-ui/icons/Email";
 
 import { InputPlace } from "../InputPlace";
 import { ToggleEyeIcon } from "../ToggleEyeIcon";
-import { FecApiWrapper } from "../../FecApiWrapper";
 import { WarningLabel } from "../WarningLabel";
+import { DisplayContainer } from "../DisplayContainer";
+import { FecApiWrapper } from "../../FecApiWrapper";
 import { useStyles } from "./style";
 
 interface LoginContainerProps extends BaseComponentProps {
@@ -16,11 +17,14 @@ interface LoginContainerProps extends BaseComponentProps {
 
 type History = loginFormData[];
 
+type WarningKey = "noCommunicate" | "missAuth";
+
 interface loginFormData {
   isShowPassword: boolean;
   emailLabel: string;
   passwordLabel: string;
   isShowLabel: boolean;
+  warningKey: WarningKey;
 }
 
 export const LoginContainer: React.FC<LoginContainerProps> = (props) => {
@@ -35,6 +39,7 @@ export const LoginContainer: React.FC<LoginContainerProps> = (props) => {
       emailLabel: "Email",
       passwordLabel: "Password",
       isShowLabel: false,
+      warningKey: "noCommunicate",
     },
   ] as History);
   const current = history[history.length - 1];
@@ -74,28 +79,30 @@ export const LoginContainer: React.FC<LoginContainerProps> = (props) => {
     insertHistory(next);
   };
 
+  const setWarningKey = (key: WarningKey) => {
+    const next = update(current, {
+      warningKey: { $set: key },
+    });
+    insertHistory(next);
+  };
+
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const [email, password] = inputs.current.map((e) => e.value);
     const [emailValidate, passwordValidate] = validateData(email, password);
     reflectWarning(emailValidate.detail, passwordValidate.detail);
     if (!(emailValidate.passCheck && passwordValidate.passCheck)) return;
-    console.log(current.isShowLabel);
-    if (current.isShowLabel) {
-      setWarningLabel(false);
-      console.log("toggle1");
-    }
+    setWarningLabel(false);
     try {
       const {
         data: { status },
       } = await api.login(email, password);
       if (status == "FAILED") {
-        console.log();
         return;
       }
     } catch (e) {
+      setWarningKey("noCommunicate");
       setWarningLabel(true);
-      console.log("toggle2");
     }
   };
 
@@ -103,7 +110,14 @@ export const LoginContainer: React.FC<LoginContainerProps> = (props) => {
     <form onSubmit={onSubmit} className={props.className}>
       <Grid container className={classes.container}>
         <Grid item>
-          <WarningLabel isShow={current.isShowLabel} />
+          <WarningLabel isShow={current.isShowLabel}>
+            <DisplayContainer currentKey={current.warningKey}>
+              <div key="noCommunicate">サーバーとの通信が失敗しました。</div>
+              <div key="missAuth">
+                認証に失敗しました。入力された情報が間違っています。
+              </div>
+            </DisplayContainer>
+          </WarningLabel>
         </Grid>
         <Grid item>
           <InputPlace
