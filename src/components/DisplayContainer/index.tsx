@@ -1,17 +1,15 @@
 import React from "react";
 
 interface DisplayContainerProps extends BaseComponentProps {
-  componentMap: ComponentMap;
-  currentName: string;
+  currentKey: string;
+  children: BaseElement[];
 }
 
 export const DisplayContainer: React.FC<DisplayContainerProps> = (props) => {
-  const elementOptional = props.componentMap.get(props.currentName);
-  if (elementOptional == null)
-    throw new Error(
-      "The component can be recieve a only currentName which there is in the keys ofcomponentMap"
-    );
-  const styledElement = React.cloneElement(elementOptional, {
+  const selectedElement = props.children.filter(
+    (e) => props.currentKey === e.key
+  )[0]; // The key is not duplicated so the lengh of this array is one.
+  const styledElement = React.cloneElement(selectedElement, {
     className: props.className,
   });
 
