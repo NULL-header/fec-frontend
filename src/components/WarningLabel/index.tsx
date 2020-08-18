@@ -5,11 +5,13 @@ import { useStyles } from "./style";
 interface WarningLabelProps {
   className?: string;
   isShow: boolean;
+  children: string;
 }
 
 export const WarningLabel: React.FC<WarningLabelProps> = (props) => {
   const classes = useStyles({ isShow: props.isShow });
   const rootClassName =
     (props.className == null ? "" : props.className) + " " + classes.root;
-  return <div className={rootClassName}>Error</div>;
+  const label = props.children;
+  return <div className={rootClassName}>{label}</div>;
 };
