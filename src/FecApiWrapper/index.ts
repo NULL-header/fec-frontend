@@ -1,9 +1,7 @@
-import axios from "axios";
-
 import { TokenGuard } from "./TokenGuard";
 import { CONSTVALUES } from "../config";
 // eslint-disable-next-line no-unused-vars
-import { AuthPostResponse } from "./APITypes";
+import { AuthPostResponse, BadResponse } from "./APITypes";
 
 /* eslint-disable no-var */
 
@@ -25,7 +23,9 @@ export class FecApiWrapper {
       ...option,
     });
     const httpStatus = res.status;
-    const data = { ...(await res.json()), httpStatus } as AuthPostResponse;
+    const data = { ...(await res.json()), httpStatus } as
+      | AuthPostResponse
+      | BadResponse;
     return data;
   }
 
