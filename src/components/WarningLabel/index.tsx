@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo, memo } from "react";
 
 import { useStyles } from "./style";
 
@@ -8,10 +8,17 @@ interface WarningLabelProps {
   children: BaseElement;
 }
 
-export const WarningLabel: React.FC<WarningLabelProps> = (props) => {
+const NotYetWarningLabel: React.FC<WarningLabelProps> = (props) => {
   const classes = useStyles({ isShow: props.isShow });
-  const rootClassName =
-    (props.className == null ? "" : props.className) + " " + classes.root;
-  const label = props.children;
+
+  const rootClassName = useMemo(
+    () => (props.className == null ? "" : props.className) + " " + classes.root,
+    [props.className, classes.root]
+  );
+
+  const label = useMemo(() => props.children, [props.children]);
+
   return <div className={rootClassName}>{label}</div>;
 };
+
+export const WarningLabel = memo(NotYetWarningLabel);

@@ -1,9 +1,7 @@
-import React, { useRef, useState, useCallback, useMemo } from "react";
+import React, { useRef, useState, useCallback, useMemo, memo } from "react";
 import { Grid, Button } from "@material-ui/core";
 import update from "immutability-helper";
 
-// eslint-disable-next-line no-unused-vars
-import { RisedData } from "./BaseInput";
 import { useDoesMountEffect } from "../../costomhook/doesMountEffect";
 import { EmailInput } from "./EmailInput";
 import { PasswordInput } from "./PasswordInput";
@@ -16,6 +14,11 @@ interface LoginContainerProps extends BaseComponentProps {
 }
 
 type WarningKey = "noCommunicate" | "missAuth";
+
+export interface RisedData {
+  value: string;
+  isRegular: boolean;
+}
 
 export type GetRisedData = () => RisedData;
 
@@ -54,7 +57,7 @@ const defaultGetMethods: GetMethods = {
 
 const api = new FecApiWrapper();
 
-export const LoginContainer: React.FC<LoginContainerProps> = (props) => {
+const NotYetLoginContainer: React.FC<LoginContainerProps> = (props) => {
   const getMethods = useRef(defaultGetMethods);
   const setGetMethods = useMemo(() => {
     const tmp = {} as SetGetMethods;
@@ -84,10 +87,6 @@ export const LoginContainer: React.FC<LoginContainerProps> = (props) => {
     [history, current]
   );
 
-  const varidate = useCallback((email: RisedData, password: RisedData) => {
-    return email.isRegular && password.isRegular;
-  }, []);
-
   const onSubmit = useCallback(
     (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
@@ -101,7 +100,7 @@ export const LoginContainer: React.FC<LoginContainerProps> = (props) => {
       } as LoginFormData;
       insertHistory(next);
     },
-    [insertHistory, varidate]
+    [insertHistory]
   );
 
   useDoesMountEffect(async () => {
@@ -131,10 +130,16 @@ export const LoginContainer: React.FC<LoginContainerProps> = (props) => {
         </Grid>
         <Grid item>
           <Button variant="outlined" type="submit" className={classes.button}>
-            送信
+            log in
           </Button>
         </Grid>
       </Grid>
     </form>
   );
 };
+
+const varidate = (email: RisedData, password: RisedData) => {
+  return email.isRegular && password.isRegular;
+};
+
+export const LoginContainer = memo(NotYetLoginContainer);

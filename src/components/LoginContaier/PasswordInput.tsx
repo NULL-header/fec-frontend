@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useMemo, memo } from "react";
 import VpnKey from "@material-ui/icons/VpnKey";
 
 // eslint-disable-next-line no-unused-vars
@@ -9,28 +9,31 @@ import { GetRisedData } from "./index";
 
 type PasswordInputProps = BaseComponentProps;
 
-export const PasswordInput = React.forwardRef<GetRisedData, PasswordInputProps>(
+const NotYetPasswordInput = React.forwardRef<GetRisedData, PasswordInputProps>(
   (props, ref) => {
     const [[isShow], setIsShow] = useState([false]);
+
     const onClick = useCallback(() => {
       setIsShow([!isShow]);
     }, [isShow]);
+
+    const inputType = useMemo(() => toggleType(isShow), [isShow]);
+
     return (
-      <BaseInput
-        label="Password"
-        {...{ varidate, ref, type: inputType(isShow) }}
-      >
+      <BaseInput {...{ varidate, type: inputType, label: "Password" }}>
         <VpnKey />
-        <ToggleEyeIcon {...{ isShow, onClick }} />
+        <ToggleEyeIcon {...{ onClick, isShow }} />
       </BaseInput>
     );
   }
 );
 
-const inputType = (isShow: boolean) => (isShow ? "text" : "password");
+const toggleType = (isShow: boolean) => (isShow ? "text" : "password");
 
 const varidate = (password: string): string => {
   const passCheckLength = password.length >= 6;
   const detail = passCheckLength ? "Password" : "パスワードが短すぎます";
   return detail;
 };
+
+export const PasswordInput = memo(NotYetPasswordInput);

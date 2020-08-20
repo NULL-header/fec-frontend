@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-unused-vars
-import React, { ReactNode } from "react";
+import React, { ReactNode, useMemo } from "react";
 
 interface ToggleDisplayContainerProps extends BaseComponentProps {
   isShowFirstChild: boolean;
@@ -9,9 +9,13 @@ interface ToggleDisplayContainerProps extends BaseComponentProps {
 export const ToggleDisplayContainer: React.FC<ToggleDisplayContainerProps> = (
   props
 ) => {
-  const container = React.cloneElement(
-    props.isShowFirstChild ? props.children[0] : props.children[1],
-    { className: props.className }
+  const container = useMemo(
+    () =>
+      React.cloneElement(
+        props.isShowFirstChild ? props.children[0] : props.children[1],
+        { className: props.className }
+      ),
+    [props]
   );
 
   return container;

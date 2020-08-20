@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo, memo } from "react";
 
 // eslint-disable-next-line no-unused-vars
 import { LoginFormData } from "./index";
@@ -10,8 +10,10 @@ interface WarningStateProps {
   loginFormData: LoginFormData;
 }
 
-export const WarningState: React.FC<WarningStateProps> = (props) => {
-  const { isShowLabel, warningKey } = props.loginFormData;
+const NotYetWarningState: React.FC<WarningStateProps> = (props) => {
+  const { isShowLabel, warningKey } = useMemo(() => props.loginFormData, [
+    props.loginFormData,
+  ]);
   return (
     <WarningLabel isShow={isShowLabel}>
       <DisplayContainer currentKey={warningKey}>
@@ -23,3 +25,5 @@ export const WarningState: React.FC<WarningStateProps> = (props) => {
     </WarningLabel>
   );
 };
+
+export const WarningState = memo(NotYetWarningState);

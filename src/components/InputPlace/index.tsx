@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo, memo } from "react";
 import { TextField, InputAdornment } from "@material-ui/core";
 
 interface InputPlaceProps extends BaseComponentProps {
@@ -8,19 +8,30 @@ interface InputPlaceProps extends BaseComponentProps {
   type: string;
   error: boolean;
 }
-export const InputPlace = React.forwardRef<HTMLInputElement, InputPlaceProps>(
+const NotYetInputPlace = React.forwardRef<HTMLInputElement, InputPlaceProps>(
   (props, ref) => {
-    const { startIcon, endIconOptional } = openItemsFromArray(
-      {
-        startIcon: undefined,
-        endIconOptional: undefined,
-      },
-      props.children
+    const { startIcon, endIconOptional } = useMemo(
+      () =>
+        openItemsFromArray(
+          {
+            startIcon: undefined,
+            endIconOptional: undefined,
+          },
+          props.children
+        ),
+      [props.children]
     );
-    const endIcon =
-      endIconOptional == null ? undefined : (
-        <InputAdornment position="end">{endIconOptional}</InputAdornment>
-      );
+    const startIconElement = useMemo(
+      () => <InputAdornment position="start">{startIcon}</InputAdornment>,
+      [startIcon]
+    );
+    const endIconElement = useMemo(
+      () =>
+        endIconOptional == null ? undefined : (
+          <InputAdornment position="end">{endIconOptional}</InputAdornment>
+        ),
+      [endIconOptional]
+    );
 
     return (
       <TextField
@@ -29,16 +40,15 @@ export const InputPlace = React.forwardRef<HTMLInputElement, InputPlaceProps>(
         type={props.type}
         label={props.label}
         InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">{startIcon}</InputAdornment>
-          ),
-          endAdornment: endIcon,
+          startAdornment: startIconElement,
+          endAdornment: endIconElement,
         }}
         inputRef={ref}
       />
     );
   }
 );
+
 // can get valiable which be Specified by key of the option object from array.
 function openItemsFromArray<T>(
   option: { [key: string]: undefined },
@@ -63,3 +73,5 @@ function openItemsFromArray<T>(
     return result;
   }
 }
+
+export const InputPlace = memo(NotYetInputPlace);

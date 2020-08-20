@@ -1,15 +1,17 @@
-import React from "react";
+import React, { memo } from "react";
 import Email from "@material-ui/icons/Email";
 
 // eslint-disable-next-line no-unused-vars
-import { BaseInput, RisedData } from "./BaseInput";
+import { GetRisedData } from "./index";
+// eslint-disable-next-line no-unused-vars
+import { BaseInput } from "./BaseInput";
 
 type EmailInputProps = BaseComponentProps;
 
-export const EmailInput = React.forwardRef<() => RisedData, EmailInputProps>(
+const NotYetEmailInput = React.forwardRef<GetRisedData, EmailInputProps>(
   (props, ref) => {
     return (
-      <BaseInput label="Email" {...{ varidate, ref, type: "text" }}>
+      <BaseInput {...{ varidate, ref, label: "Email", type: "text" }}>
         <Email />
       </BaseInput>
     );
@@ -27,3 +29,5 @@ const varidate = (email: string): string => {
     : "メールアドレスが長すぎます";
   return detail;
 };
+
+export const EmailInput = memo(NotYetEmailInput);

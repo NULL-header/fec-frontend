@@ -1,8 +1,15 @@
-import React, { useRef, useState, useCallback } from "react";
+import React, {
+  useRef,
+  useState,
+  useCallback,
+  useMemo,
+  memo,
+  useEffect,
+} from "react";
 
 import { InputPlace } from "../InputPlace";
 // eslint-disable-next-line no-unused-vars
-import { GetRisedData } from "./index";
+import { GetRisedData, RisedData } from "./index";
 
 interface BaseInputProps extends BaseComponentProps {
   label: string;
@@ -15,18 +22,13 @@ interface BaseInputData {
   label: string;
 }
 
-export interface RisedData {
-  value: string;
-  isRegular: boolean;
-}
-
-export const BaseInput = React.forwardRef<GetRisedData, BaseInputProps>(
+const NotYetBaseInput = React.forwardRef<GetRisedData, BaseInputProps>(
   (props, ref) => {
-    const input = useRef((undefined as unknown) as HTMLInputElement);
+    const input = useRef<HTMLInputElement>(undefined as any);
 
     const [[data], setData] = useState([
-      { label: props.label },
-    ] as BaseInputData[]);
+      { label: props.label } as BaseInputData,
+    ]);
 
     const isError = useCallback((label: string) => label !== props.label, [
       props.label,
@@ -38,22 +40,23 @@ export const BaseInput = React.forwardRef<GetRisedData, BaseInputProps>(
       setData([{ label }]);
       const isRegular = !isError(label);
       return { isRegular, value };
-      // eslint tells me to add props to array argument.
-      // but I think props will be change small.
+      // eslint say props is dependency, but i think like this code.
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [props.varidate]);
+    }, [isError, props.varidate]);
 
-    passValueToRef<() => RisedData>(validateInputValue, ref);
+    useEffect(() => passValueToRef<GetRisedData>(validateInputValue, ref), [
+      ref,
+      validateInputValue,
+    ]);
+    const label = useMemo(() => data.label, [data.label]);
+    const error = useMemo(() => isError(label), [isError, label]);
+    const inputType = useMemo(() => props.type, [props.type]);
 
-    const { label } = data;
-    const args = {
-      label,
-      type: props.type,
-      ref: input,
-      error: isError(label),
-    };
-
-    return <InputPlace {...args}>{props.children}</InputPlace>;
+    return (
+      <InputPlace {...{ label, error, type: inputType, ref: input }}>
+        {props.children}
+      </InputPlace>
+    );
   }
 );
 
@@ -68,3 +71,5 @@ const passValueToRef = function <T>(
     ref.current = value;
   }
 };
+
+export const BaseInput = memo(NotYetBaseInput);
