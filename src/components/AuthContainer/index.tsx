@@ -10,7 +10,7 @@ interface AuthContainerProps {
 }
 
 export const AuthContainer: React.FC<AuthContainerProps> = (props) => {
-  const [showFirst, setShowFirst] = React.useState(true);
+  const [showFirst, _setShowFirst] = React.useState(true);
   const classes = useStyles();
 
   return (

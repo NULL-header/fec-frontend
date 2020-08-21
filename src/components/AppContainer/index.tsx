@@ -25,7 +25,7 @@ const defaultProp: ThemeOptions = {
 };
 
 export const AppContainer: React.FC<AppContainerProps> = (props) => {
-  const [history, setHistory] = React.useState([
+  const [history, _setHistory] = React.useState([
     { themeProps: defaultProp, showFirst: false },
   ] as History);
   const current = history[history.length - 1];
