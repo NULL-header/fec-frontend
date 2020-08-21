@@ -34,7 +34,7 @@ export const AppContainer: React.FC<AppContainerProps> = (props) => {
 
   return (
     <ThemeProvider theme={theme}>
-      <ToggleDisplayContainer isShowFirstChild={current.showFirst}>
+      <ToggleDisplayContainer isShownFirstChild={current.showFirst}>
         <div>normal page</div>
         <AuthContainer />
       </ToggleDisplayContainer>

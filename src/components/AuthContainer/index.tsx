@@ -18,7 +18,7 @@ export const AuthContainer: React.FC<AuthContainerProps> = (props) => {
       <Paper className={classes.cloth}>
         <ToggleDisplayContainer
           className={classes.container}
-          isShowFirstChild={showFirst}
+          isShownFirstChild={showFirst}
         >
           <LoginContainer />
           <div>sign up</div>

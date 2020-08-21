@@ -1,11 +1,11 @@
 import { makeStyles } from "@material-ui/core";
 
 interface Props {
-  isShow: boolean;
+  isShown: boolean;
 }
 
 export const useStyles = makeStyles((theme) => ({
   root: {
-    visibility: (props: Props) => (props.isShow ? "initial" : "hidden"),
+    visibility: (props: Props) => (props.isShown ? "initial" : "hidden"),
   },
 }));

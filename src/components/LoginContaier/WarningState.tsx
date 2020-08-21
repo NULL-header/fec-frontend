@@ -11,11 +11,11 @@ interface WarningStateProps {
 }
 
 const NotYetWarningState: React.FC<WarningStateProps> = (props) => {
-  const { isShowLabel, warningKey } = useMemo(() => props.loginFormData, [
+  const { isShownnLabel, warningKey } = useMemo(() => props.loginFormData, [
     props.loginFormData,
   ]);
   return (
-    <WarningLabel isShow={isShowLabel}>
+    <WarningLabel isShown={isShownnLabel}>
       <DisplayContainer currentKey={warningKey}>
         <div key="noCommunicate">サーバーとの通信が失敗しました。</div>
         <div key="missAuth">

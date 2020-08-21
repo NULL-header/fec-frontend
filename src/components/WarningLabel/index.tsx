@@ -4,12 +4,12 @@ import { useStyles } from "./style";
 
 interface WarningLabelProps {
   className?: string;
-  isShow: boolean;
+  isShown: boolean;
   children: BaseElement;
 }
 
 const NotYetWarningLabel: React.FC<WarningLabelProps> = (props) => {
-  const classes = useStyles({ isShow: props.isShow });
+  const classes = useStyles({ isShown: props.isShown });
 
   const rootClassName = useMemo(
     () => (props.className == null ? "" : props.className) + " " + classes.root,

@@ -2,7 +2,7 @@
 import React, { ReactNode, useMemo } from "react";
 
 interface ToggleDisplayContainerProps extends BaseComponentProps {
-  isShowFirstChild: boolean;
+  isShownFirstChild: boolean;
   children: [BaseElement, BaseElement];
 }
 
@@ -12,7 +12,7 @@ export const ToggleDisplayContainer: React.FC<ToggleDisplayContainerProps> = (
   const container = useMemo(
     () =>
       React.cloneElement(
-        props.isShowFirstChild ? props.children[0] : props.children[1],
+        props.isShownFirstChild ? props.children[0] : props.children[1],
         { className: props.className }
       ),
     [props]

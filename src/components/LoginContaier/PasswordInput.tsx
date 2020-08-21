@@ -11,24 +11,24 @@ type PasswordInputProps = BaseComponentProps;
 
 const NotYetPasswordInput = React.forwardRef<GetRisedData, PasswordInputProps>(
   (props, ref) => {
-    const [[isShow], setIsShow] = useState([false]);
+    const [[isShown], setisShown] = useState([false]);
 
     const onClick = useCallback(() => {
-      setIsShow([!isShow]);
-    }, [isShow]);
+      setisShown([!isShown]);
+    }, [isShown]);
 
-    const inputType = useMemo(() => toggleType(isShow), [isShow]);
+    const inputType = useMemo(() => toggleType(isShown), [isShown]);
 
     return (
       <BaseInput {...{ varidate, type: inputType, label: "Password" }}>
         <VpnKey />
-        <ToggleEyeIcon {...{ onClick, isShow }} />
+        <ToggleEyeIcon {...{ onClick, isShown }} />
       </BaseInput>
     );
   }
 );
 
-const toggleType = (isShow: boolean) => (isShow ? "text" : "password");
+const toggleType = (isShown: boolean) => (isShown ? "text" : "password");
 
 const varidate = (password: string): string => {
   const passCheckLength = password.length >= 6;

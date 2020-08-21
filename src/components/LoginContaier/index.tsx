@@ -33,7 +33,7 @@ interface Info {
 }
 
 export interface LoginFormData {
-  isShowLabel: boolean;
+  isShownnLabel: boolean;
   warningKey: WarningKey;
   info: Info;
 }
@@ -69,7 +69,7 @@ const NotYetLoginContainer: React.FC<LoginContainerProps> = (props) => {
 
   const [history, setHistory] = useState([
     {
-      isShowLabel: false,
+      isShownnLabel: false,
       warningKey: "noCommunicate",
       info: { email: "", password: "" },
     } as LoginFormData,
@@ -95,7 +95,7 @@ const NotYetLoginContainer: React.FC<LoginContainerProps> = (props) => {
       const password = currentInfo.password();
       if (!varidate(email, password)) return;
       const next = {
-        isShowLabel: false,
+        isShownnLabel: false,
         info: { email: email.value, password: password.value },
       } as LoginFormData;
       insertHistory(next);
@@ -107,7 +107,7 @@ const NotYetLoginContainer: React.FC<LoginContainerProps> = (props) => {
     const { email, password } = current.info;
     const res = await api.login(email, password).catch((e) => undefined);
     console.log(res);
-    const next = { isShowLabel: true } as LoginFormData;
+    const next = { isShownnLabel: true } as LoginFormData;
     if (res == null) {
       next.warningKey = "noCommunicate";
     } else {
