@@ -20,7 +20,7 @@ const NotYetPasswordInput = React.forwardRef<GetRisedData, PasswordInputProps>(
     const inputType = useMemo(() => toggleType(isShown), [isShown]);
 
     return (
-      <BaseInput {...{ validate, type: inputType, label: "Password" }}>
+      <BaseInput {...{ ref, validate, type: inputType, label: "Password" }}>
         <VpnKey />
         <ToggleEyeIcon {...{ onClick, isShown }} />
       </BaseInput>
