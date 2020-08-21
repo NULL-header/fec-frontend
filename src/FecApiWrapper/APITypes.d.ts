@@ -1,6 +1,6 @@
 // F means fetch
 
-declare type Status = "SUCCESS" | "FAILED";
+declare type Status = "SUCCESS" | "FAILED" | "OLD_TOKEN" | "ERROR";
 
 interface BaseResponce {
   status: Status;
