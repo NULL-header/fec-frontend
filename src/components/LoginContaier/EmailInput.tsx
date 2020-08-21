@@ -11,14 +11,14 @@ type EmailInputProps = BaseComponentProps;
 const NotYetEmailInput = React.forwardRef<GetRisedData, EmailInputProps>(
   (props, ref) => {
     return (
-      <BaseInput {...{ varidate, ref, label: "Email", type: "text" }}>
+      <BaseInput {...{ validate, ref, label: "Email", type: "text" }}>
         <Email />
       </BaseInput>
     );
   }
 );
 
-const varidate = (email: string): string => {
+const validate = (email: string): string => {
   const reg = /^[\w+-.]+@[a-z\d-]+(.[a-z\d-]+)*.[a-z]+$/i;
   const passCheckLength = email.length <= 255;
   const passCheckRegular = reg.test(email);

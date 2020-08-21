@@ -20,7 +20,7 @@ const NotYetPasswordInput = React.forwardRef<GetRisedData, PasswordInputProps>(
     const inputType = useMemo(() => toggleType(isShown), [isShown]);
 
     return (
-      <BaseInput {...{ varidate, type: inputType, label: "Password" }}>
+      <BaseInput {...{ validate, type: inputType, label: "Password" }}>
         <VpnKey />
         <ToggleEyeIcon {...{ onClick, isShown }} />
       </BaseInput>
@@ -30,7 +30,7 @@ const NotYetPasswordInput = React.forwardRef<GetRisedData, PasswordInputProps>(
 
 const toggleType = (isShown: boolean) => (isShown ? "text" : "password");
 
-const varidate = (password: string): string => {
+const validate = (password: string): string => {
   const passCheckLength = password.length >= 6;
   const detail = passCheckLength ? "Password" : "パスワードが短すぎます";
   return detail;

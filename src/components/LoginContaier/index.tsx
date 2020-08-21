@@ -93,7 +93,7 @@ const NotYetLoginContainer: React.FC<LoginContainerProps> = (props) => {
       const currentInfo = getMethods.current;
       const email = currentInfo.email();
       const password = currentInfo.password();
-      if (!varidate(email, password)) return;
+      if (!validate(email, password)) return;
       const next = {
         isShownnLabel: false,
         info: { email: email.value, password: password.value },
@@ -138,7 +138,7 @@ const NotYetLoginContainer: React.FC<LoginContainerProps> = (props) => {
   );
 };
 
-const varidate = (email: RisedData, password: RisedData) => {
+const validate = (email: RisedData, password: RisedData) => {
   return email.isRegular && password.isRegular;
 };
 

@@ -14,7 +14,7 @@ import { GetRisedData, RisedData } from "./index";
 interface BaseInputProps extends BaseComponentProps {
   label: string;
   type: string;
-  varidate: (arg: string) => string;
+  validate: (arg: string) => string;
   children: BaseElement | BaseElement[];
 }
 
@@ -36,13 +36,13 @@ const NotYetBaseInput = React.forwardRef<GetRisedData, BaseInputProps>(
 
     const validateInputValue = useCallback((): RisedData => {
       const value = input.current.value;
-      const label = props.varidate(value);
+      const label = props.validate(value);
       setData([{ label }]);
       const isRegular = !isError(label);
       return { isRegular, value };
       // eslint say props is dependency, but i think like this code.
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isError, props.varidate]);
+    }, [isError, props.validate]);
 
     useEffect(() => passValueToRef<GetRisedData>(validateInputValue, ref), [
       ref,
