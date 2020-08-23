@@ -1,7 +1,7 @@
 import { TokenGuard } from "./TokenGuard";
 import { CONSTVALUES } from "../config";
 // eslint-disable-next-line no-unused-vars
-import { AuthPostResponse, BadResponse } from "./APITypes";
+import { AuthPostResponse, BadResponse, BaseResponse } from "./APITypes";
 
 /* eslint-disable no-var */
 
@@ -25,22 +25,38 @@ export class FecApiWrapper {
     });
     const httpStatus = res.status;
     const data = { ...(await res.json()), httpStatus } as
-      | AuthPostResponse
+      | BaseResponse
       | BadResponse;
     console.log("after");
     return data;
   }
 
-  login(email: string, password: string) {
-    return this.fetch(
+  async login(argObj: { email: string; password: string }) {
+    const res = await this.fetch(
       CONSTVALUES.auth,
-      { value: { email, password } },
+      { value: argObj },
       { method: "POST" }
-    );
+    ).catch((e) => undefined);
+    if (res != null && !this.badGurad(res)) {
+      this.setTokensCache((res as AuthPostResponse).body.token);
+    }
+    return res;
   }
 
-  // reson which ontime argument is first is to become to able to call with a onetime argument only.
-  setTokensCache(onetime: string, master?: string) {
+  async createUser(argObj: { email: string; password: string; name: string }) {
+    const res = await this.fetch(
+      CONSTVALUES.users,
+      { value: argObj },
+      { method: "POST" }
+    );
+    return res;
+  }
+
+  badGurad(arg: BaseResponse | BadResponse): arg is BadResponse {
+    return arg.status !== "SUCCESS";
+  }
+
+  setTokensCache({ onetime, master }: { onetime: string; master?: string }) {
     this.tokenGuard.setOntime(onetime);
     if (master != null) this.tokenGuard.setMaster(master);
   }
