@@ -3,7 +3,7 @@ import React, { useEffect, useRef } from "react";
 
 type effectFunc = () => Promise<unknown>;
 
-export const useDoesMountEffect = (
+export const useDidMountEffect = (
   func: effectFunc,
   deps: React.DependencyList | undefined
 ) => {

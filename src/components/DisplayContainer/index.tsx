@@ -23,4 +23,7 @@ const NotYetDisplayContainer: React.FC<DisplayContainerProps> = (props) => {
   return styledElement;
 };
 
-export const DisplayContainer = memo(NotYetDisplayContainer);
+const DisplayContainer = memo(NotYetDisplayContainer);
+DisplayContainer.displayName = "DisplayContainer";
+
+export { DisplayContainer };

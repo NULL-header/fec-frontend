@@ -18,10 +18,11 @@
       "jsx": true
     },
     "sourceType": "module",
-    "project": "./tsconfig.eslint.json"
+    "project": "./tsconfig.json"
   },
   "globals": {
-    "fetch":false
+    "fetch":false,
+    "AbortController":false
   },
   "rules": {
     //"no-useless-catch":"off",

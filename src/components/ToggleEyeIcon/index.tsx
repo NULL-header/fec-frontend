@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import Eye from "@material-ui/icons/Visibility";
 import OffEye from "@material-ui/icons/VisibilityOff";
 import { IconButton } from "@material-ui/core";
@@ -9,7 +9,7 @@ interface ToggleEyeIconProps extends BaseComponentProps {
   onClick: () => void;
 }
 
-export const ToggleEyeIcon: React.FC<ToggleEyeIconProps> = (props) => {
+const NotYetToggleEyeIcon: React.FC<ToggleEyeIconProps> = (props) => {
   return (
     <IconButton className={props.className} onClick={props.onClick}>
       <ToggleDisplayContainer isShownFirstChild={props.isShown}>
@@ -19,3 +19,8 @@ export const ToggleEyeIcon: React.FC<ToggleEyeIconProps> = (props) => {
     </IconButton>
   );
 };
+
+const ToggleEyeIcon = memo(NotYetToggleEyeIcon);
+ToggleEyeIcon.displayName = "ToggleEyeIcon";
+
+export { ToggleEyeIcon };

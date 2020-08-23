@@ -23,7 +23,7 @@ const webpackConfig = (env: {
         test: /\.tsx?$/,
         loader: "ts-loader",
         options: {
-          transpileOnly: true,
+          configFile: path.resolve(__dirname, "./tsconfig.build.json"),
         },
         exclude: /public/,
       },

@@ -1,12 +1,12 @@
 // eslint-disable-next-line no-unused-vars
-import React, { ReactNode, useMemo } from "react";
+import React, { ReactNode, useMemo, memo } from "react";
 
 interface ToggleDisplayContainerProps extends BaseComponentProps {
   isShownFirstChild: boolean;
   children: [BaseElement, BaseElement];
 }
 
-export const ToggleDisplayContainer: React.FC<ToggleDisplayContainerProps> = (
+const NotYetToggleDisplayContainer: React.FC<ToggleDisplayContainerProps> = (
   props
 ) => {
   const container = useMemo(
@@ -20,3 +20,8 @@ export const ToggleDisplayContainer: React.FC<ToggleDisplayContainerProps> = (
 
   return container;
 };
+
+const ToggleDisplayContainer = memo(NotYetToggleDisplayContainer);
+ToggleDisplayContainer.displayName = "ToggleDisplayContainer";
+
+export { ToggleDisplayContainer };

@@ -2,8 +2,7 @@ import React, { useMemo, memo } from "react";
 
 import { useStyles } from "./style";
 
-interface WarningLabelProps {
-  className?: string;
+interface WarningLabelProps extends BaseComponentProps {
   isShown: boolean;
   children: BaseElement;
 }
@@ -16,9 +15,14 @@ const NotYetWarningLabel: React.FC<WarningLabelProps> = (props) => {
     [props.className, classes.root]
   );
 
-  const label = useMemo(() => props.children, [props.children]);
+  const label = React.cloneElement(props.children, {
+    className: rootClassName,
+  });
 
-  return <div className={rootClassName}>{label}</div>;
+  return label;
 };
 
-export const WarningLabel = memo(NotYetWarningLabel);
+const WarningLabel = memo(NotYetWarningLabel);
+WarningLabel.displayName = "WarningLabel";
+
+export { WarningLabel };

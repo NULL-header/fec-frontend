@@ -2,29 +2,20 @@ import React, { useRef, useState, useCallback, useMemo, memo } from "react";
 import { Grid, Button } from "@material-ui/core";
 import update from "immutability-helper";
 
-import { useDoesMountEffect } from "../../costomhook/doesMountEffect";
-import { EmailInput } from "./EmailInput";
-import { PasswordInput } from "./PasswordInput";
+import { useDidMountEffect } from "../../costomhook/useDidMountEffect";
+import { ValidateEmailInput } from "../ValidateEmailInput";
+import { ValidatePasswordInput } from "../ValidatePasswordInput";
 import { WarningState } from "./WarningState";
 import { FecApiWrapper } from "../../FecApiWrapper";
 import { useStyles } from "./style";
 
-interface LoginContainerProps extends BaseComponentProps {
-  className?: string;
-}
+type LoginContainerProps = BaseComponentProps;
 
 type WarningKey = "noCommunicate" | "missAuth";
 
-export interface RisedData {
-  value: string;
-  isRegular: boolean;
-}
-
-export type GetRisedData = () => RisedData;
-
-interface GetMethods extends Record<string, GetRisedData> {
-  email: GetRisedData;
-  password: GetRisedData;
+interface GetMethods extends Record<string, GetRaisedData> {
+  Email: GetRaisedData;
+  Password: GetRaisedData;
 }
 
 interface Info {
@@ -38,34 +29,20 @@ export interface LoginFormData {
   info: Info;
 }
 
-type SetGetMethod = (f: GetRisedData) => void;
-
-interface SetGetMethods extends Record<string, SetGetMethod> {
-  email: SetGetMethod;
-  password: SetGetMethod;
-}
-
-const defaultRisedData: RisedData = {
+const defaultRaisedData: RaisedData = {
   isRegular: true,
   value: "",
 };
 
 const defaultGetMethods: GetMethods = {
-  email: () => defaultRisedData,
-  password: () => defaultRisedData,
+  Email: () => defaultRaisedData,
+  Password: () => defaultRaisedData,
 };
 
 const api = new FecApiWrapper();
 
 const NotYetLoginContainer: React.FC<LoginContainerProps> = (props) => {
   const getMethods = useRef(defaultGetMethods);
-  const setGetMethods = useMemo(() => {
-    const tmp = {} as SetGetMethods;
-    Object.keys(getMethods.current).forEach(
-      (e) => (tmp[e] = (f: GetRisedData) => (getMethods.current[e] = f))
-    );
-    return tmp;
-  }, []);
 
   const [history, setHistory] = useState([
     {
@@ -78,7 +55,7 @@ const NotYetLoginContainer: React.FC<LoginContainerProps> = (props) => {
 
   const classes = useStyles();
 
-  const insertHistory = useCallback(
+  let insertHistory = useCallback(
     (arg: LoginFormData) => {
       const newCurrent = { ...current, ...arg };
       const next = update(history, { $push: [newCurrent] });
@@ -91,8 +68,8 @@ const NotYetLoginContainer: React.FC<LoginContainerProps> = (props) => {
     (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
       const currentInfo = getMethods.current;
-      const email = currentInfo.email();
-      const password = currentInfo.password();
+      const email = currentInfo.Email();
+      const password = currentInfo.Password();
       if (!validate(email, password)) return;
       const next = {
         isShownnLabel: false,
@@ -103,18 +80,25 @@ const NotYetLoginContainer: React.FC<LoginContainerProps> = (props) => {
     [insertHistory]
   );
 
-  useDoesMountEffect(async () => {
-    const { email, password } = current.info;
-    const res = await api.login(email, password).catch((e) => undefined);
-    console.log(res);
-    const next = { isShownnLabel: true } as LoginFormData;
-    if (res == null) {
-      next.warningKey = "noCommunicate";
-    } else {
-      next.warningKey = "missAuth";
-    }
-    insertHistory(next);
-  }, [current.info]);
+  useDidMountEffect(
+    async () => {
+      const { email, password } = current.info;
+      const res = await api.login({ email, password }).catch((e) => undefined);
+      console.log(res);
+      const next = { isShownnLabel: true } as LoginFormData;
+      if (res == null) {
+        next.warningKey = "noCommunicate";
+      } else {
+        next.warningKey = "missAuth";
+      }
+      insertHistory(next);
+    },
+    () => {
+      insertHistory = () => null;
+      api.stopComunicateAll();
+    },
+    [current.info]
+  );
 
   return (
     <form onSubmit={onSubmit} className={props.className}>
@@ -123,10 +107,10 @@ const NotYetLoginContainer: React.FC<LoginContainerProps> = (props) => {
           <WarningState loginFormData={current} />
         </Grid>
         <Grid item>
-          <EmailInput ref={setGetMethods.email} />
+          <ValidateEmailInput ref={getMethods} />
         </Grid>
         <Grid item>
-          <PasswordInput ref={setGetMethods.password} />
+          <ValidatePasswordInput ref={getMethods} />
         </Grid>
         <Grid item>
           <Button variant="outlined" type="submit" className={classes.button}>
@@ -138,8 +122,11 @@ const NotYetLoginContainer: React.FC<LoginContainerProps> = (props) => {
   );
 };
 
-const validate = (email: RisedData, password: RisedData) => {
+const validate = (email: RaisedData, password: RaisedData) => {
   return email.isRegular && password.isRegular;
 };
 
-export const LoginContainer = memo(NotYetLoginContainer);
+const LoginContainer = memo(NotYetLoginContainer);
+LoginContainer.displayName = "LoginContainer";
+
+export { LoginContainer };

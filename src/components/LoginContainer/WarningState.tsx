@@ -26,4 +26,7 @@ const NotYetWarningState: React.FC<WarningStateProps> = (props) => {
   );
 };
 
-export const WarningState = memo(NotYetWarningState);
+const WarningState = memo(NotYetWarningState);
+WarningState.displayName = "WarningState";
+
+export { WarningState };
