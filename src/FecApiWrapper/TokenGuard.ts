@@ -1,22 +1,51 @@
 import cookies from "js-cookie";
 
+const coreKey = "TokenGuard";
+
+// keyName should be Pascal case
+const genKey = (keyName: string) => coreKey + keyName;
+
+const masterTokenKey = genKey("Master");
+const onetimeTokenKey = genKey("Onetime");
+
 export class TokenGuard {
-  private readonly master = "TokenGuardMaster";
-  private readonly onetime = "TokenGuardOnetime";
+  private cache!: Record<string, string>;
+  private isChanged = false;
+
+  constructor() {
+    this.update();
+  }
+
+  private update() {
+    this.cache = cookies.get();
+  }
+
+  private setLatest() {
+    if (this.isChanged) this.update();
+    this.isChanged = false;
+  }
+
+  private setOld() {
+    this.isChanged = true;
+  }
 
   getMaster() {
-    return cookies.get()[this.master];
+    this.setLatest();
+    return this.cache[masterTokenKey];
   }
 
   setMaster(value: string) {
-    return cookies.set(this.master, value);
+    this.setOld();
+    return cookies.set(masterTokenKey, value);
   }
 
   getOnetime() {
-    return cookies.get()[this.onetime];
+    this.setLatest();
+    return this.cache[onetimeTokenKey];
   }
 
   setOntime(value: string) {
-    return cookies.set(this.onetime, value);
+    this.setOld();
+    return cookies.set(onetimeTokenKey, value);
   }
 }
