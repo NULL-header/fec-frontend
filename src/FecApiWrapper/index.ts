@@ -52,6 +52,16 @@ export class FecApiWrapper {
     return res;
   }
 
+  async deleteUser(name: string) {
+    const onetime = this.tokenGuard.getOnetime();
+    const res = await this.fetch(
+      CONSTVALUES.users + `/${name}`,
+      { token: onetime },
+      { method: "DELETE" }
+    );
+    return res;
+  }
+
   badGurad(arg: BaseResponse | BadResponse): arg is BadResponse {
     return arg.status !== "SUCCESS";
   }
