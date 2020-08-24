@@ -8,7 +8,7 @@
     "moduleResolution": "node",
     "lib": ["ES6", "DOM"],
     "types": ["node"],
-    "typeRoots": ["node_module/@types","src/dts"],
+    "typeRoots": ["node_modules/@types","src/dts"],
     "experimentalDecorators": true,
     "removeComments": true,
     "emitDecoratorMetadata": true,
