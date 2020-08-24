@@ -11,7 +11,7 @@ interface AuthContainerProps {
 }
 
 export const AuthContainer: React.FC<AuthContainerProps> = (props) => {
-  const [showFirst, _setShowFirst] = React.useState(true);
+  const [showFirst, _setShowFirst] = React.useState(false);
   const classes = useStyles();
 
   return (
@@ -22,7 +22,7 @@ export const AuthContainer: React.FC<AuthContainerProps> = (props) => {
           isShownFirstChild={showFirst}
         >
           <LoginContainer />
-          <div>sign up</div>
+          <CreateContainer />
         </ToggleDisplayContainer>
       </Paper>
     </div>
