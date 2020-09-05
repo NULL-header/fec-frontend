@@ -43,12 +43,17 @@ export class FecApiWrapper {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(value),
+      signal: this.abortCtl.signal,
       ...option,
     });
     const httpStatus = res.status;
     const data = { ...(await res.json()), httpStatus } as T | BadResponse;
     console.log("after");
     return data;
+  }
+
+  stopComunicateAll() {
+    this.abortCtl.abort();
   }
 
   async login(argObj: { email: string; password: string }) {
