@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useCallback } from "react";
-import { useMountedState } from "./useMountedState";
+import { useMountedState } from ".";
 
 // abort when unmount
 export const useAbortableEffect = (
