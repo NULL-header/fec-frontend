@@ -1,5 +1,5 @@
 import React from "react";
-import { useAbortableEffect } from "./useAbortableEffect";
+import { useAbortableEffect } from ".";
 // eslint-disable-next-line no-unused-vars
 import { FecApiWrapper } from "../FecApiWrapper";
 
