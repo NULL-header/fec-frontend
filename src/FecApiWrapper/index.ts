@@ -9,13 +9,27 @@ import {
   BaseResponse,
   // eslint-disable-next-line no-unused-vars
   UsersPostResponse,
+  // eslint-disable-next-line no-unused-vars
+  Tokens,
 } from "./APITypes";
 
-/* eslint-disable no-var */
+const apiUrl = CONSTVALUES.baseUrl + CONSTVALUES.apiv1;
+const tokenGuard = new TokenGuard();
+
+export const isBadResponse = (
+  arg: BaseResponse | BadResponse
+): arg is BadResponse => {
+  return arg.status !== "SUCCESS";
+};
+
+const setTokensCache = ({ onetime, master }: Tokens) => {
+  tokenGuard.setOntime(onetime);
+  if (master == null) return;
+  tokenGuard.setMaster(master);
+};
 
 export class FecApiWrapper {
-  private readonly tokenGuard = new TokenGuard();
-  private readonly apiUrl = CONSTVALUES.baseUrl + CONSTVALUES.apiv1;
+  private readonly abortCtl = new AbortController();
 
   async fetch<T = BaseResponse>(
     path: string,
@@ -23,7 +37,7 @@ export class FecApiWrapper {
     option?: RequestInit
   ) {
     console.log("before");
-    const res = await fetch(this.apiUrl + path, {
+    const res = await fetch(apiUrl + path, {
       mode: "cors",
       headers: {
         "Content-Type": "application/json",
@@ -43,8 +57,8 @@ export class FecApiWrapper {
       { value: argObj },
       { method: "POST" }
     ).catch((e) => undefined);
-    if (res != null && !this.badGurad(res)) {
-      this.setTokensCache(res.body.token);
+    if (res != null && !isBadResponse(res)) {
+      setTokensCache(res.body.token);
     }
     return res;
   }
@@ -59,21 +73,12 @@ export class FecApiWrapper {
   }
 
   async deleteUser(name: string) {
-    const onetime = this.tokenGuard.getOnetime();
+    const onetime = tokenGuard.getOnetime();
     const res = await this.fetch(
       CONSTVALUES.users + `/${name}`,
       { token: onetime },
       { method: "DELETE" }
     );
     return res;
-  }
-
-  badGurad(arg: BaseResponse | BadResponse): arg is BadResponse {
-    return arg.status !== "SUCCESS";
-  }
-
-  setTokensCache({ onetime, master }: { onetime: string; master?: string }) {
-    this.tokenGuard.setOntime(onetime);
-    if (master != null) this.tokenGuard.setMaster(master);
   }
 }
