@@ -4,7 +4,7 @@ import update from "immutability-helper";
 // eslint-disable-next-line no-unused-vars
 import { CreateForm, Infos, warning } from "./CreateForm";
 import { FecApiWrapper, isBadResponse } from "../../FecApiWrapper";
-import { useCurrent, useApi, useVariable } from "../../costomhook";
+import { useCurrent, useApi, useVariable } from "../../customhook";
 
 interface CreateContainerProps extends BaseComponentProps {
   className?: string;
