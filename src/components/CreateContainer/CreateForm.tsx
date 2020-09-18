@@ -7,7 +7,7 @@ import { ValidateEmailInput } from "../ValidateEmailInput";
 import { ValidatePasswordInput } from "../ValidatePasswordInput";
 import { ValidateNameInput } from "../ValidateNameInput";
 
-import { useVariable } from "../../costomhook";
+import { useVariable } from "../../customhook";
 
 import { useStyles } from "./style";
 

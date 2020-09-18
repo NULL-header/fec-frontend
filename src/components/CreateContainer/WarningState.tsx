@@ -2,7 +2,7 @@ import React, { memo } from "react";
 
 import { WarningLabel } from "../WarningLabel";
 import { DisplayContainer } from "../DisplayContainer";
-import { useVariable } from "../../costomhook";
+import { useVariable } from "../../customhook";
 
 export interface Info {
   email: string;
