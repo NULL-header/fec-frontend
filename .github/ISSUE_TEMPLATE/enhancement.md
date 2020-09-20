@@ -1,6 +1,6 @@
 ---
-name: Custom issue template
-about: Describe this issue template's purpose here.
+name: 機能要望 issue template
+about: 機能追加・修正のissueテンプレート
 title: '機能要望'
 labels: 'enhancement'
 assignees: ''
