@@ -1,6 +1,6 @@
 ---
 name: 機能要望 issue template
-about: 
+about: ''
 title: '機能要望'
 labels: 'enhancement'
 assignees: ''
