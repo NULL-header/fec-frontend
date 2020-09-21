@@ -10,4 +10,7 @@ module.exports = {
       tsConfig: "tsconfig.test.json",
     },
   },
+  moduleNameMapper: {
+    "src/(.*)": "<rootDir>/src/$1",
+  },
 };
