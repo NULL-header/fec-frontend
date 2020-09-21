@@ -1,4 +1,6 @@
+// eslint-disable-next-line no-unused-vars
 import React, { useEffect, useRef, useCallback } from "react";
+
 import { useMountedState } from ".";
 
 // abort when unmount
