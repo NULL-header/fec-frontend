@@ -3,7 +3,6 @@ import Email from "@material-ui/icons/Email";
 
 // eslint-disable-next-line no-unused-vars
 import { ValidateBaseInput } from "../ValidateBaseInput";
-// eslint-disable-next-line no-unused-vars
 
 const label = "Email";
 

@@ -2,13 +2,12 @@ import React, { memo, useRef, useCallback } from "react";
 import { Grid, Button } from "@material-ui/core";
 
 // eslint-disable-next-line no-unused-vars
-import { WarningState, warning } from "./WarningState";
 import { ValidateEmailInput } from "../ValidateEmailInput";
 import { ValidatePasswordInput } from "../ValidatePasswordInput";
 import { ValidateNameInput } from "../ValidateNameInput";
+import { useVariable } from "src/customhook";
 
-import { useVariable } from "../../costomhook";
-
+import { WarningState, warning } from "./WarningState";
 import { useStyles } from "./style";
 
 export interface Infos {
