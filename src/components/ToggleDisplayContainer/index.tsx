@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-unused-vars
-import React, { ReactNode, useMemo, memo } from "react";
+import React, { useMemo, memo } from "react";
 
 interface ToggleDisplayContainerProps extends BaseComponentProps {
   isShownFirstChild: boolean;
