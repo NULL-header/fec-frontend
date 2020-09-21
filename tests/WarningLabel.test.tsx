@@ -3,7 +3,7 @@ import React from "react";
 // eslint-disable-next-line no-unused-vars
 import { render, screen, RenderResult } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import { WarningLabel } from "../src/components/WarningLabel";
+import { WarningLabel } from "src/components/WarningLabel";
 
 describe("Normal system", () => {
   let warningLabel: RenderResult;
