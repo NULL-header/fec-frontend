@@ -1,5 +1,5 @@
 import { TokenGuard } from "./TokenGuard";
-import { CONSTVALUES } from "../config";
+import { CONSTVALUES } from "src/config";
 import {
   // eslint-disable-next-line no-unused-vars
   AuthPostResponse,
