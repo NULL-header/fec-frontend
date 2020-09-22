@@ -8,7 +8,7 @@ import { getElementsFrom } from "../../../../src/util/test/dom";
 describe("Normal system", () => {
   it("result is array", () => {
     render(<div />);
-    const result = getElementsFrom().ByTagName("div");
+    const result = getElementsFrom().byTagName("div");
     expect(Array.isArray(result)).toBeTruthy();
   });
 
@@ -21,15 +21,15 @@ describe("Normal system", () => {
       </>
     );
 
-    expect(getElementsFrom(container).ByTagName("div")).toHaveLength(3);
-    expect(getElementsFrom().ByTagName("div")).toHaveLength(4);
+    expect(getElementsFrom(container).byTagName("div")).toHaveLength(3);
+    expect(getElementsFrom().byTagName("div")).toHaveLength(4);
   });
 
   it("get div", () => {
     const { container } = render(<div />);
 
-    const divs = getElementsFrom(container).ByTagName("div");
-    expect(() => divs.first()).not.toThrow();
-    expect(divs.first()).toHaveProperty("tagName", "DIV");
+    const divs = getElementsFrom(container).byTagName("div");
+    expect(() => divs.asSingle()).not.toThrow();
+    expect(divs.asSingle()).toHaveProperty("tagName", "DIV");
   });
 });
