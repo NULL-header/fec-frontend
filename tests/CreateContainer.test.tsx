@@ -7,7 +7,8 @@ import React from "react";
 import { render, screen, RenderResult, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import { mocked } from "ts-jest/utils";
-import { CreateContainer } from "src/components/CreateContainer";
+
+import { CreateContainer } from "src/components";
 import { FecApiWrapper, isBadResponse } from "src/FecApiWrapper";
 
 const isBadResponseOrigin = jest.requireActual("../src/FecApiWrapper")

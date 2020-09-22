@@ -8,7 +8,8 @@ import { render, screen, RenderResult } from "@testing-library/react";
 import { mock } from "jest-mock-extended";
 import { act } from "react-dom/test-utils";
 import "@testing-library/jest-dom";
-import { ValidateBaseInput } from "src/components/ValidateBaseInput";
+
+import { ValidateBaseInput } from "src/components";
 
 const excludeNull = function <T>(arg: T) {
   if (arg == null) throw new Error("This value includes null");
