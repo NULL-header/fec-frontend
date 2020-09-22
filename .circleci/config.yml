@@ -1,0 +1,80 @@
+version: 2.1
+workflows:
+  test_build:
+    jobs:
+      - module_install
+      - test:
+          requires:
+            - module_install
+      - build:
+          requires:
+            - module_install
+            - test
+      - deploy:
+          requires:
+            - build
+jobs:
+  module_install:
+    docker:
+      - image: circleci/node:14
+    steps:
+      - restore_cache:
+          keys:
+            - yarn-cache-{{ arch }}-{{ .Branch }}-{{ checksum "yarn.lock" }}
+      - run:
+          name: install dependencies
+          command: yarn install
+      - save_cache:
+          key: yarn-cache-{{ arch }}-{{ .Branch }}-{{ checksum "yarn.lock" }}
+          paths:
+            - node_modules
+  test:
+    docker:
+      - image: circleci/node:14
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - yarn-cache-{{ arch }}-{{ .Branch }}-{{ checksum "yarn.lock" }}
+      - run:
+          name: unit test
+          command: yarn test
+  build:
+    docker:
+      - image: circleci/node:14
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - yarn-cache-{{ arch }}-{{ .Branch }}-{{ checksum "yarn.lock" }}
+      - run:
+          name: yarn build
+          command: yarn build
+      - save_cache:
+          key: yarn-public-{{ arch }}-{{ .Branch }}
+          paths:
+            - public
+  deploy:
+    docker:
+      - image: alpine
+    steps:
+      - restore_cache:
+          keys:
+            - yarn-public-{{ arch }}
+      - add_ssh_keys:
+          fingerprints:
+            - host_fingerprint
+      - run:
+          name: Install LFTP & ssh
+          command: |
+            apk add lftp openssh;
+      - run:
+          name: mkdir
+          command: |
+            mkdir ~/.ssh && chmod 700 ~/.ssh
+            echo -e "StrictHostKeyChecking no\n" > ~/.ssh/config &&
+            ssh ${username}@${hostname} "mkdir -p ${deploybace}/${CIRCLE_BRANCH}"
+      - run:
+          name: Send Via SFTP
+          command: lftp sftp://${username}:@${hostname} -e "mirror -v -R -X empty public/. ${deploybace}/${CIRCLE_BRANCH}/.; quit"
+          working_directory: /home/circleci/project
