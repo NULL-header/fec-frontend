@@ -2,7 +2,7 @@ import React, { memo, useMemo } from "react";
 import Email from "@material-ui/icons/Email";
 
 // eslint-disable-next-line no-unused-vars
-import { ValidateBaseInput } from "../ValidateBaseInput";
+import { ValidateBaseInput } from "src/components";
 
 const label = "Email";
 
