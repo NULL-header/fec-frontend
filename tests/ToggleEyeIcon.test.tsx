@@ -7,7 +7,7 @@ import React from "react";
 import { render, screen, RenderResult, waitFor } from "@testing-library/react";
 import UserEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom";
-import { ToggleEyeIcon } from "../src/components/ToggleEyeIcon";
+import { ToggleEyeIcon } from "src/components/ToggleEyeIcon";
 
 const excludeNull = function <T>(arg: T) {
   if (arg == null) throw new Error("This value includes null");

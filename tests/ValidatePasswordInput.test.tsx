@@ -8,7 +8,7 @@ import { mock } from "jest-mock-extended";
 import { act } from "react-dom/test-utils";
 import UserEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom";
-import { ValidatePasswordInput } from "../src/components/ValidatePasswordInput";
+import { ValidatePasswordInput } from "src/components/ValidatePasswordInput";
 
 const excludeNull = function <T>(arg: T) {
   if (arg == null) throw new Error("This value includes null");
