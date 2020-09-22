@@ -3,7 +3,7 @@ import Eye from "@material-ui/icons/Visibility";
 import OffEye from "@material-ui/icons/VisibilityOff";
 import { IconButton } from "@material-ui/core";
 
-import { ToggleDisplayContainer } from "../ToggleDisplayContainer";
+import { ToggleDisplayContainer } from "src/components";
 
 interface ToggleEyeIconProps extends BaseComponentProps {
   isShown: boolean;

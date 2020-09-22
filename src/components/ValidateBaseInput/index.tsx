@@ -7,7 +7,7 @@ import React, {
   useEffect,
 } from "react";
 
-import { InputPlace } from "../InputPlace";
+import { InputPlace } from "src/components";
 
 export interface ValidateBaseInputProps extends BaseComponentProps {
   label: string;

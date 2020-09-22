@@ -2,8 +2,7 @@ import React, { useState, useCallback, useMemo, memo } from "react";
 import VpnKey from "@material-ui/icons/VpnKey";
 
 // eslint-disable-next-line no-unused-vars
-import { ValidateBaseInput } from "../ValidateBaseInput";
-import { ToggleEyeIcon } from "../ToggleEyeIcon";
+import { ValidateBaseInput, ToggleEyeIcon } from "src/components";
 
 const label = "Password";
 
