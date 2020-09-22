@@ -3,7 +3,8 @@ import React from "react";
 // eslint-disable-next-line no-unused-vars
 import { render, screen, RenderResult } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import { ToggleDisplayContainer } from "src/components/ToggleDisplayContainer";
+
+import { ToggleDisplayContainer } from "src/components";
 
 describe("Normal system", () => {
   let toggleDisplayContainer: RenderResult;

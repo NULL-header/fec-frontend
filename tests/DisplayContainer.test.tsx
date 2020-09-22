@@ -3,7 +3,8 @@ import React from "react";
 // eslint-disable-next-line no-unused-vars
 import { render, screen, RenderResult } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import { DisplayContainer } from "src/components/DisplayContainer";
+
+import { DisplayContainer } from "src/components";
 
 const prefix = "this is the ";
 const testcase = "testcase";
