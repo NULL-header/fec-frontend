@@ -3,7 +3,8 @@ import React from "react";
 // eslint-disable-next-line no-unused-vars
 import { render, screen, RenderResult } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import { InputPlace } from "src/components/InputPlace";
+
+import { InputPlace } from "src/components";
 
 describe("Normal system", () => {
   let inputPlace: RenderResult;

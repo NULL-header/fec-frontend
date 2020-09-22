@@ -7,7 +7,8 @@ import React from "react";
 import { render, screen, RenderResult, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import { mocked } from "ts-jest/utils";
-import { LoginContainer } from "src/components/LoginContainer";
+
+import { LoginContainer } from "src/components";
 import { FecApiWrapper } from "src/FecApiWrapper";
 
 jest.mock("../src/FecApiWrapper");
