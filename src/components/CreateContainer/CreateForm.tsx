@@ -1,10 +1,11 @@
 import React, { memo, useRef, useCallback } from "react";
 import { Grid, Button } from "@material-ui/core";
 
-// eslint-disable-next-line no-unused-vars
-import { ValidateEmailInput } from "../ValidateEmailInput";
-import { ValidatePasswordInput } from "../ValidatePasswordInput";
-import { ValidateNameInput } from "../ValidateNameInput";
+import {
+  ValidateEmailInput,
+  ValidatePasswordInput,
+  ValidateNameInput,
+} from "src/components";
 import { useVariable } from "src/customhook";
 
 import { WarningState, warning } from "./WarningState";
