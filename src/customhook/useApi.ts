@@ -1,7 +1,8 @@
 import React from "react";
-import { useAbortableEffect } from ".";
+
+import { useAbortableEffect } from "src/customhook";
 // eslint-disable-next-line no-unused-vars
-import { FecApiWrapper } from "../FecApiWrapper";
+import { FecApiWrapper } from "src/FecApiWrapper";
 
 export const useApi = (
   func: (isMounted: () => boolean, didMounted: () => boolean) => any,

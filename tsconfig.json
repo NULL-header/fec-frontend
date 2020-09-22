@@ -17,9 +17,12 @@
     "noImplicitReturns": true,
     "downlevelIteration": true,
     "forceConsistentCasingInFileNames": true,
-    "jsx": "react"
+    "jsx": "react",
+    "baseUrl": ".",
+    "paths": {
+      "src/*":["*","src/*"]
+    }
   },
   "include": ["./**/*.ts*","./**/*.js"],
   "exclude": ["node_modules","public"]
   }
-  
