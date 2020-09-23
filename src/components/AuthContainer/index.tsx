@@ -1,9 +1,11 @@
 import React from "react";
 import { Paper } from "@material-ui/core";
 
-import { LoginContainer } from "../LoginContainer";
-import { CreateContainer } from "../CreateContainer";
-import { ToggleDisplayContainer } from "../ToggleDisplayContainer";
+import {
+  LoginContainer,
+  CreateContainer,
+  ToggleDisplayContainer,
+} from "src/components";
 
 import { useStyles } from "./style";
 

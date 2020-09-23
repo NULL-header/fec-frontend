@@ -2,8 +2,7 @@ import React from "react";
 // eslint-disable-next-line no-unused-vars
 import { ThemeProvider, ThemeOptions, createMuiTheme } from "@material-ui/core";
 
-import { AuthContainer } from "../AuthContainer";
-import { ToggleDisplayContainer } from "../ToggleDisplayContainer";
+import { AuthContainer, ToggleDisplayContainer } from "src/components";
 
 interface AppContainerProps extends BaseComponentProps {
   className?: string;

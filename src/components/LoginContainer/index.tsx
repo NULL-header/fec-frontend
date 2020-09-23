@@ -2,11 +2,11 @@ import React, { useRef, useState, useCallback, useMemo, memo } from "react";
 import { Grid, Button } from "@material-ui/core";
 import update from "immutability-helper";
 
-import { ValidateEmailInput } from "../ValidateEmailInput";
-import { ValidatePasswordInput } from "../ValidatePasswordInput";
-import { WarningState } from "./WarningState";
+import { ValidateEmailInput, ValidatePasswordInput } from "src/components";
 import { FecApiWrapper } from "src/FecApiWrapper";
 import { useDidMountEffect } from "src/customhook";
+
+import { WarningState } from "./WarningState";
 
 import { useStyles } from "./style";
 

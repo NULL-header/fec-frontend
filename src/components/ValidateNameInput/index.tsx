@@ -3,7 +3,7 @@ import React, { memo, useMemo } from "react";
 import Pencil from "@material-ui/icons/Create";
 
 // eslint-disable-next-line no-unused-vars
-import { ValidateBaseInput } from "../ValidateBaseInput";
+import { ValidateBaseInput } from "src/components";
 
 const label = "Name";
 
