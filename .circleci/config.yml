@@ -79,3 +79,7 @@ jobs:
           name: Send Via SFTP
           command: lftp sftp://${username}:@${hostname} -e "mirror -v -R -X empty public/. ${deploybase}/${CIRCLE_BRANCH}/.; quit"
           working_directory: /home/circleci/project
+      - run:
+          name: change owner
+          command: |
+            ssh ${sudouser}@${hostname} "sudo chown -R ${nginx_user}:${nginx_user} ${deploybase}/${CIRCLE_BRANCH}"
