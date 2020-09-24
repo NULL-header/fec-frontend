@@ -74,7 +74,7 @@ jobs:
           command: |
             mkdir ~/.ssh && chmod 700 ~/.ssh
             echo -e "StrictHostKeyChecking no\n" > ~/.ssh/config &&
-            ssh ${username}@${hostname} "mkdir -p ${deploybase}/${CIRCLE_BRANCH}"
+            ssh ${username}@${hostname} "sudo rm -rf ${deploybase}/${CIRCLE_BRANCH}; mkdir -p ${deploybase}/${CIRCLE_BRANCH}"
       - run:
           name: Send Via SFTP
           command: lftp sftp://${username}:@${hostname} -e "mirror -v -R -X empty public/. ${deploybase}/${CIRCLE_BRANCH}/.; quit"
