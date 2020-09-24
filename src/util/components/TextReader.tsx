@@ -1,3 +1,9 @@
+// use if you want to take an input tag with Ref.
+// this can pass a getter to Ref.
+// So, you can take this when to want to take value;
+// For example, use with a form tag, and call getter
+// when the submit event occured.
+
 import React, { memo, useEffect, useRef } from "react";
 // eslint-disable-next-line no-unused-vars
 import { HadChildComponentProps, RefComponentProps } from "src/util/types";

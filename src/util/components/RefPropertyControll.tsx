@@ -1,3 +1,6 @@
+// Use if some values from Refs and components.
+// this is to gather values of Ref with an object.
+
 import React, { memo, useEffect, useMemo, useRef } from "react";
 // eslint-disable-next-line no-unused-vars
 import { Ref, HadChildComponentProps, RefComponentProps } from "../types";
