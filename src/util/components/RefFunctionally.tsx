@@ -1,3 +1,7 @@
+// Use if the warning occured.
+// It is like "use createRef or Ref-setter."
+// So, this is to transform RefMutableObject from useRef to Ref-setter.
+
 import React, { memo, useMemo } from "react";
 // eslint-disable-next-line no-unused-vars
 import { HadChildComponentProps, RefComponentProps } from "../types";
