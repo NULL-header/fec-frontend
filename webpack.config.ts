@@ -2,14 +2,19 @@ import path from "path";
 import webpack from "webpack";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import ForkTsCheckerWebpackPlugin from "fork-ts-checker-webpack-plugin";
+import UglifyJsPlugin from "uglifyjs-webpack-plugin";
 import packageJSON from "./package.json";
+
 const webpackConfig = (env: {
   production: any;
   development: any;
 }): webpack.Configuration => ({
   entry: "./src/index.tsx",
   resolve: {
-    extensions: [".ts", ".tsx", ".js"],
+    extensions: [".ts", ".tsx", ".js", ".css"],
+    alias: {
+      src: path.resolve(__dirname, "src/"),
+    },
   },
   output: {
     path: path.join(__dirname, "/public"),
@@ -21,7 +26,7 @@ const webpackConfig = (env: {
         test: /\.tsx?$/,
         loader: "ts-loader",
         options: {
-          transpileOnly: true,
+          configFile: path.resolve(__dirname, "./tsconfig.build.json"),
         },
         exclude: /public/,
       },
@@ -50,6 +55,9 @@ const webpackConfig = (env: {
     }),
     new ForkTsCheckerWebpackPlugin(),
   ],
+  optimization: {
+    minimizer: [new UglifyJsPlugin()],
+  },
 });
 
 export default webpackConfig;
