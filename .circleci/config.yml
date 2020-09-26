@@ -8,7 +8,6 @@ workflows:
             - module_install
       - build:
           requires:
-            - module_install
             - test
       - deploy:
           requires:
@@ -18,6 +17,7 @@ jobs:
     docker:
       - image: circleci/node:14
     steps:
+      - checkout
       - restore_cache:
           keys:
             - yarn-cache-{{ arch }}-{{ .Branch }}-{{ checksum "yarn.lock" }}
@@ -67,14 +67,15 @@ jobs:
       - run:
           name: Install LFTP & ssh
           command: |
-            apk add lftp openssh;
+            apk add lftp openssh openssh-client;
+      - run:
+          name: add fingerprints
+          command: mkdir ~/.ssh; chown 700 ~/.ssh; ssh-keyscan ${hostname} >> ~/.ssh/known_hosts
       - run:
           name: mkdir
           command: |
-            mkdir ~/.ssh && chmod 700 ~/.ssh
-            echo -e "StrictHostKeyChecking no\n" > ~/.ssh/config &&
-            ssh ${username}@${hostname} "mkdir -p ${deploybace}/${CIRCLE_BRANCH}"
+            ssh ${username}@${hostname} "mkdir -p ${deploybase}/${CIRCLE_BRANCH}"
       - run:
           name: Send Via SFTP
-          command: lftp sftp://${username}:@${hostname} -e "mirror -v -R -X empty public/. ${deploybace}/${CIRCLE_BRANCH}/.; quit"
+          command: lftp sftp://${username}:@${hostname} -e "mirror -v -R -X empty public/. ${deploybase}/${CIRCLE_BRANCH}/.; quit"
           working_directory: /home/circleci/project
