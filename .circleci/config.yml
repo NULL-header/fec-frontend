@@ -67,7 +67,7 @@ jobs:
             - host_fingerprint
       - run:
           name: add fingerprints
-          command: ssh-keyscan ${hostname} >> ~/.ssh/known_hosts
+          command: mkdir ~/.ssh; chown 700 ~/.ssh; ssh-keyscan ${hostname} >> ~/.ssh/known_hosts
       - run:
           name: Install LFTP & ssh
           command: |
