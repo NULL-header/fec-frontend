@@ -8,7 +8,6 @@ workflows:
             - module_install
       - build:
           requires:
-            - module_install
             - test
       - deploy:
           requires:
