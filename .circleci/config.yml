@@ -65,12 +65,12 @@ jobs:
           fingerprints:
             - host_fingerprint
       - run:
-          name: add fingerprints
-          command: mkdir ~/.ssh; chown 700 ~/.ssh; ssh-keyscan ${hostname} >> ~/.ssh/known_hosts
-      - run:
           name: Install LFTP & ssh
           command: |
-            apk add lftp openssh;
+            apk add lftp openssh openssh-client;
+      - run:
+          name: add fingerprints
+          command: mkdir ~/.ssh; chown 700 ~/.ssh; ssh-keyscan ${hostname} >> ~/.ssh/known_hosts
       - run:
           name: mkdir
           command: |
