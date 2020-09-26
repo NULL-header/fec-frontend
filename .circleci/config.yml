@@ -66,6 +66,9 @@ jobs:
           fingerprints:
             - host_fingerprint
       - run:
+          name: add fingerprints
+          command: ssh-keyscan ${hostname} >> ~/.ssh/known_hosts
+      - run:
           name: Install LFTP & ssh
           command: |
             apk add lftp openssh;
