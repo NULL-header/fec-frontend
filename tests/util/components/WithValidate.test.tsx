@@ -3,10 +3,12 @@ import { mock } from "jest-mock-extended";
 import { getElementsFrom, renderDomFactory } from "src/util/test/dom";
 import { WithValidate, TextReader } from "src/util/components";
 // eslint-disable-next-line no-unused-vars
-import { ValidatedResult } from "src/util/types";
+import { ValidatedResult, Validate } from "src/util/components/types";
 
 const getProps = () => ({
-  validate: jest.fn(() => true),
+  validate: jest.fn(((arg: string) => {
+    return { isRegular: true, value: arg };
+  }) as Validate),
   ref: mock<React.MutableRefObject<() => ValidatedResult>>(),
   className: "testcase",
 });
@@ -40,8 +42,8 @@ describe("Normal system", () => {
     const {
       props: { ref, validate },
     } = renderDom();
-    expect(validate).toBeCalledWith(ref.current().value);
-    expect(validate()).toEqual(ref.current().isRegular);
+    const result = ref.current();
+    expect(validate).toBeCalledWith(result.value);
   });
 
   it("pass className", () => {
@@ -51,6 +53,44 @@ describe("Normal system", () => {
     } = renderDom();
     const input = getElementsFrom(container).byTagName("input").asSingle();
     expect(input).toHaveProperty("className", className);
+  });
+
+  describe("use Validate", () => {
+    const getProps = () => ({
+      validate: jest.fn(((arg: string) => {
+        const isRegular = arg.length > 0;
+        const value = arg;
+        let failedReason;
+        if (!isRegular) failedReason = "blank";
+        return { isRegular, value, failedReason };
+      }) as Validate),
+      ref: mock<React.MutableRefObject<() => ValidatedResult>>(),
+      className: "testcase",
+    });
+
+    it("regular", () => {
+      const {
+        container,
+        props: { ref },
+      } = renderDom(getProps());
+      const input = getElementsFrom(container).byTagName("input").asSingle();
+      const value = "testcase";
+      input.value = value;
+      const result = ref.current();
+      expect(result.value).toEqual(value);
+      expect(result.isRegular).toEqual(true);
+    });
+
+    it("iregular", () => {
+      const {
+        props: { ref },
+      } = renderDom(getProps());
+      const result = ref.current();
+
+      expect(result.value).toEqual("");
+      expect(result.isRegular).toEqual(false);
+      expect(result.failedReason).toEqual("blank");
+    });
   });
 });
 
