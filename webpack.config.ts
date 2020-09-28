@@ -53,14 +53,13 @@ const webpackConfig = (env: Env): webpack.Configuration => ({
   plugins: [
     new HtmlWebpackPlugin({ template: "./src/index.html" }),
     new webpack.DefinePlugin({
-      "process.env.PRODUCTION": env.master || !(env.develop && env.feature),
+      "process.env.PRODUCTION": env.master || !(env.develop || env.feature),
       "process.env.NAME": JSON.stringify(packageJSON.name),
       "process.env.VERSION": JSON.stringify(packageJSON.version),
     }),
     new ForkTsCheckerWebpackPlugin(),
     new Dotenv({
       path: getEnvFilepath(env),
-      systemvars: true
     }),
   ],
   optimization: {
@@ -69,13 +68,15 @@ const webpackConfig = (env: Env): webpack.Configuration => ({
 });
 
 const getEnvFilepath = (config: Env): string => {
+  let envPath;
   if (config.master) {
-    return ".env.production";
+    envPath = path.resolve(__dirname, ".env.production");
   } else if (config.develop) {
-    return ".env.development";
+    envPath = path.resolve(__dirname, ".env.develop");
   } else {
-    return ".env.feature";
+    envPath = path.resolve(__dirname, ".env.feature");
   }
+  return envPath;
 };
 
 export default webpackConfig;

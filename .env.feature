@@ -1,1 +1,1 @@
-API_BASE=https://develop.api.4ecode.com
+REACT_APP_API_BASE=https://dev.api.4ecode.com
