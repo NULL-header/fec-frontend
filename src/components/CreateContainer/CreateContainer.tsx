@@ -74,6 +74,12 @@ const Component: React.FC<BaseComponentProps> = (props) => {
     async (isMounted, didMounted) => {
       if (!didMounted()) return;
       insertState({ isShownLabel: false } as Current);
+      console.log("api_base");
+      console.log(process.env.REACT_APP_API_BASE);
+      console.log("production");
+      console.log(process.env.PRODUCTION);
+
+      console.log(current.infos);
       const res = await api.createUser(current.infos);
       console.log({ res });
       const next = {
