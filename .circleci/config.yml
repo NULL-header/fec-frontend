@@ -72,7 +72,7 @@ jobs:
     steps:
       - restore_cache:
           keys:
-            - yarn-public-{{ arch }}
+            - yarn-public-{{ arch }}-{{ .Branch }}
       - add_ssh_keys:
           fingerprints:
             - host_fingerprint
