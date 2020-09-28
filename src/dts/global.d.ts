@@ -26,3 +26,9 @@ type GetRaisedData = () => RaisedData;
 type SetGetMethod = (f: GetRaisedData) => void;
 
 type RaisedRecord = Record<string, GetRaisedData>;
+
+declare namespace NodeJS {
+  interface ProcessEnv {
+    readonly API_BASE: string;
+  }
+}

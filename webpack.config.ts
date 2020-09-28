@@ -4,6 +4,7 @@ import HtmlWebpackPlugin from "html-webpack-plugin";
 import ForkTsCheckerWebpackPlugin from "fork-ts-checker-webpack-plugin";
 import UglifyJsPlugin from "uglifyjs-webpack-plugin";
 import packageJSON from "./package.json";
+import Dotenv from "dotenv-webpack";
 
 const webpackConfig = (env: {
   production: any;
@@ -54,6 +55,9 @@ const webpackConfig = (env: {
       "process.env.VERSION": JSON.stringify(packageJSON.version),
     }),
     new ForkTsCheckerWebpackPlugin(),
+    new Dotenv({
+      systemvars: true
+    }),
   ],
   optimization: {
     minimizer: [new UglifyJsPlugin()],
