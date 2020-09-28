@@ -1,14 +1,7 @@
-import React, { memo } from "react";
+import React from "react";
 
-import { WarningLabel } from "../WarningLabel";
-import { DisplayContainer } from "../DisplayContainer";
+import { WarningLabel, DisplayContainer } from "src/components";
 import { useVariable } from "src/customhook";
-
-export interface Info {
-  email: string;
-  password: string;
-  name: string;
-}
 
 export type warning =
   | "noCommunicate"
@@ -16,31 +9,15 @@ export type warning =
   | "duplicateName"
   | "unknown";
 
-interface WarningStateProps extends BaseComponentProps {
+interface Props extends BaseComponentProps {
   warningKey: warning;
   isShown: boolean;
 }
 
-const NotYetWarningState: React.FC<WarningStateProps> = (props) => {
+const Component: React.FC<Props> = (props) => {
   const className = useVariable(props.className);
   const isShown = useVariable(props.isShown);
   const warningKey = useVariable(props.warningKey);
-
-  // useApi(
-  //  async (isMounted, didMounted) => {
-  //    if (!didMounted()) return;
-  //    insertHistory({ isShown: false } as WarningStateState);
-  //    const res = await api.createUser(props.info);
-  //    console.log(res);
-  //    const next = {
-  //      isShown: true,
-  //      warningKey: getKeyFromRes(res, api),
-  //    } as WarningStateState;
-  //    if (isMounted()) insertHistory(next);
-  //  },
-  //  api,
-  //  [props.info]
-  // );
 
   return (
     <WarningLabel {...{ isShown, className }}>
@@ -56,4 +33,7 @@ const NotYetWarningState: React.FC<WarningStateProps> = (props) => {
   );
 };
 
-export const WarningState = memo(NotYetWarningState);
+const WarningState = React.memo(Component);
+WarningState.displayName = "WarningState";
+
+export { WarningState };

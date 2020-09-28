@@ -1,15 +1,18 @@
-import React, { memo, useRef, useCallback } from "react";
-import { Grid, Button } from "@material-ui/core";
+import React, { useMemo, useState, useCallback } from "react";
 
+import { TextField, TextPasswordField } from "src/components";
+import { BaseForm, FormInput, FormLabel } from "src/util/components/form";
+// eslint-disable-next-line no-unused-vars
+import { ValidatedResult } from "src/util/components/types";
+import { useCurrent, useVariable } from "src/util/customhook";
 import {
-  ValidateEmailInput,
-  ValidatePasswordInput,
-  ValidateNameInput,
-} from "src/components";
-import { useVariable } from "src/customhook";
+  EmailValidate,
+  NameValidate,
+  PasswordValidate,
+  getErrorLabels,
+} from "src/logics/validates";
 
 import { WarningState, warning } from "./WarningState";
-import { useStyles } from "./style";
 
 export interface Infos {
   email: string;
@@ -17,122 +20,56 @@ export interface Infos {
   name: string;
 }
 
-type SetInfos = (infos: Infos) => void;
-
-interface CreateFormProps extends BaseComponentProps {
-  setInfos: SetInfos;
+interface Props extends BaseComponentProps {
+  setValues: (arg: Record<string, string>) => void;
   isShownLabel: boolean;
   warningKey: warning;
 }
 
-interface GetMethodsRef extends Record<string, GetRaisedData> {
-  Name: GetRaisedData;
-  Email: GetRaisedData;
-  Password: GetRaisedData;
-}
+const defaultErrors = [
+  ({ email: {}, name: {}, password: {} } as unknown) as Record<
+    string,
+    ValidatedResult
+  >,
+];
 
-const defaultRaisedData: RaisedData = {
-  isRegular: true,
-  value: "",
-};
-
-const getDefaultRaisedData: GetRaisedData = () => defaultRaisedData;
-
-const defaultGetMethodsRef: GetMethodsRef = {
-  Name: getDefaultRaisedData,
-  Email: getDefaultRaisedData,
-  Password: getDefaultRaisedData,
-};
-
-const mapAttr = function <
-  Item,
-  Key extends keyof Item,
-  Value extends Item[Key],
-  CallBack extends (arg: Value) => any
->(obj: Item, func: CallBack) {
-  const newObj = {} as Record<Key, ReturnType<CallBack>>;
-  Object.entries(obj).map(([key, value]) => {
-    newObj[key as Key] = func(value as Value);
-  });
-  return newObj;
-};
-
-const getInfoDetails = (current: GetMethodsRef) => mapAttr(current, (f) => f());
-
-type InfoDetails = ReturnType<typeof getInfoDetails>;
-
-const getIsRegulars = (details: InfoDetails) =>
-  mapAttr(details, (e) => e.isRegular);
-
-const isTrueAll = (flagObj: Record<string, boolean>) => {
-  const flags = Object.values(flagObj);
-  return flags.reduce((a, e) => (e ? a : false), true);
-};
-
-const getIsRegularAll = (detaiils: InfoDetails) => {
-  const isRegulars = getIsRegulars(detaiils);
-  return isTrueAll(isRegulars);
-};
-
-const getInfos = (details: InfoDetails): Infos => {
-  const infos = mapAttr(details, (e) => e.value);
-  return {
-    email: infos.Email,
-    name: infos.Name,
-    password: infos.Password,
-  };
-};
-const NotYetCreateForm: React.FC<CreateFormProps> = (props) => {
-  // The ValidateEmailInput add attributes as a getter function
-  // to current of getMethodsRef
-  const getMethodsRef = useRef(defaultGetMethodsRef);
-
-  const className = useVariable(props.className);
-  const setInfos = useVariable(props.setInfos);
-  const warningKey = useVariable(props.warningKey);
+const Component: React.FC<Props> = (props) => {
+  const [errors, setErrors] = useState(defaultErrors);
+  const current = useCurrent(errors);
+  const labels = useMemo(() => getErrorLabels(current), [current]);
   const isShown = useVariable(props.isShownLabel);
+  const warningKey = useVariable(props.warningKey);
+  const setValues = useVariable(props.setValues);
+  const className = useVariable(props.className);
 
-  const classes = useStyles();
-
-  const onSubmit = useCallback(
-    (event: React.FormEvent<HTMLFormElement>) => {
-      event.preventDefault();
-      const infoDetails = getInfoDetails(getMethodsRef.current);
-      const isRegularAll = getIsRegularAll(infoDetails);
-      if (isRegularAll) {
-        const infos = getInfos(infoDetails);
-        setInfos(infos);
-      }
-    },
-    [setInfos]
+  const insertErrors = useCallback(
+    (arg: Record<string, ValidatedResult>) =>
+      setErrors([Object.assign({}, current, arg)]),
+    [current]
   );
 
   return (
-    <form {...{ className, onSubmit }}>
-      <Grid container className={classes.container}>
-        <Grid item>
-          <WarningState {...{ warningKey, isShown }} />
-        </Grid>
-        <Grid item>
-          <ValidateEmailInput ref={getMethodsRef} />
-        </Grid>
-        <Grid>
-          <ValidateNameInput ref={getMethodsRef} />
-        </Grid>
-        <Grid item>
-          <ValidatePasswordInput ref={getMethodsRef} />
-        </Grid>
-        <Grid item>
-          <Button variant="outlined" type="submit" className={classes.button}>
-            create
-          </Button>
-        </Grid>
-      </Grid>
-    </form>
+    <BaseForm {...{ setValues, setErrors: insertErrors, className }}>
+      <FormLabel>
+        <WarningState {...{ isShown, warningKey }} />
+      </FormLabel>
+      <FormInput propertyName="email" validate={EmailValidate.validate}>
+        <TextField error={labels.email} type="email" forwardLabel="email" />
+      </FormInput>
+      <FormInput propertyName="name" validate={NameValidate.validate}>
+        <TextField error={labels.name} type="text" forwardLabel="name" />
+      </FormInput>
+      <FormInput propertyName="password" validate={PasswordValidate.validate}>
+        <TextPasswordField error={labels.password} forwardLabel="password" />
+      </FormInput>
+      <FormLabel>
+        <button type="submit">create</button>
+      </FormLabel>
+    </BaseForm>
   );
 };
 
-const CreateForm = memo(NotYetCreateForm);
+const CreateForm = React.memo(Component);
 CreateForm.displayName = "CreateForm";
 
 export { CreateForm, warning };
