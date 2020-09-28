@@ -6,10 +6,13 @@ import UglifyJsPlugin from "uglifyjs-webpack-plugin";
 import packageJSON from "./package.json";
 import Dotenv from "dotenv-webpack";
 
-const webpackConfig = (env: {
-  production: any;
-  development: any;
-}): webpack.Configuration => ({
+interface Env {
+  master: "master" | null;
+  develop: "develop" | null;
+  feature: "feature" | null;
+}
+
+const webpackConfig = (env: Env): webpack.Configuration => ({
   entry: "./src/index.tsx",
   resolve: {
     extensions: [".ts", ".tsx", ".js", ".css"],
@@ -50,12 +53,13 @@ const webpackConfig = (env: {
   plugins: [
     new HtmlWebpackPlugin({ template: "./src/index.html" }),
     new webpack.DefinePlugin({
-      "process.env.PRODUCTION": env.production || !env.development,
+      "process.env.PRODUCTION": env.master || !(env.develop && env.feature),
       "process.env.NAME": JSON.stringify(packageJSON.name),
       "process.env.VERSION": JSON.stringify(packageJSON.version),
     }),
     new ForkTsCheckerWebpackPlugin(),
     new Dotenv({
+      path: getEnvFilepath(env),
       systemvars: true
     }),
   ],
@@ -63,5 +67,15 @@ const webpackConfig = (env: {
     minimizer: [new UglifyJsPlugin()],
   },
 });
+
+const getEnvFilepath = (config: Env): string => {
+  if (config.master) {
+    return ".env.production";
+  } else if (config.develop) {
+    return ".env.development";
+  } else {
+    return ".env.feature";
+  }
+};
 
 export default webpackConfig;
