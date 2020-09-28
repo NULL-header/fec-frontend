@@ -18,10 +18,3 @@ export interface HadChildComponentProps<T = BaseComponentProps>
 interface RefComponentProps<T = unknown> extends BaseComponentProps {
   ref: Ref<T>;
 }
-
-export type Validate = (value: string) => boolean;
-
-export interface ValidatedResult {
-  isRegular: ReturnType<Validate>;
-  value: string;
-}
