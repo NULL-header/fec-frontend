@@ -30,7 +30,7 @@ interface Tokens {
 }
 
 interface AuthPostFBody {
-  token: Token;
+  token: Tokens;
 }
 
 export interface AuthPostResponse extends GoodResponse {
