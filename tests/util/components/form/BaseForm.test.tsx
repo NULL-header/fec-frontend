@@ -55,7 +55,12 @@ describe("Normal system", () => {
           <FormInput
             propertyName="input"
             key="single"
-            validate={(value) => value.length !== 0}
+            validate={(value: string) => {
+              const isRegular = value.length > 0;
+              let failedReason;
+              if (!isRegular) failedReason = "blank";
+              return { isRegular, value, failedReason };
+            }}
           >
             <input />
           </FormInput>,
@@ -71,7 +76,9 @@ describe("Normal system", () => {
       } = renderDom();
       submit(container);
       expect(setValues).not.toBeCalled();
-      expect(setErrors).toBeCalledWith({ input: false });
+      expect(setErrors).toBeCalledWith({
+        input: { failedReason: "blank", isRegular: false, value: "" },
+      });
     });
 
     it("allow setting value", () => {
