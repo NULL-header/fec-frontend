@@ -1,16 +1,8 @@
-import React, { memo, useMemo } from "react";
-import {
-  // eslint-disable-next-line no-unused-vars
-  Ref,
-  // eslint-disable-next-line no-unused-vars
-  HadChildComponentProps,
-  // eslint-disable-next-line no-unused-vars
-  RefComponentProps,
-  // eslint-disable-next-line no-unused-vars
-  Validate,
-  // eslint-disable-next-line no-unused-vars
-  ValidatedResult,
-} from "src/util/types";
+import React, { memo } from "react";
+// eslint-disable-next-line no-unused-vars
+import { HadChildComponentProps, RefComponentProps } from "src/util/types";
+// eslint-disable-next-line no-unused-vars
+import { Validate, ValidatedResult } from "src/util/components/types";
 import { RefPropertyControll, TextReader, WithValidate } from "..";
 import { useOptionalVariable } from "src/util/customhook";
 
@@ -28,7 +20,10 @@ const NotYetFormInput = React.forwardRef<
     className: props.className,
     ref,
   };
-  const validate = useOptionalVariable(props.validate, () => true);
+  const validate = useOptionalVariable(props.validate, (value: string) => ({
+    isRegular: true,
+    value,
+  }));
 
   return (
     <RefPropertyControll {...rootProps}>
