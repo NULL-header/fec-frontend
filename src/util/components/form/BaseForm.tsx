@@ -1,12 +1,8 @@
 import React, { memo, useCallback, useMemo, useRef } from "react";
-import {
-  // eslint-disable-next-line no-unused-vars
-  RefComponentProps,
-  // eslint-disable-next-line no-unused-vars
-  BaseComponentProps,
-  // eslint-disable-next-line no-unused-vars
-  ValidatedResult,
-} from "src/util/types";
+// eslint-disable-next-line no-unused-vars
+import { RefComponentProps, BaseComponentProps } from "src/util/types";
+// eslint-disable-next-line no-unused-vars
+import { ValidatedResult } from "src/util/components/types";
 import { mapAttr } from "src/util";
 import { useVariable, useOptionalVariable } from "src/util/customhook";
 
@@ -14,12 +10,11 @@ type KeyStringRecord<T> = Record<string, T>;
 type StringRecord = KeyStringRecord<string>;
 type ValidateRecord = KeyStringRecord<() => ValidatedResult>;
 type ResultRecord = KeyStringRecord<ValidatedResult>;
-type RegularRecord = KeyStringRecord<boolean>;
 
 interface BaseFormProps extends BaseComponentProps {
   children: React.ReactElement<RefComponentProps<ValidateRecord>>[];
   setValues: (arg: StringRecord) => void;
-  setErrors?: (arg: RegularRecord) => void;
+  setErrors?: (arg: ResultRecord) => void;
 }
 
 const getResults = (obj: ValidateRecord) => mapAttr(obj, (e) => e());
@@ -38,7 +33,10 @@ const NotYetBaseForm: React.FC<BaseFormProps> = (props) => {
   const setErrors = useOptionalVariable(props.setErrors, () => null);
   const className = useVariable(props.className);
   const children = useMemo(
-    () => props.children.map((e) => React.cloneElement(e, { ref: transfer })),
+    () =>
+      props.children.map((e, i) =>
+        React.cloneElement(e, { ref: transfer, key: i })
+      ),
     [props.children]
   );
 
@@ -51,7 +49,7 @@ const NotYetBaseForm: React.FC<BaseFormProps> = (props) => {
         const values = getValues(result);
         setValues(values);
       } else {
-        setErrors(isRegulars);
+        setErrors(result);
       }
     },
     [setErrors, setValues]
