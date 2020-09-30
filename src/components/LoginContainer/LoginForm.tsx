@@ -1,0 +1,77 @@
+import React, { useCallback, useMemo, useState } from "react";
+
+// eslint-disable-next-line no-unused-vars
+import { BaseComponentProps } from "src/util/types";
+// eslint-disable-next-line no-unused-vars
+import { ValidatedResult } from "src/util/components/types";
+import { BaseForm, FormInput, FormLabel } from "src/util/components/form";
+import { TextField } from "src/components";
+import {
+  EmailValidate,
+  PasswordValidate,
+  getErrorLabels,
+} from "src/logics/validates";
+
+// eslint-disable-next-line no-unused-vars
+import { warning, WarningState } from "./WarningState";
+import { useCurrent, useVariable } from "src/util/customhook";
+
+export interface Infos {
+  email: string;
+  password: string;
+}
+
+interface Props extends BaseComponentProps {
+  setValues: (arg: Record<string, string>) => void;
+  isShownLabel: boolean;
+  warningKey: warning;
+}
+
+const defaultErrors = [
+  ({ email: {}, name: {}, password: {} } as unknown) as Record<
+    string,
+    ValidatedResult
+  >,
+];
+
+const Component: React.FC<Props> = (props) => {
+  const [errors, setErrors] = useState(defaultErrors);
+  const current = useCurrent(errors);
+  const labels = useMemo(() => getErrorLabels(current), [current]);
+  const isShown = useVariable(props.isShownLabel);
+  const warningKey = useVariable(props.warningKey);
+  const setValues = useVariable(props.setValues);
+  const className = useVariable(props.className);
+
+  const insertErrors = useCallback(
+    (arg: Record<string, ValidatedResult>) =>
+      setErrors([Object.assign({}, current, arg)]),
+    [current]
+  );
+
+  return (
+    <BaseForm {...{ setValues, className, setErrors: insertErrors }}>
+      <FormLabel>
+        <WarningState {...{ isShown, warningKey }} />
+      </FormLabel>
+      <FormInput propertyName="email" validate={EmailValidate.validate}>
+        <TextField error={labels.email} type="email" forwardLabel="email" />
+      </FormInput>
+      <FormInput propertyName="password" validate={PasswordValidate.validate}>
+        <TextField
+          error={labels.password}
+          type="password"
+          forwardLabel="password"
+        />
+      </FormInput>
+      <FormLabel>
+        <button type="submit">log in</button>
+      </FormLabel>
+    </BaseForm>
+  );
+};
+
+const LoginForm = React.memo(Component);
+LoginForm.displayName = "LoginForm";
+
+export { LoginForm };
