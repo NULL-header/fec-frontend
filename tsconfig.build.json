@@ -3,9 +3,6 @@
   "compilerOptions": {
     "rootDir": "src",
     "outDir": "./public",
-    "sourceMap": true,
-    "target": "es5",
-    "module": "es2015"
   },
   "include": [
     "src/**/*.ts*"
