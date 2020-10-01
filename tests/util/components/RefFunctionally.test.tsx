@@ -1,6 +1,6 @@
 import React from "react";
 import { mock } from "jest-mock-extended";
-import { RefFanctionally } from "src/util/components";
+import { RefFunctionally } from "src/util/components";
 import { getElementsFrom, renderDomFactory } from "src/util/test/dom";
 
 const getProps = () => ({
@@ -9,9 +9,9 @@ const getProps = () => ({
 });
 
 const renderDom = renderDomFactory(
-  <RefFanctionally {...getProps()}>
+  <RefFunctionally {...getProps()}>
     <div />
-  </RefFanctionally>,
+  </RefFunctionally>,
   getProps
 );
 
