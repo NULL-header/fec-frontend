@@ -1,5 +1,5 @@
 export const CONSTVALUES = {
-  baseUrl: "https://takashiii-hq.com",
+  baseUrl: process.env.REACT_APP_API_BASE,
   apiv1: "/api/v1/",
   auth: "auth",
   users: "users",
