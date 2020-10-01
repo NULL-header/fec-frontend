@@ -3,20 +3,16 @@ workflows:
   test_build:
     jobs:
       - module_install
-      # - test:
-      #     requires:
-      #       - module_install
-      - build
-      # :
-      #     requires:
-      #       - test
-      - deploy:
+      - test:
           requires:
-            - build
+            - module_install
+      - build_deploy:
+          requires:
+            - test
 jobs:
   module_install:
     docker:
-      - image: circleci/node:14
+      - image: t1una/fec-frontend-build
     steps:
       - checkout
       - restore_cache:
@@ -40,9 +36,9 @@ jobs:
       - run:
           name: unit test
           command: yarn test
-  build:
+  build_deploy:
     docker:
-      - image: circleci/node:14
+      - image: t1una/fec-frontend-build
     steps:
       - checkout
       - restore_cache:
@@ -63,27 +59,12 @@ jobs:
             elif [ "${BRANCH_BASE}"  = "hotfixes" ]; then
               yarn build:master
             fi
-      - save_cache:
-          key: yarn-public-{{ arch }}-{{ .Branch }}
-          paths:
-            - public
-  deploy:
-    docker:
-      - image: alpine
-    steps:
-      - restore_cache:
-          keys:
-            - yarn-public-{{ arch }}-{{ .Branch }}
       - add_ssh_keys:
           fingerprints:
             - host_fingerprint
       - run:
-          name: Install LFTP & ssh
-          command: |
-            apk add lftp openssh openssh-client;
-      - run:
           name: add fingerprints
-          command: mkdir ~/.ssh; chown 700 ~/.ssh; ssh-keyscan ${hostname} >> ~/.ssh/known_hosts
+          command: ssh-keyscan ${hostname} >> ~/.ssh/known_hosts
       - run:
           name: mkdir
           command: |
@@ -91,4 +72,3 @@ jobs:
       - run:
           name: Send Via SFTP
           command: lftp sftp://${username}:@${hostname} -e "mirror -v -R -X empty public/. ${deploybase}/${CIRCLE_BRANCH}/.; quit"
-          working_directory: /home/circleci/project
