@@ -4,6 +4,12 @@
     "rootDir": "src",
     "outDir": "./public",
   },
-  "include": ["src/**/*.ts*"],
-  "exclude": ["node_modules","public","tests"]
+  "include": [
+    "src/**/*.ts*"
+  ],
+  "exclude": [
+    "node_modules",
+    "public",
+    "tests"
+  ]
 }

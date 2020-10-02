@@ -6,16 +6,13 @@ workflows:
       - test:
           requires:
             - module_install
-      - build:
+      - build_deploy:
           requires:
             - test
-      - deploy:
-          requires:
-            - build
 jobs:
   module_install:
     docker:
-      - image: circleci/node:14
+      - image: t1una/fec-frontend-build
     steps:
       - checkout
       - restore_cache:
@@ -39,9 +36,9 @@ jobs:
       - run:
           name: unit test
           command: yarn test
-  build:
+  build_deploy:
     docker:
-      - image: circleci/node:14
+      - image: t1una/fec-frontend-build
     steps:
       - checkout
       - restore_cache:
@@ -49,28 +46,25 @@ jobs:
             - yarn-cache-{{ arch }}-{{ .Branch }}-{{ checksum "yarn.lock" }}
       - run:
           name: yarn build
-          command: yarn build
-      - save_cache:
-          key: yarn-public-{{ arch }}-{{ .Branch }}
-          paths:
-            - public
-  deploy:
-    docker:
-      - image: alpine
-    steps:
-      - restore_cache:
-          keys:
-            - yarn-public-{{ arch }}
+          command: |
+            BRANCH_BASE=`echo "$CIRCLE_BRANCH" | awk -F'/' '{print $1}'`
+            if [ "${BRANCH_BASE}" = "master" ]; then
+              yarn build:master
+            elif [ "${BRANCH_BASE}" = "release" ]; then
+              yarn build:master
+            elif [ "${BRANCH_BASE}" = "develop" ]; then
+              yarn build:develop
+            elif [ "${BRANCH_BASE}"  = "feature" ]; then
+              yarn build:feature
+            elif [ "${BRANCH_BASE}"  = "hotfixes" ]; then
+              yarn build:master
+            fi
       - add_ssh_keys:
           fingerprints:
             - host_fingerprint
       - run:
-          name: Install LFTP & ssh
-          command: |
-            apk add lftp openssh openssh-client;
-      - run:
           name: add fingerprints
-          command: mkdir ~/.ssh; chown 700 ~/.ssh; ssh-keyscan ${hostname} >> ~/.ssh/known_hosts
+          command: ssh-keyscan ${hostname} >> ~/.ssh/known_hosts
       - run:
           name: mkdir
           command: |
@@ -78,4 +72,3 @@ jobs:
       - run:
           name: Send Via SFTP
           command: lftp sftp://${username}:@${hostname} -e "mirror -v -R -X empty public/. ${deploybase}/${CIRCLE_BRANCH}/.; quit"
-          working_directory: /home/circleci/project
