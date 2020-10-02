@@ -1,23 +1,24 @@
-import React, { useMemo, useState, useCallback } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 
-import { TextField, TextPasswordField } from "src/components";
-import { BaseForm, FormInput, FormLabel } from "src/util/components/form";
+// eslint-disable-next-line no-unused-vars
+import { BaseComponentProps } from "src/util/types";
 // eslint-disable-next-line no-unused-vars
 import { ValidatedResult } from "src/util/components/types";
-import { useCurrent, useVariable } from "src/util/customhook";
+import { BaseForm, FormInput, FormLabel } from "src/util/components/form";
+import { TextField, TextPasswordField } from "src/components";
 import {
   EmailValidate,
-  NameValidate,
   PasswordValidate,
   getErrorLabels,
 } from "src/logics/validates";
 
-import { WarningState, warning } from "./WarningState";
+// eslint-disable-next-line no-unused-vars
+import { warning, WarningState } from "./WarningState";
+import { useCurrent, useVariable } from "src/util/customhook";
 
 export interface Infos {
   email: string;
   password: string;
-  name: string;
 }
 
 interface Props extends BaseComponentProps {
@@ -49,27 +50,24 @@ const Component: React.FC<Props> = (props) => {
   );
 
   return (
-    <BaseForm {...{ setValues, setErrors: insertErrors, className }}>
+    <BaseForm {...{ setValues, className, setErrors: insertErrors }}>
       <FormLabel>
         <WarningState {...{ isShown, warningKey }} />
       </FormLabel>
       <FormInput propertyName="email" validate={EmailValidate.validate}>
         <TextField error={labels.email} type="email" forwardLabel="email" />
       </FormInput>
-      <FormInput propertyName="name" validate={NameValidate.validate}>
-        <TextField error={labels.name} type="text" forwardLabel="name" />
-      </FormInput>
       <FormInput propertyName="password" validate={PasswordValidate.validate}>
         <TextPasswordField error={labels.password} forwardLabel="password" />
       </FormInput>
       <FormLabel>
-        <button type="submit">create</button>
+        <button type="submit">log in</button>
       </FormLabel>
     </BaseForm>
   );
 };
 
-const CreateForm = React.memo(Component);
-CreateForm.displayName = "CreateForm";
+const LoginForm = React.memo(Component);
+LoginForm.displayName = "LoginForm";
 
-export { CreateForm, warning };
+export { LoginForm };

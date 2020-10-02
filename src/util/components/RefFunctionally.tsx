@@ -7,7 +7,7 @@ import React, { memo, useMemo } from "react";
 import { HadChildComponentProps, RefComponentProps } from "../types";
 import { getRefSetter } from "..";
 
-const NotYetRefFanctionally = React.forwardRef<
+const NotYetRefFunctionally = React.forwardRef<
   unknown,
   HadChildComponentProps<RefComponentProps>
 >((props, ref) => {
@@ -18,7 +18,7 @@ const NotYetRefFanctionally = React.forwardRef<
   });
 });
 
-const RefFanctionally = memo(NotYetRefFanctionally);
-RefFanctionally.displayName = "RefFanctionally";
+const RefFunctionally = memo(NotYetRefFunctionally);
+RefFunctionally.displayName = "RefFanctionally";
 
-export { RefFanctionally };
+export { RefFunctionally };

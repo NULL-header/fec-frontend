@@ -1,32 +1,35 @@
-import React, { useMemo, memo } from "react";
+import React, { memo } from "react";
 
-// eslint-disable-next-line no-unused-vars
-import { LoginFormData } from "./index";
-import { WarningLabel } from "../WarningLabel";
-import { DisplayContainer } from "../DisplayContainer";
+import { WarningLabel, DisplayContainer } from "src/components";
+import { useVariable } from "src/util/customhook";
 
-interface WarningStateProps {
+export type warning = "noCommunicate" | "missAuth" | "unknown";
+
+interface Props {
   className?: string;
-  loginFormData: LoginFormData;
+  warningKey: warning;
+  isShown: boolean;
 }
 
-const NotYetWarningState: React.FC<WarningStateProps> = (props) => {
-  const { isShownnLabel, warningKey } = useMemo(() => props.loginFormData, [
-    props.loginFormData,
-  ]);
+const Component: React.FC<Props> = (props) => {
+  const isShown = useVariable(props.isShown);
+  const currentKey = useVariable(props.warningKey);
+  const className = useVariable(props.className);
+
   return (
-    <WarningLabel isShown={isShownnLabel}>
-      <DisplayContainer currentKey={warningKey}>
+    <WarningLabel {...{ isShown, className }}>
+      <DisplayContainer {...{ currentKey }}>
         <div key="noCommunicate">サーバーとの通信が失敗しました。</div>
         <div key="missAuth">
           認証に失敗しました。入力された情報が間違っています。
         </div>
+        <div key="unknown">未知のエラーが発生しました。</div>
       </DisplayContainer>
     </WarningLabel>
   );
 };
 
-const WarningState = memo(NotYetWarningState);
+const WarningState = memo(Component);
 WarningState.displayName = "WarningState";
 
 export { WarningState };

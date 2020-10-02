@@ -1,19 +1,23 @@
-// ref ValidateEmailInput.test.tsx, ValidatePasswordInput.test.tsx, WarningLabel.test.tsx
-// this component uses LoginContainer, ValidatePasswordInput, WarningLabel
+// ref BaseForm.test.tsx, FormLabel.test.tsx, FormInput.test.tsx, TextField.test.tsx
 
 import React from "react";
-// for to leave screen to debug
-// eslint-disable-next-line no-unused-vars
-import { render, screen, RenderResult, waitFor } from "@testing-library/react";
-import "@testing-library/jest-dom";
 import { mocked } from "ts-jest/utils";
+import { screen, waitFor } from "@testing-library/react";
+import "@testing-library/jest-dom";
 
 import { LoginContainer } from "src/components";
-import { FecApiWrapper } from "src/FecApiWrapper";
+import { excludeNull } from "src/util";
+import { getElementsFrom, renderDomFactory } from "src/util/test/dom";
 
-jest.mock("../src/FecApiWrapper");
+import { FecApiWrapper, isBadResponse } from "src/FecApiWrapper";
+
+const isBadResponseOrigin = jest.requireActual("src/FecApiWrapper")
+  .isBadResponse;
+jest.mock("src/FecApiWrapper");
 
 const FecApiWrapperMock = mocked(FecApiWrapper, true);
+const isBadResponseMock = mocked(isBadResponse, true);
+isBadResponseMock.mockImplementation(isBadResponseOrigin);
 
 type UnPromisify<T> = T extends Promise<infer U> ? U : T;
 
@@ -23,57 +27,53 @@ type AsyncReturnType<T extends (...args: any) => Promise<any>> = UnPromisify<
 
 type Responses = AsyncReturnType<typeof FecApiWrapperMock.prototype.login>;
 
-const setLoginMockValue = (value: Responses) => {
+const setloginMockValue = (value: Responses) => {
   FecApiWrapperMock.prototype.login.mockReturnValue(
     new Promise((resolve) => resolve(value))
   );
 };
 
-const excludeNull = function <T>(arg: T) {
-  if (arg == null) throw new Error("This value includes null");
-  return arg as NonNullable<T>;
-};
+const getProps = () => ({
+  className: "testcase",
+});
 
-const getInputFromLabel = (label: HTMLLabelElement) => {
-  const parent = excludeNull(label.parentElement);
-  const input = excludeNull(parent.querySelector("input"));
-  return input;
-};
+const renderDom = renderDomFactory(
+  <LoginContainer {...getProps()} />,
+  getProps
+);
 
-describe("Normal System", () => {
-  let loginContainer: RenderResult;
+describe("Normal system", () => {
+  let result: ReturnType<typeof renderDom>;
+  let container: typeof result.container;
 
   beforeEach(() => {
-    loginContainer = render(<div />);
-    rerender();
-    jest.clearAllMocks();
+    result = renderDom();
+    container = result.container;
   });
 
-  const rerender = (options = {}) => {
-    const props = { ...options };
-    loginContainer.rerender(<LoginContainer {...props} />);
-    return props;
+  const getButton = () => {
+    const form = getElementsFrom(container).byTagName("form").asSingle();
+    const button = Array.from(form.children).find(
+      (e) => e.tagName === "BUTTON"
+    ) as HTMLButtonElement;
+    return excludeNull(button);
   };
 
   const getInputs = () => {
-    const labelNodes = loginContainer.container.querySelectorAll("label");
-    const labels = Array.from(labelNodes);
-    const emailIndex = labels.findIndex((e) => e.textContent === "Email");
-    const emailLabel = labels.splice(emailIndex, 1)[0];
-    const passwordLabel = labels[0];
+    const form = getElementsFrom(container).byTagName("form").asSingle();
+    const elements = Array.from(form.children);
+    const inputs = elements.slice(1, elements.length - 1).map((e) =>
+      getElementsFrom(e as HTMLElement)
+        .byTagName("input")
+        .asSingle()
+    ) as HTMLInputElement[];
     return {
-      email: getInputFromLabel(emailLabel),
-      password: getInputFromLabel(passwordLabel),
+      email: inputs[0],
+      password: inputs[1],
     };
   };
 
-  const getSubmitButton = () => {
-    const buttons = loginContainer.container.querySelectorAll("button");
-    const arrayButtons = Array.from(buttons);
-    const nullableSubmit = arrayButtons.find((e) => e.textContent === "log in");
-    const submit = excludeNull(nullableSubmit);
-    return submit;
-  };
+  const submit = () => getButton().click();
 
   const setExampleValue = () => {
     const { email, password } = getInputs();
@@ -82,8 +82,7 @@ describe("Normal System", () => {
   };
 
   it("default label", () => {
-    const el = loginContainer.getByText("サーバーとの通信が失敗しました。");
-
+    const el = screen.getByText("サーバーとの通信が失敗しました。");
     expect(el).toBeInTheDocument();
 
     const style = window.getComputedStyle(el);
@@ -91,28 +90,55 @@ describe("Normal System", () => {
   });
 
   describe("submit system", () => {
+    describe("nothing submit", () => {
+      it("blank", () => {
+        submit();
+        expect(screen.getAllByText("入力欄が空です")).toHaveLength(2);
+      });
+
+      it("not formated", async () => {
+        const { email } = getInputs();
+        email.value = "example";
+
+        submit();
+
+        expect(screen.getByText("不正な形式です")).toBeInTheDocument();
+      });
+
+      it("too short", () => {
+        const { password } = getInputs();
+        password.value = "exam";
+
+        submit();
+
+        expect(screen.getByText("パスワードが短すぎます")).toBeInTheDocument();
+      });
+    });
+
     it("success", () => {
       const value = {
         httpStatus: 200,
         status: "SUCCESS",
-        body: { token: { master: "master", onetime: "onetime" } },
+        body: {
+          token: { master: "master", onetime: "onetime" },
+        },
       } as Responses;
-      setLoginMockValue(value);
+      setloginMockValue(value);
 
-      // TODO: Rewrite decent
+      // TODO: write success patten test
       expect(true).toBeTruthy();
     });
 
     describe("failed", () => {
       it("noCommnicate", async () => {
         const value = undefined as Responses;
-        setLoginMockValue(value);
+        setloginMockValue(value);
 
         setExampleValue();
-        getSubmitButton().click();
+        submit();
 
         const el = await waitFor(() =>
-          loginContainer.getByText("サーバーとの通信が失敗しました。")
+          screen.getByText("サーバーとの通信が失敗しました。")
         );
         expect(el).toBeInTheDocument();
 
@@ -124,13 +150,13 @@ describe("Normal System", () => {
         const value = {
           status: "FAILED",
         } as Responses;
-        setLoginMockValue(value);
+        setloginMockValue(value);
 
         setExampleValue();
-        getSubmitButton().click();
+        submit();
 
         const el = await waitFor(() =>
-          loginContainer.getByText(
+          screen.getByText(
             "認証に失敗しました。入力された情報が間違っています。"
           )
         );
@@ -139,58 +165,6 @@ describe("Normal System", () => {
         const style = window.getComputedStyle(el);
         expect(style).toHaveProperty("visibility", "initial");
       });
-    });
-
-    describe("nothing submit", () => {
-      it("not regular", () => {
-        const value = undefined as Responses;
-        setLoginMockValue(value);
-
-        const inputs = getInputs();
-        inputs.email.value = "failed";
-        inputs.password.value = "example";
-        getSubmitButton().click();
-
-        expect(FecApiWrapperMock.prototype.login).not.toBeCalled();
-      });
-    });
-
-    // this test fail on el2
-    it.skip("label visible when submitting", async () => {
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
-      let finishSubmit = () => {};
-      FecApiWrapperMock.prototype.login.mockReturnValue(
-        new Promise((resolve) => {
-          const finish = () => resolve(undefined);
-          finishSubmit = finish;
-          setTimeout(finish, 100000);
-        })
-      );
-      const submit = getSubmitButton();
-
-      setExampleValue();
-      submit.click();
-      finishSubmit();
-
-      const el1 = await waitFor(() =>
-        loginContainer.getByText("サーバーとの通信が失敗しました。")
-      );
-      const style1 = window.getComputedStyle(el1);
-      expect(style1).toHaveProperty("visibility", "initial");
-
-      submit.click();
-
-      const el2 = loginContainer.getByText("サーバーとの通信が失敗しました。");
-      const style2 = window.getComputedStyle(el2);
-      expect(style2).toHaveProperty("visibility", "hidden");
-
-      finishSubmit();
-
-      const el3 = await waitFor(() =>
-        loginContainer.getByText("サーバーとの通信が失敗しました。")
-      );
-      const style3 = window.getComputedStyle(el3);
-      expect(style3).toHaveProperty("visibility", "initial");
     });
   });
 });
