@@ -6,6 +6,7 @@ import { screen, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
 
 import { LoginContainer } from "src/components";
+import { excludeNull } from "src/util";
 import { getElementsFrom, renderDomFactory } from "src/util/test/dom";
 
 import { FecApiWrapper, isBadResponse } from "src/FecApiWrapper";
@@ -51,8 +52,11 @@ describe("Normal system", () => {
   });
 
   const getButton = () => {
-    const button = getElementsFrom(container).byTagName("button").asSingle();
-    return button;
+    const form = getElementsFrom(container).byTagName("form").asSingle();
+    const button = Array.from(form.children).find(
+      (e) => e.tagName === "BUTTON"
+    ) as HTMLButtonElement;
+    return excludeNull(button);
   };
 
   const getInputs = () => {
