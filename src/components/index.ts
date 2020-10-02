@@ -12,3 +12,4 @@ export * from "./ValidateNameInput";
 export * from "./ValidatePasswordInput";
 export * from "./WarningLabel";
 export * from "./TextField";
+export * from "./TextPasswordFIeld";
