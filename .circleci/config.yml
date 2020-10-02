@@ -3,12 +3,12 @@ workflows:
   test_build:
     jobs:
       - module_install
-      - test:
-          requires:
-            - module_install
+      # - test:
+      #     requires:
+      #       - module_install
       - build_deploy:
-          requires:
-            - test
+          # requires:
+          #   - test
 jobs:
   module_install:
     docker:
