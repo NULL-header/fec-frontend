@@ -5,7 +5,7 @@ import { BaseComponentProps } from "src/util/types";
 // eslint-disable-next-line no-unused-vars
 import { ValidatedResult } from "src/util/components/types";
 import { BaseForm, FormInput, FormLabel } from "src/util/components/form";
-import { TextField } from "src/components";
+import { TextField, TextPasswordField } from "src/components";
 import {
   EmailValidate,
   PasswordValidate,
@@ -58,11 +58,7 @@ const Component: React.FC<Props> = (props) => {
         <TextField error={labels.email} type="email" forwardLabel="email" />
       </FormInput>
       <FormInput propertyName="password" validate={PasswordValidate.validate}>
-        <TextField
-          error={labels.password}
-          type="password"
-          forwardLabel="password"
-        />
+        <TextPasswordField error={labels.password} forwardLabel="password" />
       </FormInput>
       <FormLabel>
         <button type="submit">log in</button>
