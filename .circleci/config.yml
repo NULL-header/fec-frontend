@@ -7,8 +7,8 @@ workflows:
       #     requires:
       #       - module_install
       - build_deploy:
-          # requires:
-          #   - test
+          requires:
+            - module_install
 jobs:
   module_install:
     docker:
