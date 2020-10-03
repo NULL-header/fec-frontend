@@ -15,3 +15,4 @@ export * from "./TextField";
 export * from "./TextPasswordFIeld";
 export * from "./AnonymousContainer";
 export * from "./OnymousContainer";
+export * from "./ContentContainer";
