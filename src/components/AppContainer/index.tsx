@@ -2,7 +2,11 @@ import React from "react";
 // eslint-disable-next-line no-unused-vars
 import { ThemeProvider, ThemeOptions, createMuiTheme } from "@material-ui/core";
 
-import { AuthContainer, ToggleDisplayContainer } from "src/components";
+import {
+  AuthContainer,
+  ToggleDisplayContainer,
+  ContentContainer,
+} from "src/components";
 
 interface AppContainerProps extends BaseComponentProps {
   className?: string;
@@ -25,7 +29,7 @@ const defaultProp: ThemeOptions = {
 
 export const AppContainer: React.FC<AppContainerProps> = (props) => {
   const [history, _setHistory] = React.useState([
-    { themeProps: defaultProp, showFirst: false },
+    { themeProps: defaultProp, showFirst: true },
   ] as History);
   const current = history[history.length - 1];
   const theme = createMuiTheme(current.themeProps);
@@ -34,7 +38,7 @@ export const AppContainer: React.FC<AppContainerProps> = (props) => {
   return (
     <ThemeProvider theme={theme}>
       <ToggleDisplayContainer isShownFirstChild={current.showFirst}>
-        <div>normal page</div>
+        <ContentContainer />
         <AuthContainer />
       </ToggleDisplayContainer>
     </ThemeProvider>
