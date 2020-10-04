@@ -61,6 +61,7 @@
     "jest": "^26.1.0",
     "jest-mock-extended": "^1.0.10",
     "js-cookie": "^2.2.1",
+    "jss": "^10.4.0",
     "nodemon": "^2.0.4",
     "prettier": "^2.0.5",
     "react": "^16.13.1",
