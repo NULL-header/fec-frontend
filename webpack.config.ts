@@ -72,7 +72,7 @@ const getEnvFilepath = (config: Env): string => {
   if (config.master) {
     envPath = path.resolve(__dirname, ".env.production");
   } else if (config.develop) {
-    envPath = path.resolve(__dirname, ".env.develop");
+    envPath = path.resolve(__dirname, ".env.development");
   } else {
     envPath = path.resolve(__dirname, ".env.feature");
   }
