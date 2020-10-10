@@ -24,7 +24,7 @@ const Component: React.FC<Props> = (props) => {
         <button value="MyPage">MyPage</button>
         <button value="Option">Option</button>
       </SideBar>
-      <div style={{ width: "50%" }}>OnymousContainer</div>;
+      <div style={{ width: "50%" }}>OnymousContainer</div>
       <DisplayContainer currentKey={currentName}>
         <div key="Home">Home</div>
         <div key="Search">Search</div>
