@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 import React from "react";
 
 import { useAbortableEffect } from "src/customhook";
@@ -9,5 +10,5 @@ export const useApi = (
   api: FecApiWrapper,
   deps: React.DependencyList | undefined
 ) => {
-  useAbortableEffect(func, api.stopComunicateAll, deps);
+  useAbortableEffect(func, api.stopComunicateAll.bind(api), deps);
 };
