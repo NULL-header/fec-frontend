@@ -7,7 +7,7 @@ import {
 } from "src/components";
 
 const Component: React.FC<BaseComponentProps> = (props) => {
-  const [[isLogin], _setState] = useState([true]);
+  const [[isLogin], _setState] = useState([false]);
   return (
     <ToggleDisplayContainer isShownFirstChild={isLogin}>
       <OnymousContainer />
