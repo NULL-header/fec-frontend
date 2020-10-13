@@ -1,6 +1,7 @@
 import React from "react";
 // eslint-disable-next-line no-unused-vars
 import { ThemeProvider, ThemeOptions, createMuiTheme } from "@material-ui/core";
+import { BrowserRouter } from "react-router-dom";
 
 import { ContentContainer } from "src/components";
 
@@ -32,8 +33,10 @@ export const AppContainer: React.FC<AppContainerProps> = (props) => {
   // TODO setter of showfirst and themeprops
 
   return (
-    <ThemeProvider theme={theme}>
-      <ContentContainer />
-    </ThemeProvider>
+    <BrowserRouter>
+      <ThemeProvider theme={theme}>
+        <ContentContainer />
+      </ThemeProvider>
+    </BrowserRouter>
   );
 };
