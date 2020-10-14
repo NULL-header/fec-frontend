@@ -17,3 +17,5 @@ export * from "./AnonymousContainer";
 export * from "./OnymousContainer";
 export * from "./ContentContainer";
 export * from "./SideBar";
+export * from "./LinkButton";
+export * from "./SwitchContainer";
