@@ -17,7 +17,7 @@ const Component: React.FC<Props> = (props) => {
 
   return (
     <div className={classes.root}>
-      <SideBar setValues={insertState} className={classes.sidebar}>
+      <SideBar className={classes.sidebar}>
         <button value="Home">Home</button>
         <button value="Search">Search</button>
         <button value="Notify">Notify</button>
