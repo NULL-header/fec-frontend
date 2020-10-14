@@ -2,11 +2,7 @@ import React from "react";
 // eslint-disable-next-line no-unused-vars
 import { ThemeProvider, ThemeOptions, createMuiTheme } from "@material-ui/core";
 
-import {
-  AuthContainer,
-  ToggleDisplayContainer,
-  ContentContainer,
-} from "src/components";
+import { ContentContainer } from "src/components";
 
 interface AppContainerProps extends BaseComponentProps {
   className?: string;
@@ -37,10 +33,7 @@ export const AppContainer: React.FC<AppContainerProps> = (props) => {
 
   return (
     <ThemeProvider theme={theme}>
-      <ToggleDisplayContainer isShownFirstChild={current.showFirst}>
-        <ContentContainer />
-        <AuthContainer />
-      </ToggleDisplayContainer>
+      <ContentContainer />
     </ThemeProvider>
   );
 };

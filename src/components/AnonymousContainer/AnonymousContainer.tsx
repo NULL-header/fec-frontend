@@ -1,7 +1,12 @@
 import React, { useState, useCallback } from "react";
 import withStyle from "react-jss";
 
-import { SideBar, DisplayContainer } from "src/components";
+import {
+  SideBar,
+  DisplayContainer,
+  LoginContainer,
+  CreateContainer,
+} from "src/components";
 import { styles } from "./style";
 
 interface Props extends BaseComponentProps {
@@ -17,13 +22,14 @@ const Component: React.FC<Props> = (props) => {
       <SideBar setValues={insertState} className={props.classes.sidebar}>
         <button value="Home">Home</button>
         <button value="Search">Search</button>
-        <button value="MyPage">MyPage</button>
+        <button value="Login">Log in</button>
+        <button value="Create">Account Create</button>
       </SideBar>
-      <div style={{ width: "50%" }}>AnonymousContainer</div>
       <DisplayContainer currentKey={currentName}>
         <div key="Home">Home</div>
         <div key="Search">Search</div>
-        <div key="MyPage">MyPage</div>
+        <LoginContainer key="Login" />
+        <CreateContainer key="Create" />
       </DisplayContainer>
     </div>
   );
