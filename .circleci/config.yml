@@ -55,7 +55,7 @@ jobs:
             elif [ "${BRANCH_BASE}" = "develop" ]; then
               yarn build:develop
             elif [ "${BRANCH_BASE}"  = "feature" ]; then
-              yarn build:feature
+              yarn build:feature --env.branchName ${BRANCH_BASE#*/}
             elif [ "${BRANCH_BASE}"  = "hotfixes" ]; then
               yarn build:master
             fi
