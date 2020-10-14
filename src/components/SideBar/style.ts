@@ -5,8 +5,12 @@ export const styles = makeStyles({
     backgroundColor: "darkgreen",
     display: "flex",
     flexDirection: "column",
-  },
-  button: {
-    margin: "30% 10%",
+    "&>a": {
+      margin: "30% 10%",
+
+      "&>button": {
+        width: "100%",
+      },
+    },
   },
 });
