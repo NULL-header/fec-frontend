@@ -21,7 +21,7 @@ const Component: React.FC<Props> = (props) => {
         <LinkButton to="/home">Home</LinkButton>
         <LinkButton to="/search">Search</LinkButton>
         <LinkButton to="login">Log in</LinkButton>
-        <LinkButton to="create">Account Create</LinkButton>
+        <LinkButton to="signup">Sign up</LinkButton>
       </SideBar>
       <SwitchContainer>
         <div key="/home">Home</div>
