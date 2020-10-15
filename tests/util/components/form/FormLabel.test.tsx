@@ -1,6 +1,9 @@
 import React from "react";
 import { FormLabel } from "src/util/components/form";
-import { getElementsFrom, renderDomFactory } from "src/util/test/dom";
+import {
+  getElementsFrom,
+  renderDomFactory,
+} from "@null-header/react-test-util";
 
 const getProps = () => ({
   className: "testclass",
