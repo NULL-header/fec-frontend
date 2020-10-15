@@ -1,7 +1,7 @@
 import React from "react";
 
 import { WarningLabel, DisplayContainer } from "src/components";
-import { useVariable } from "src/customhook";
+import { useVariable } from "src/util/customhook";
 
 export type warning =
   | "noCommunicate"
