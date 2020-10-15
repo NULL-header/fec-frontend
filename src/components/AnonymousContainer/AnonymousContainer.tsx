@@ -27,7 +27,7 @@ const Component: React.FC<Props> = (props) => {
         <div key="/home">Home</div>
         <div key="/search">Search</div>
         <LoginContainer key="/login" />
-        <SignupContainer key="/create" />
+        <SignupContainer key="/signup" />
       </SwitchContainer>
     </div>
   );
