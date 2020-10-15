@@ -1,11 +1,12 @@
-import React, { useState, useCallback } from "react";
+import React from "react";
 import withStyle from "react-jss";
 
 import {
   SideBar,
-  DisplayContainer,
   LoginContainer,
-  CreateContainer,
+  SignupContainer,
+  LinkButton,
+  SwitchContainer,
 } from "src/components";
 import { styles } from "./style";
 
@@ -14,23 +15,20 @@ interface Props extends BaseComponentProps {
 }
 
 const Component: React.FC<Props> = (props) => {
-  const [[currentName], setStates] = useState(["Home"]);
-
-  const insertState = useCallback((e: string) => setStates([e]), []);
   return (
     <div className={props.classes.root}>
-      <SideBar setValues={insertState} className={props.classes.sidebar}>
-        <button value="Home">Home</button>
-        <button value="Search">Search</button>
-        <button value="Login">Log in</button>
-        <button value="Create">Account Create</button>
+      <SideBar className={props.classes.sidebar}>
+        <LinkButton to="/home">Home</LinkButton>
+        <LinkButton to="/search">Search</LinkButton>
+        <LinkButton to="login">Log in</LinkButton>
+        <LinkButton to="create">Account Create</LinkButton>
       </SideBar>
-      <DisplayContainer currentKey={currentName}>
-        <div key="Home">Home</div>
-        <div key="Search">Search</div>
-        <LoginContainer key="Login" />
-        <CreateContainer key="Create" />
-      </DisplayContainer>
+      <SwitchContainer>
+        <div key="/home">Home</div>
+        <div key="/search">Search</div>
+        <LoginContainer key="/login" />
+        <SignupContainer key="/signup" />
+      </SwitchContainer>
     </div>
   );
 };

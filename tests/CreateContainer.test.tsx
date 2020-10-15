@@ -5,7 +5,7 @@ import { mocked } from "ts-jest/utils";
 import { screen, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
 
-import { CreateContainer } from "src/components";
+import { SignupContainer } from "src/components";
 import { excludeNull } from "src/util";
 import { getElementsFrom, renderDomFactory } from "src/util/test/dom";
 
@@ -38,7 +38,7 @@ const getProps = () => ({
 });
 
 const renderDom = renderDomFactory(
-  <CreateContainer {...getProps()} />,
+  <SignupContainer {...getProps()} />,
   getProps
 );
 

@@ -1,6 +1,6 @@
 export * from "./AppContainer";
 export * from "./AuthContainer";
-export * from "./CreateContainer";
+export * from "./SignupContainer";
 export * from "./DisplayContainer";
 export * from "./InputPlace";
 export * from "./LoginContainer";
@@ -17,3 +17,5 @@ export * from "./AnonymousContainer";
 export * from "./OnymousContainer";
 export * from "./ContentContainer";
 export * from "./SideBar";
+export * from "./LinkButton";
+export * from "./SwitchContainer";

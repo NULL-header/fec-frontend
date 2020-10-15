@@ -3,7 +3,7 @@ import { Paper } from "@material-ui/core";
 
 import {
   LoginContainer,
-  CreateContainer,
+  SignupContainer,
   ToggleDisplayContainer,
 } from "src/components";
 
@@ -25,7 +25,7 @@ export const AuthContainer: React.FC<AuthContainerProps> = (props) => {
           isShownFirstChild={showFirst}
         >
           <LoginContainer />
-          <CreateContainer />
+          <SignupContainer />
         </ToggleDisplayContainer>
       </Paper>
     </div>
