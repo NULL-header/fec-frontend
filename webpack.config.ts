@@ -10,6 +10,7 @@ interface Env {
   master: "master" | null;
   develop: "develop" | null;
   feature: "feature" | null;
+  branchName: string;
 }
 
 const webpackConfig = (env: Env): webpack.Configuration => ({
@@ -56,6 +57,10 @@ const webpackConfig = (env: Env): webpack.Configuration => ({
       "process.env.PRODUCTION": env.master || !(env.develop || env.feature),
       "process.env.NAME": JSON.stringify(packageJSON.name),
       "process.env.VERSION": JSON.stringify(packageJSON.version),
+      "process.env.BRANCH_NAME":
+        env.branchName == null
+          ? undefined
+          : JSON.stringify(encodeURIComponent(env.branchName)),
     }),
     new ForkTsCheckerWebpackPlugin(),
     new Dotenv({
