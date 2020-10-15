@@ -4,7 +4,7 @@ import withStyle from "react-jss";
 import {
   SideBar,
   LoginContainer,
-  CreateContainer,
+  SignupContainer,
   LinkButton,
   SwitchContainer,
 } from "src/components";
@@ -27,7 +27,7 @@ const Component: React.FC<Props> = (props) => {
         <div key="/home">Home</div>
         <div key="/search">Search</div>
         <LoginContainer key="/login" />
-        <CreateContainer key="/create" />
+        <SignupContainer key="/create" />
       </SwitchContainer>
     </div>
   );

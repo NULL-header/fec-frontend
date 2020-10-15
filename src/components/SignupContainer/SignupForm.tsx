@@ -107,7 +107,7 @@ const Component: React.FC<Props> = (props) => {
   );
 };
 
-const CreateForm = React.memo(Component);
-CreateForm.displayName = "CreateForm";
+const SignupForm = React.memo(Component);
+SignupForm.displayName = "SignupForm";
 
-export { CreateForm, warning };
+export { SignupForm, warning };

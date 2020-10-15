@@ -7,7 +7,7 @@ import { useCurrent, useVariable } from "src/util/customhook";
 import { BaseComponentProps } from "src/util/types";
 
 // eslint-disable-next-line no-unused-vars
-import { CreateForm, Infos } from "./CreateForm";
+import { SignupForm, Infos } from "./SignupForm";
 // eslint-disable-next-line no-unused-vars
 import { warning } from "./WarningState";
 
@@ -88,13 +88,13 @@ const Component: React.FC<BaseComponentProps> = (props) => {
   );
 
   return (
-    <CreateForm
+    <SignupForm
       {...{ setValues: setInfos, isShownLabel, warningKey, className }}
     />
   );
 };
 
-const CreateContainer = React.memo(Component);
-CreateContainer.displayName = "CreateContainer";
+const SignupContainer = React.memo(Component);
+SignupContainer.displayName = "SignupContainer";
 
-export { CreateContainer };
+export { SignupContainer };

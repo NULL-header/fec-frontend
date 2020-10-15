@@ -1,6 +1,6 @@
 export * from "./AppContainer";
 export * from "./AuthContainer";
-export * from "./CreateContainer";
+export * from "./SignupContainer";
 export * from "./DisplayContainer";
 export * from "./InputPlace";
 export * from "./LoginContainer";
