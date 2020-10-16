@@ -4,7 +4,10 @@ import "@testing-library/jest-dom";
 
 import { mock } from "jest-mock-extended";
 import { TextField } from "src/components";
-import { getElementsFrom, renderDomFactory } from "src/util/test/dom";
+import {
+  getElementsFrom,
+  renderDomFactory,
+} from "@null-header/react-test-util";
 
 const getProps = () => ({
   type: "text",

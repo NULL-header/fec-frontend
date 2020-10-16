@@ -1,32 +1,25 @@
 import React from "react";
 // for to leave screen to debug
 // eslint-disable-next-line no-unused-vars
-import { render, screen, RenderResult } from "@testing-library/react";
+import { screen } from "@testing-library/react";
+import { renderDomFactory } from "@null-header/react-test-util";
 import "@testing-library/jest-dom";
 
 import { WarningLabel } from "src/components";
 
+const getProps = () => ({ isShown: true });
+const renderDom = renderDomFactory(
+  <WarningLabel {...getProps()}>
+    <div>child</div>
+  </WarningLabel>,
+  getProps
+);
+
 describe("Normal system", () => {
-  let warningLabel: RenderResult;
-
-  beforeEach(() => {
-    warningLabel = render(<div />);
-  });
-
-  const rerender = (options = {}) => {
-    const props = { isShown: true, ...options };
-    warningLabel.rerender(
-      <WarningLabel {...props}>
-        <div>child</div>
-      </WarningLabel>
-    );
-    return props;
-  };
-
   it("show label", () => {
-    rerender({ isShown: true });
+    renderDom({ isShown: true });
 
-    const el = warningLabel.getByText("child");
+    const el = screen.getByText("child");
     expect(el).toBeInTheDocument();
 
     const style = window.getComputedStyle(el);
@@ -34,8 +27,8 @@ describe("Normal system", () => {
   });
 
   it("hide label", () => {
-    rerender({ isShown: false });
-    const el = warningLabel.getByText("child");
+    renderDom({ isShown: false });
+    const el = screen.getByText("child");
     expect(el).toBeInTheDocument();
 
     const style = window.getComputedStyle(el);

@@ -4,50 +4,38 @@
 import React from "react";
 // for to leave screen to debug
 // eslint-disable-next-line no-unused-vars
-import { render, screen, RenderResult, waitFor } from "@testing-library/react";
-import UserEvent from "@testing-library/user-event";
+import { screen } from "@testing-library/react";
+import {
+  getElementsFrom,
+  renderDomFactory,
+} from "@null-header/react-test-util";
 import "@testing-library/jest-dom";
 
 import { ToggleEyeIcon } from "src/components";
 
-const excludeNull = function <T>(arg: T) {
-  if (arg == null) throw new Error("This value includes null");
-  return arg as NonNullable<T>;
-};
+const getProps = () => ({ isShown: true, onClick: jest.fn() });
+const renderDom = renderDomFactory(<ToggleEyeIcon {...getProps()} />, getProps);
 
 describe("Normal system", () => {
-  let toggleEyeIcon: RenderResult;
-
-  beforeEach(() => {
-    toggleEyeIcon = render(<div />);
-  });
-
-  const rerender = (options = {}) => {
-    const props = { isShown: true, onClick: jest.fn(), ...options };
-    toggleEyeIcon.rerender(<ToggleEyeIcon {...props} />);
-    return props;
-  };
-
-  const accessPathHtml = () => {
-    const nullablePathElement = toggleEyeIcon.container.querySelector("path");
-    const pathElement = excludeNull(nullablePathElement);
-    return pathElement;
-  };
-
   it("change icon toggle by isShown", async () => {
-    rerender({ isShown: true });
-    const firstIcon = accessPathHtml().outerHTML;
+    const { rerender, container } = renderDom({ isShown: true });
+    const firstIcon = getElementsFrom(container)
+      .byTagName("path" as any)
+      .asSingle().outerHTML;
     rerender({ isShown: false });
-    const secondIcon = accessPathHtml();
-    console.log(firstIcon);
+    const secondIcon = getElementsFrom(container)
+      .byTagName("path" as any)
+      .asSingle().outerHTML;
     expect(firstIcon).not.toEqual(secondIcon);
   });
 
   it("call onClick", () => {
-    const props = rerender();
-    const buttonElement = accessPathHtml();
-    UserEvent.click(buttonElement);
+    const {
+      container,
+      props: { onClick },
+    } = renderDom();
+    getElementsFrom(container).byTagName("button").asSingle().click();
 
-    expect(props.onClick).toHaveBeenCalledTimes(1);
+    expect(onClick).toHaveBeenCalledTimes(1);
   });
 });
