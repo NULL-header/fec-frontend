@@ -1,6 +1,9 @@
 import React from "react";
 import { mock } from "jest-mock-extended";
-import { getElementsFrom, renderDomFactory } from "src/util/test/dom";
+import {
+  getElementsFrom,
+  renderDomFactory,
+} from "@null-header/react-test-util";
 import { WithValidate, TextReader } from "src/util/components";
 // eslint-disable-next-line no-unused-vars
 import { ValidatedResult, Validate } from "src/util/components/types";

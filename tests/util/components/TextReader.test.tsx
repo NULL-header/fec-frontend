@@ -2,9 +2,14 @@ import React from "react";
 import { mock } from "jest-mock-extended";
 
 import { TextReader } from "src/util/components";
-import { renderDomFactory, getElementsFrom } from "src/util/test/dom";
+import {
+  renderDomFactory,
+  getElementsFrom,
+} from "@null-header/react-test-util";
 
-const getProps = () => ({ ref: mock<React.MutableRefObject<() => string>>() });
+const getProps = () => ({
+  ref: mock<React.MutableRefObject<() => string>>(),
+});
 
 const renderDom = renderDomFactory(
   <TextReader>

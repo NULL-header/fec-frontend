@@ -7,7 +7,10 @@ import "@testing-library/jest-dom";
 
 import { SignupContainer } from "src/components";
 import { excludeNull } from "src/util";
-import { getElementsFrom, renderDomFactory } from "src/util/test/dom";
+import {
+  getElementsFrom,
+  renderDomFactory,
+} from "@null-header/react-test-util";
 
 import { FecApiWrapper, isBadResponse } from "src/FecApiWrapper";
 
