@@ -7,7 +7,10 @@ import "@testing-library/jest-dom";
 
 import { SignupContainer } from "src/components";
 import { excludeNull } from "src/util";
-import { getElementsFrom, renderDomFactory } from "src/util/test/dom";
+import {
+  getElementsFrom,
+  renderDomFactory,
+} from "@null-header/react-test-util";
 
 import { FecApiWrapper, isBadResponse } from "src/FecApiWrapper";
 
@@ -73,14 +76,16 @@ describe("Normal system", () => {
       email: inputs[0],
       name: inputs[1],
       password: inputs[2],
+      repassword: inputs[3],
     };
   };
 
   const setExampleValue = () => {
-    const { email, name, password } = getInputs();
+    const { email, name, password, repassword } = getInputs();
     email.value = "example@example.com";
     password.value = "example";
     name.value = "example";
+    repassword.value = "example";
   };
 
   it("default label", () => {
@@ -94,11 +99,6 @@ describe("Normal system", () => {
   describe("submit system", () => {
     describe("nothing submit", () => {
       it("blank", () => {
-        console.log(
-          Array.from(
-            getElementsFrom(container).byTagName("form").asSingle().children
-          ).find((e) => e.tagName === "JET")?.innerHTML
-        );
         getButton().click();
         expect(screen.getAllByText("入力欄が空です")).toHaveLength(3);
       });

@@ -7,7 +7,10 @@ import "@testing-library/jest-dom";
 import { FormInput } from "src/util/components/form";
 // eslint-disable-next-line no-unused-vars
 import { ValidatedResult } from "src/util/components/types";
-import { getElementsFrom, renderDomFactory } from "src/util/test/dom";
+import {
+  getElementsFrom,
+  renderDomFactory,
+} from "@null-header/react-test-util";
 
 interface RefCurrent extends Record<string, () => ValidatedResult> {
   testcase: () => ValidatedResult;

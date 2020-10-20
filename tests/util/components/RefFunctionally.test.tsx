@@ -1,7 +1,10 @@
 import React from "react";
 import { mock } from "jest-mock-extended";
 import { RefFunctionally } from "src/util/components";
-import { getElementsFrom, renderDomFactory } from "src/util/test/dom";
+import {
+  getElementsFrom,
+  renderDomFactory,
+} from "@null-header/react-test-util";
 
 const getProps = () => ({
   ref: mock<React.MutableRefObject<HTMLDivElement>>(),

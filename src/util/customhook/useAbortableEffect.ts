@@ -12,7 +12,7 @@ export const useAbortableEffect = (
   useEffect(() => {
     func(isMounted, didMounted);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [deps]);
+  }, deps);
 
   // unmount
   // eslint-disable-next-line react-hooks/exhaustive-deps
