@@ -1,21 +1,23 @@
-import React from "react";
-import { Switch, Route } from "react-router-dom";
+import React, { useMemo } from "react";
+// eslint-disable-next-line no-unused-vars
+import { Switch, Route, RouteComponentProps } from "react-router-dom";
 
 interface Props extends BaseComponentProps {
-  children: React.ReactElement<KeyComponent>[];
+  components: Record<string, BaseComponent & React.FC<RouteComponentProps>>;
 }
 
 const Component: React.FC<Props> = (props) => {
+  const components = useMemo(
+    () =>
+      Object.keys(props.components).map((e) => (
+        <Route key={e} path={e} component={props.components[e]} />
+      )),
+    [props.components]
+  );
   return (
     <Switch>
-      {props.children.map((e) => {
-        const path = e.key as any;
-        return (
-          <Route key={path} path={path}>
-            {e}
-          </Route>
-        );
-      })}
+      {components}
+      {props.children}
     </Switch>
   );
 };
