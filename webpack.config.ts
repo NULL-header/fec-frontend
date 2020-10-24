@@ -1,5 +1,6 @@
 import path from "path";
 import webpack from "webpack";
+import "webpack-dev-server";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import ForkTsCheckerWebpackPlugin from "fork-ts-checker-webpack-plugin";
 import UglifyJsPlugin from "uglifyjs-webpack-plugin";
@@ -24,6 +25,9 @@ const webpackConfig = (env: Env): webpack.Configuration => ({
   output: {
     path: path.join(__dirname, "/public"),
     filename: "bundle.js",
+  },
+  devServer: {
+    historyApiFallback: true,
   },
   module: {
     rules: [
