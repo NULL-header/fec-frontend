@@ -7,6 +7,7 @@ import {
   SignupContainer,
   LinkButton,
   SwitchContainer,
+  ActivateContainer,
 } from "src/components";
 import { styles } from "./style";
 
@@ -19,7 +20,8 @@ const components = {
   "/search": () => <div>Search</div>,
   "/login": LoginContainer,
   "/signup": SignupContainer,
-} as Record<string, React.FC>;
+  "/account/activate/": ActivateContainer,
+} as Record<string, React.FC<any>>;
 
 const Component: React.FC<Props> = (props) => {
   return (
@@ -27,8 +29,8 @@ const Component: React.FC<Props> = (props) => {
       <SideBar className={props.classes.sidebar}>
         <LinkButton to="/home">Home</LinkButton>
         <LinkButton to="/search">Search</LinkButton>
-        <LinkButton to="login">Log in</LinkButton>
-        <LinkButton to="signup">Sign up</LinkButton>
+        <LinkButton to="/login">Log in</LinkButton>
+        <LinkButton to="/signup">Sign up</LinkButton>
       </SideBar>
       <SwitchContainer components={components} />
     </div>
