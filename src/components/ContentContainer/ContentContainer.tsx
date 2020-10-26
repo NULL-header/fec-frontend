@@ -1,15 +1,16 @@
-import React, { useState } from "react";
+import React, { useMemo } from "react";
 
 import {
   AnonymousContainer,
   OnymousContainer,
   ToggleDisplayContainer,
 } from "src/components";
+import { isLogin } from "src/FecApiWrapper";
 
 const Component: React.FC<BaseComponentProps> = (props) => {
-  const [[isLogin], _setState] = useState([false]);
+  const wasLogin = useMemo(() => isLogin(), []);
   return (
-    <ToggleDisplayContainer isShownFirstChild={isLogin}>
+    <ToggleDisplayContainer isShownFirstChild={wasLogin}>
       <OnymousContainer />
       <AnonymousContainer />
     </ToggleDisplayContainer>
