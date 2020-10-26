@@ -1,4 +1,6 @@
 export * from "./AppContainer";
+// order for circular dependensices
+export * from "./ActivateContainer";
 export * from "./SignupContainer";
 export * from "./DisplayContainer";
 export * from "./LoginContainer";

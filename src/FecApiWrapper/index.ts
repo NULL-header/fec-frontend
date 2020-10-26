@@ -6,18 +6,20 @@ import {
   // eslint-disable-next-line no-unused-vars
   BadResponse,
   // eslint-disable-next-line no-unused-vars
-  BaseResponse,
+  GoodResponse,
   // eslint-disable-next-line no-unused-vars
   UsersPostResponse,
   // eslint-disable-next-line no-unused-vars
   Tokens,
+  // eslint-disable-next-line no-unused-vars
+  ActivatePutResponse,
 } from "./APITypes";
 
 const apiUrl = CONSTVALUES.baseUrl + CONSTVALUES.apiv1;
 const tokenGuard = new TokenGuard();
 
 export const isBadResponse = (
-  arg: BaseResponse | BadResponse
+  arg: GoodResponse | BadResponse
 ): arg is BadResponse => {
   return arg.status !== "SUCCESS";
 };
@@ -31,7 +33,7 @@ const setTokensCache = ({ onetime, master }: Tokens) => {
 export class FecApiWrapper {
   private readonly abortCtl = new AbortController();
 
-  async fetch<T = BaseResponse>(
+  async fetch<T extends GoodResponse>(
     path: string,
     value: Record<string, unknown>,
     option?: RequestInit
@@ -84,6 +86,15 @@ export class FecApiWrapper {
       { token: onetime },
       { method: "DELETE" }
     );
+    return res;
+  }
+
+  async activateUser(argObj: { token: string; email: string }) {
+    const res = await this.fetch<ActivatePutResponse>(
+      CONSTVALUES.activate,
+      { value: argObj },
+      { method: "PUT" }
+    ).catch((e) => undefined);
     return res;
   }
 }

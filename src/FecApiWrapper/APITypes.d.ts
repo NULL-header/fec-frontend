@@ -1,9 +1,13 @@
 type Status = "SUCCESS" | "FAILED" | "OLD_TOKEN" | "ERROR";
 type BadStatus = "FAILED" | "OLD_TOKEN" | "ERROR";
 
+interface BaseBody {
+  message: string;
+}
+
 export interface BaseResponse {
   status: Status;
-  body: unknown;
+  body: BaseBody;
   httpStatus: number;
 }
 
@@ -16,7 +20,6 @@ interface APIError {
 export interface BadResponse extends BaseResponse {
   status: BadStatus;
   body: null;
-  message: string;
   errors: APIError[];
 }
 
@@ -29,7 +32,7 @@ interface Tokens {
   onetime: string;
 }
 
-interface AuthPostFBody {
+interface AuthPostFBody extends BaseBody {
   token: Tokens;
 }
 
@@ -37,10 +40,6 @@ export interface AuthPostResponse extends GoodResponse {
   body: AuthPostFBody;
 }
 
-interface UsersPostFBody {
-  message: string;
-}
+export type UsersPostResponse = GoodResponse;
 
-export interface UsersPostResponse extends GoodResponse {
-  body: UsersPostFBody;
-}
+export type ActivatePutResponse = GoodResponse;

@@ -25,6 +25,8 @@ const webpackConfig = (env: Env): webpack.Configuration => ({
   output: {
     path: path.join(__dirname, "/public"),
     filename: "bundle.js",
+    publicPath:
+      "/" + ((e) => (e == null ? "" : encodeURIComponent(e)))(env.branchName),
   },
   devServer: {
     historyApiFallback: true,
