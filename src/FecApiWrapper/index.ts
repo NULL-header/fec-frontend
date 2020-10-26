@@ -24,6 +24,11 @@ export const isBadResponse = (
   return arg.status !== "SUCCESS";
 };
 
+export const isLogin = () => {
+  console.log(tokenGuard.getMaster());
+  return tokenGuard.getMaster() != null;
+};
+
 const setTokensCache = ({ onetime, master }: Tokens) => {
   tokenGuard.setOntime(onetime);
   if (master == null) return;
