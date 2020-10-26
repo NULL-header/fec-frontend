@@ -4,4 +4,5 @@ export const CONSTVALUES = {
   apiv1: "/api/v1/",
   auth: "auth",
   users: "users",
+  activate: "account_activations",
 } as const;
