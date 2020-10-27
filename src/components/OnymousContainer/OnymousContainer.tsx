@@ -1,7 +1,7 @@
-import React, { useState, useCallback } from "react";
+import React from "react";
 import withStyle from "react-jss";
 
-import { SideBar, DisplayContainer } from "src/components";
+import { SideBar, SwitchContainer, LinkButton } from "src/components";
 import { useVariable } from "src/util/customhook";
 import { styles } from "./style";
 
@@ -9,29 +9,27 @@ interface Props extends BaseComponentProps {
   classes: Record<keyof typeof styles, string>;
 }
 
-const Component: React.FC<Props> = (props) => {
-  const [[currentName], setStates] = useState(["Home"]);
-  const classes = useVariable(props.classes);
+const components = {
+  "/home": () => <div>Home</div>,
+  "/search": () => <div>Search</div>,
+  "/notify": () => <div>Notify</div>,
+  "/mypage": () => <div>MyPage</div>,
+  "/option": () => <div>Option</div>,
+} as Record<string, React.FC<any>>;
 
-  const insertState = useCallback((e: string) => setStates([e]), []);
+const Component: React.FC<Props> = (props) => {
+  const classes = useVariable(props.classes);
 
   return (
     <div className={classes.root}>
       <SideBar className={classes.sidebar}>
-        <button value="Home">Home</button>
-        <button value="Search">Search</button>
-        <button value="Notify">Notify</button>
-        <button value="MyPage">MyPage</button>
-        <button value="Option">Option</button>
+        <LinkButton to="/home">Home</LinkButton>
+        <LinkButton to="/search">Search</LinkButton>
+        <LinkButton to="/notify">Notify</LinkButton>
+        <LinkButton to="/mypage">MyPage</LinkButton>
+        <LinkButton to="/option">Option</LinkButton>
       </SideBar>
-      <div style={{ width: "50%" }}>OnymousContainer</div>
-      <DisplayContainer currentKey={currentName}>
-        <div key="Home">Home</div>
-        <div key="Search">Search</div>
-        <div key="Notify">Notify</div>
-        <div key="MyPage">MyPage</div>
-        <div key="Option">Option</div>
-      </DisplayContainer>
+      <SwitchContainer components={components} />
     </div>
   );
 };
