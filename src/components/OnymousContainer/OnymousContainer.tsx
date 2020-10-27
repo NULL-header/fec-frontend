@@ -1,12 +1,7 @@
-import React, { useState, useCallback } from "react";
+import React from "react";
 import withStyle from "react-jss";
 
-import {
-  SideBar,
-  DisplayContainer,
-  SwitchContainer,
-  LinkButton,
-} from "src/components";
+import { SideBar, SwitchContainer, LinkButton } from "src/components";
 import { useVariable } from "src/util/customhook";
 import { styles } from "./style";
 
