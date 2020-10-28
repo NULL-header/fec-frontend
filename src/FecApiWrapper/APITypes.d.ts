@@ -43,3 +43,5 @@ export interface AuthPostResponse extends GoodResponse {
 export type UsersPostResponse = GoodResponse;
 
 export type ActivatePutResponse = GoodResponse;
+
+export type AuthDeleteResponse = GoodResponse;

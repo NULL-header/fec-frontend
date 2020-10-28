@@ -48,4 +48,10 @@ export class TokenGuard {
     this.setOld();
     return cookies.set(onetimeTokenKey, value);
   }
+
+  deleteTokens() {
+    cookies.remove(masterTokenKey);
+    cookies.remove(onetimeTokenKey);
+    this.setOld();
+  }
 }
