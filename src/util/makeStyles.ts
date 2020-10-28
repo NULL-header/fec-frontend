@@ -6,11 +6,7 @@ type MassJss<T> = {
     ? CSSProperties
     : Key extends keyof CSSProperties
     ? CSSProperties[Key]
-    : {
-        [NestKey in keyof T[Key]]: NestKey extends keyof CSSProperties
-          ? CSSProperties[NestKey]
-          : MassJss<T[Key][NestKey]>;
-      };
+    : MassJss<T[Key]>;
 };
 
 export const makeStyles = <T extends Record<string, any>>(styles: MassJss<T>) =>
