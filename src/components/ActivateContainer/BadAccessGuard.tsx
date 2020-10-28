@@ -5,7 +5,7 @@ import { mapAttr } from "src/util";
 
 // eslint-disable-next-line no-unused-vars
 import { Queries } from "./types";
-import { useQueryRecord } from "./useQueryRecord";
+import { useQueryRecord } from "src/customhook";
 
 const areTrueAll = (arg: Record<string, boolean>) =>
   Object.values(arg).findIndex((e) => !e) === -1;

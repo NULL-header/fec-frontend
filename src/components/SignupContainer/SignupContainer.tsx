@@ -2,9 +2,9 @@ import React, { useState, useCallback, useMemo } from "react";
 
 import { FecApiWrapper, isBadResponse } from "src/FecApiWrapper";
 import { useApi } from "src/customhook";
-import { useCurrent, useVariable } from "src/util/customhook";
+import { useCurrent } from "src/util/customhook";
 // eslint-disable-next-line no-unused-vars
-import { BaseComponentProps } from "src/util/types";
+import { AsyncReturnType } from "src/util/types";
 
 // eslint-disable-next-line no-unused-vars
 import { SignupForm, Infos } from "./SignupForm";
@@ -29,12 +29,6 @@ const defaultStates = [
   } as Current,
 ];
 
-type UnPromisify<T> = T extends Promise<infer U> ? U : T;
-
-type AsyncReturnType<T extends (...args: any) => Promise<any>> = UnPromisify<
-  ReturnType<T>
->;
-
 type Responses = AsyncReturnType<typeof FecApiWrapper.prototype.createUser>;
 
 const getKeyFromRes = (res: Responses): warning => {
@@ -51,9 +45,8 @@ const getKeyFromRes = (res: Responses): warning => {
 const Component: React.FC<BaseComponentProps> = (props) => {
   const [states, setStates] = useState(defaultStates);
   const current = useCurrent(states);
-  const isShownLabel = useVariable(current.isShownLabel);
-  const warningKey = useVariable(current.warningKey);
-  const className = useVariable(props.className);
+  const { isShownLabel, warningKey } = current;
+  const { className } = props;
   const api = useMemo(() => new FecApiWrapper(), []);
 
   const insertState = useCallback(

@@ -2,8 +2,8 @@ import React, { useCallback, useMemo, useState, useContext } from "react";
 import { useHistory } from "react-router-dom";
 
 // eslint-disable-next-line no-unused-vars
-import { BaseComponentProps } from "src/util/types";
-import { useVariable, useCurrent } from "src/util/customhook";
+import { AsyncReturnType } from "src/util/types";
+import { useCurrent } from "src/util/customhook";
 import { useApi } from "src/customhook";
 import { FecApiWrapper, isBadResponse } from "src/FecApiWrapper";
 import { LoginStateContext } from "src/components/ContentContainer/context";
@@ -30,12 +30,6 @@ const defaultStates = [
   } as Current,
 ];
 
-type UnPromisify<T> = T extends Promise<infer U> ? U : T;
-
-type AsyncReturnType<T extends (...args: any) => Promise<any>> = UnPromisify<
-  ReturnType<T>
->;
-
 type Responses = AsyncReturnType<typeof FecApiWrapper.prototype.login>;
 
 const getKeyFromRes = (res: Responses): warning => {
@@ -48,9 +42,8 @@ const getKeyFromRes = (res: Responses): warning => {
 const Component: React.FC<BaseComponentProps> = (props) => {
   const [states, setStates] = useState(defaultStates);
   const current = useCurrent(states);
-  const isShownLabel = useVariable(current.isShownLabel);
-  const warningKey = useVariable(current.warningKey);
-  const className = useVariable(props.className);
+  const { warningKey, isShownLabel } = current;
+  const { className } = props;
   const api = useMemo(() => new FecApiWrapper(), []);
   const loginState = useContext(LoginStateContext);
   const history = useHistory();

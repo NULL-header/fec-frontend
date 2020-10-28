@@ -1,7 +1,7 @@
-import React, { useState, useMemo, useContext } from "react";
+import React, { useState, useMemo, useContext, useCallback } from "react";
 import { useHistory } from "react-router-dom";
 
-import { FecApiWrapper, isBadResponse } from "src/FecApiWrapper";
+import { FecApiWrapper } from "src/FecApiWrapper";
 import { useCurrent } from "src/util/customhook";
 import { useApi } from "src/customhook";
 import { LoginStateContext } from "src/components/ContentContainer/context";
@@ -25,12 +25,17 @@ const Component: React.FC<BaseComponentProps> = (props) => {
   const history = useHistory();
   const loginState = useContext(LoginStateContext);
 
-  const insertState = (arg: Current) =>
-    setStates([Object.assign({}, current, arg)]);
+  const insertState = useCallback(
+    (arg: Current) => setStates([Object.assign({}, current, arg)]),
+    [current]
+  );
 
-  const setIsFired = (arg: boolean) => insertState({ isFired: arg } as Current);
+  const setIsFired = useCallback(
+    (arg: boolean) => insertState({ isFired: arg } as Current),
+    [insertState]
+  );
 
-  const onClick = () => setIsFired(true);
+  const onClick = useCallback(() => setIsFired(true), [setIsFired]);
 
   useApi(
     async (isMounted, didMounted) => {

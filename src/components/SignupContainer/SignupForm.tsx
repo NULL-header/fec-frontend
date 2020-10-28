@@ -5,7 +5,7 @@ import { BaseForm, FormInput, FormLabel } from "src/util/components/form";
 import { TextReader } from "src/util/components";
 // eslint-disable-next-line no-unused-vars
 import { ValidatedResult } from "src/util/components/types";
-import { useCurrent, useVariable } from "src/util/customhook";
+import { useCurrent } from "src/util/customhook";
 import {
   EmailValidate,
   NameValidate,
@@ -48,9 +48,7 @@ const Component: React.FC<Props> = (props) => {
     [current.isEqualPassword]
   );
   const labels = useMemo(() => getErrorLabels(current.errors), [current]);
-  const isShown = useVariable(props.isShownLabel);
-  const warningKey = useVariable(props.warningKey);
-  const className = useVariable(props.className);
+  const { isShownLabel, warningKey, className } = props;
   const passwordRef = useRef<() => string>(undefined as any);
 
   const insertErrors = useCallback(
@@ -81,7 +79,7 @@ const Component: React.FC<Props> = (props) => {
   return (
     <BaseForm {...{ setValues, setErrors: insertErrors, className }}>
       <FormLabel>
-        <WarningState {...{ isShown, warningKey }} />
+        <WarningState {...{ isShown: isShownLabel, warningKey }} />
       </FormLabel>
       <FormInput propertyName="email" validate={EmailValidate.validate}>
         <TextField error={labels.email} type="email" forwardLabel="email" />
