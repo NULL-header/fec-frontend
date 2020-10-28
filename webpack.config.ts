@@ -31,6 +31,7 @@ const webpackConfig = (env: Env): webpack.Configuration => ({
   devServer: {
     historyApiFallback: true,
   },
+  devtool: "#inline-source-map",
   module: {
     rules: [
       {
@@ -54,6 +55,11 @@ const webpackConfig = (env: Env): webpack.Configuration => ({
             options: { url: false },
           },
         ],
+      },
+      {
+        test: /\.js$/,
+        enforce: "pre",
+        loader: "source-map-loader",
       },
     ],
   },
