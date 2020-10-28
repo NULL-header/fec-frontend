@@ -1,7 +1,12 @@
 import React from "react";
 import withStyle from "react-jss";
 
-import { SideBar, SwitchContainer, LinkButton } from "src/components";
+import {
+  SideBar,
+  SwitchContainer,
+  LinkButton,
+  OptionContainer,
+} from "src/components";
 import { useVariable } from "src/util/customhook";
 import { styles } from "./style";
 
@@ -14,7 +19,7 @@ const components = {
   "/search": () => <div>Search</div>,
   "/notify": () => <div>Notify</div>,
   "/mypage": () => <div>MyPage</div>,
-  "/option": () => <div>Option</div>,
+  "/option": OptionContainer,
 } as Record<string, React.FC<any>>;
 
 const Component: React.FC<Props> = (props) => {
