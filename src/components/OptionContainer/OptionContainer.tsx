@@ -4,6 +4,7 @@ import { useRouteMatch } from "react-router-dom";
 
 import { SwitchContainer } from "src/components";
 
+import { Account } from "./Account";
 import { Topics } from "./Topics";
 import { styles } from "./style";
 
@@ -12,7 +13,7 @@ interface Props extends BaseComponentProps {
 }
 
 const components = {
-  "/account": () => <div>account</div>,
+  "/account": Account,
   "/": Topics,
 } as Record<string, React.FC<any>>;
 
