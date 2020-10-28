@@ -1,8 +1,10 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useContext } from "react";
+import { useHistory } from "react-router-dom";
 
 import { FecApiWrapper, isBadResponse } from "src/FecApiWrapper";
 import { useCurrent } from "src/util/customhook";
 import { useApi } from "src/customhook";
+import { LoginStateContext } from "src/components/ContentContainer/context";
 
 interface Current {
   isFired: boolean;
@@ -20,6 +22,8 @@ const Component: React.FC<BaseComponentProps> = (props) => {
   const [states, setStates] = useState(defaultState);
   const current = useCurrent(states);
   const api = useMemo(() => new FecApiWrapper(), []);
+  const history = useHistory();
+  const loginState = useContext(LoginStateContext);
 
   const insertState = (arg: Current) =>
     setStates([Object.assign({}, current, arg)]);
@@ -34,7 +38,11 @@ const Component: React.FC<BaseComponentProps> = (props) => {
       const res = await api.logout();
       console.log(res);
       const next = { isFired: false } as Current;
-      if (res != null) next.wasLogout = true;
+      if (res != null) {
+        next.wasLogout = true;
+        history.push("/home");
+        loginState.setIsLogin(false);
+      }
       insertState(next);
     },
     api,
