@@ -18,3 +18,9 @@ export interface HadChildComponentProps<T = BaseComponentProps>
 interface RefComponentProps<T = unknown> extends BaseComponentProps {
   ref: Ref<T>;
 }
+
+type UnPromisify<T> = T extends Promise<infer U> ? U : T;
+
+export type AsyncReturnType<
+  T extends (...args: any) => Promise<any>
+> = UnPromisify<ReturnType<T>>;
