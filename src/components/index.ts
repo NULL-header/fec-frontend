@@ -1,6 +1,11 @@
 export * from "./AppContainer";
+
+export * from "./LinkTabs";
+
 // order for circular dependensices
 export * from "./ActivateContainer";
+export * from "./OptionContainer";
+
 export * from "./SignupContainer";
 export * from "./DisplayContainer";
 export * from "./LoginContainer";

@@ -4,15 +4,19 @@ import { Switch, Route, RouteComponentProps } from "react-router-dom";
 
 interface Props extends BaseComponentProps {
   components: Record<string, BaseComponent & React.FC<RouteComponentProps>>;
+  base?: string;
 }
 
 const Component: React.FC<Props> = (props) => {
+  const baseUrl = useMemo(() => (props.base == null ? "" : props.base), [
+    props.base,
+  ]);
   const components = useMemo(
     () =>
       Object.keys(props.components).map((e) => (
-        <Route key={e} path={e} component={props.components[e]} />
+        <Route key={e} path={baseUrl + e} component={props.components[e]} />
       )),
-    [props.components]
+    [props.components, baseUrl]
   );
   return (
     <Switch>
