@@ -1,10 +1,12 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useMemo, useState, useContext } from "react";
+import { useHistory } from "react-router-dom";
 
 // eslint-disable-next-line no-unused-vars
 import { BaseComponentProps } from "src/util/types";
 import { useVariable, useCurrent } from "src/util/customhook";
 import { useApi } from "src/customhook";
 import { FecApiWrapper, isBadResponse } from "src/FecApiWrapper";
+import { LoginStateContext } from "src/components/ContentContainer/context";
 
 // eslint-disable-next-line no-unused-vars
 import { Infos, LoginForm } from "./LoginForm";
@@ -50,6 +52,8 @@ const Component: React.FC<BaseComponentProps> = (props) => {
   const warningKey = useVariable(current.warningKey);
   const className = useVariable(props.className);
   const api = useMemo(() => new FecApiWrapper(), []);
+  const loginState = useContext(LoginStateContext);
+  const history = useHistory();
 
   const insertState = useCallback(
     (arg: Current) => setStates([Object.assign({}, current, arg)]),
@@ -76,7 +80,11 @@ const Component: React.FC<BaseComponentProps> = (props) => {
         isShownLabel: true,
         warningKey: getKeyFromRes(res),
       } as Current;
-      if (isMounted()) insertState(next);
+      if (isMounted()) {
+        insertState(next);
+        loginState.setIsLogin(true);
+        history.push("/home");
+      }
     },
     api,
     [current.infos]

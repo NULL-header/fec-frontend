@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState, useCallback } from "react";
 
 import {
   AnonymousContainer,
@@ -6,14 +6,40 @@ import {
   ToggleDisplayContainer,
 } from "src/components";
 import { isLogin } from "src/FecApiWrapper";
+import { useCurrent } from "src/util/customhook";
+
+import { LoginStateContext } from "./context";
+
+interface Current {
+  isLogin: boolean;
+}
 
 const Component: React.FC<BaseComponentProps> = (props) => {
-  const wasLogin = useMemo(() => isLogin(), []);
+  const [states, setStates] = useState([{ isLogin: isLogin() } as Current]);
+  const current = useCurrent(states);
+
+  const insertState = useCallback(
+    (arg: Current) => setStates([Object.assign({}, current, arg)]),
+    [current]
+  );
+
+  const setIsLogin = useCallback(
+    (arg: boolean) => insertState({ isLogin: arg } as Current),
+    [insertState]
+  );
+
+  const loginState = useMemo(() => ({ isLogin: current.isLogin, setIsLogin }), [
+    current.isLogin,
+    setIsLogin,
+  ]);
+
   return (
-    <ToggleDisplayContainer isShownFirstChild={wasLogin}>
-      <OnymousContainer />
-      <AnonymousContainer />
-    </ToggleDisplayContainer>
+    <LoginStateContext.Provider value={loginState}>
+      <ToggleDisplayContainer isShownFirstChild={current.isLogin}>
+        <OnymousContainer />
+        <AnonymousContainer />
+      </ToggleDisplayContainer>
+    </LoginStateContext.Provider>
   );
 };
 
