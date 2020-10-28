@@ -1,7 +1,6 @@
 import React, { memo } from "react";
 
 import { WarningLabel, DisplayContainer } from "src/components";
-import { useVariable } from "src/util/customhook";
 
 export type warning = "noCommunicate" | "missAuth" | "unknown";
 
@@ -12,13 +11,11 @@ interface Props {
 }
 
 const Component: React.FC<Props> = (props) => {
-  const isShown = useVariable(props.isShown);
-  const currentKey = useVariable(props.warningKey);
-  const className = useVariable(props.className);
+  const { isShown, warningKey, className } = props;
 
   return (
     <WarningLabel {...{ isShown, className }}>
-      <DisplayContainer {...{ currentKey }}>
+      <DisplayContainer currentKey={warningKey}>
         <div key="noCommunicate">サーバーとの通信が失敗しました。</div>
         <div key="missAuth">
           認証に失敗しました。入力された情報が間違っています。

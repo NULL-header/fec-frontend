@@ -1,7 +1,6 @@
 import React from "react";
 
 import { WarningLabel, DisplayContainer } from "src/components";
-import { useVariable } from "src/util/customhook";
 
 export type warning =
   | "noCommunicate"
@@ -15,9 +14,7 @@ interface Props extends BaseComponentProps {
 }
 
 const Component: React.FC<Props> = (props) => {
-  const className = useVariable(props.className);
-  const isShown = useVariable(props.isShown);
-  const warningKey = useVariable(props.warningKey);
+  const { isShown, warningKey, className } = props;
 
   return (
     <WarningLabel {...{ isShown, className }}>

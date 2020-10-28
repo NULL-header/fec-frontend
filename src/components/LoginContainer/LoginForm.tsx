@@ -14,7 +14,7 @@ import {
 
 // eslint-disable-next-line no-unused-vars
 import { warning, WarningState } from "./WarningState";
-import { useCurrent, useVariable } from "src/util/customhook";
+import { useCurrent } from "src/util/customhook";
 
 export interface Infos {
   email: string;
@@ -38,10 +38,7 @@ const Component: React.FC<Props> = (props) => {
   const [errors, setErrors] = useState(defaultErrors);
   const current = useCurrent(errors);
   const labels = useMemo(() => getErrorLabels(current), [current]);
-  const isShown = useVariable(props.isShownLabel);
-  const warningKey = useVariable(props.warningKey);
-  const setValues = useVariable(props.setValues);
-  const className = useVariable(props.className);
+  const { isShownLabel, setValues, className, warningKey } = props;
 
   const insertErrors = useCallback(
     (arg: Record<string, ValidatedResult>) =>
@@ -52,7 +49,7 @@ const Component: React.FC<Props> = (props) => {
   return (
     <BaseForm {...{ setValues, className, setErrors: insertErrors }}>
       <FormLabel>
-        <WarningState {...{ isShown, warningKey }} />
+        <WarningState {...{ isShown: isShownLabel, warningKey }} />
       </FormLabel>
       <FormInput propertyName="email" validate={EmailValidate.validate}>
         <TextField error={labels.email} type="email" forwardLabel="email" />

@@ -5,7 +5,7 @@ import { ToggleDisplayContainer, LinkButton } from "src/components";
 import { WarningState } from "./WarningState";
 // eslint-disable-next-line no-unused-vars
 import { Queries, Warning } from "./types";
-import { useQueryRecord } from "./useQueryRecord";
+import { useQueryRecord } from "src/customhook";
 
 interface Props extends BaseComponentProps {
   onClick: (
