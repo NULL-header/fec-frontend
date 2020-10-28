@@ -13,6 +13,8 @@ import {
   Tokens,
   // eslint-disable-next-line no-unused-vars
   ActivatePutResponse,
+  // eslint-disable-next-line no-unused-vars
+  AuthDeleteResponse,
 } from "./APITypes";
 
 const apiUrl = CONSTVALUES.baseUrl + CONSTVALUES.apiv1;
@@ -72,6 +74,15 @@ export class FecApiWrapper {
     if (res != null && !isBadResponse(res)) {
       setTokensCache(res.body.token);
     }
+    return res;
+  }
+
+  async logout() {
+    const values = { token: tokenGuard.getOnetime() };
+    const res = await this.fetch<AuthDeleteResponse>(CONSTVALUES.auth, values, {
+      method: "DELETE",
+    }).catch((e) => undefined);
+    if (res != null) tokenGuard.deleteTokens();
     return res;
   }
 
