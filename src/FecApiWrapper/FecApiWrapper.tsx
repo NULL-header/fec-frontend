@@ -15,6 +15,8 @@ import {
   ActivatePutResponse,
   // eslint-disable-next-line no-unused-vars
   AuthDeleteResponse,
+  // eslint-disable-next-line no-unused-vars
+  AuthGetResponse,
 } from "./APITypes";
 
 const apiUrl = CONSTVALUES.baseUrl + CONSTVALUES.apiv1;
@@ -110,6 +112,16 @@ export class FecApiWrapper {
       CONSTVALUES.activate,
       { value: argObj },
       { method: "PUT" }
+    ).catch((e) => undefined);
+    return res;
+  }
+
+  async getMyPage() {
+    const onetime = tokenGuard.getOnetime();
+    const res = await this.fetch<AuthGetResponse>(
+      CONSTVALUES.auth,
+      { token: onetime },
+      { method: "GET" }
     ).catch((e) => undefined);
     return res;
   }

@@ -45,3 +45,18 @@ export type UsersPostResponse = GoodResponse;
 export type ActivatePutResponse = GoodResponse;
 
 export type AuthDeleteResponse = GoodResponse;
+
+interface AuthGetBody extends BaseBody {
+  name: string;
+  nickname: string;
+  explanation: string;
+  icon: string;
+  // eslint-disable-next-line camelcase
+  is_admin: boolean;
+  // eslint-disable-next-line camelcase
+  is_mypage: boolean;
+}
+
+export interface AuthGetResponse extends GoodResponse {
+  body: AuthGetBody;
+}

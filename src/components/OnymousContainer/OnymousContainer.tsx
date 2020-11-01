@@ -6,6 +6,7 @@ import {
   SwitchContainer,
   LinkButton,
   OptionContainer,
+  MyPageContainer,
 } from "src/components";
 import { useVariable } from "src/util/customhook";
 import { styles } from "./style";
@@ -18,7 +19,7 @@ const components = {
   "/home": () => <div>Home</div>,
   "/search": () => <div>Search</div>,
   "/notify": () => <div>Notify</div>,
-  "/mypage": () => <div>MyPage</div>,
+  "/mypage": MyPageContainer,
   "/option": OptionContainer,
 } as Record<string, React.FC<any>>;
 
