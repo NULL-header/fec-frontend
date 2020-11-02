@@ -2,7 +2,7 @@
 
 import React, { useState, useMemo, useCallback } from "react";
 
-import { TextField, ToggleEyeIcon } from "src/components";
+import { TextField, ToggleEye } from "src/components";
 import { useCurrent } from "src/util/customhook";
 
 type PropsAll = Omit<
@@ -27,7 +27,7 @@ const Component = React.forwardRef<HTMLInputElement, Props>((props, ref) => {
     <TextField
       {...{
         ...props,
-        backLabel: <ToggleEyeIcon {...{ isShown, onClick }} />,
+        backLabel: <ToggleEye {...{ isShown, onClick }} />,
         type: textType,
         ref,
       }}
