@@ -61,6 +61,10 @@ const webpackConfig = (env: Env): webpack.Configuration => ({
         enforce: "pre",
         loader: "source-map-loader",
       },
+      {
+        test: /\.svg$/,
+        loader: "@svgr/webpack",
+      },
     ],
   },
   plugins: [
