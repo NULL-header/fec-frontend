@@ -1,2 +1,10 @@
-export { default as EyeIcon } from "src/../icons/visibility-black-18dp.svg";
-export { default as ClosedEyeIcon } from "src/../icons/visibility_off-black-18dp.svg";
+export { default as Eye } from "src/../icons/visibility-black-18dp.svg";
+export { default as ClosedEye } from "src/../icons/visibility_off-black-18dp.svg";
+export { default as Notify } from "src/../icons/notifications_none-black-18dp.svg";
+export { default as NotifyUpdated } from "src/../icons/add_alert-black-18dp.svg";
+export { default as Login } from "src/../icons/login-black-18dp.svg";
+export { default as SignUp } from "src/../icons/assignment_ind-black-18dp.svg";
+export { default as MyPage } from "src/../icons/person-black-18dp.svg";
+export { default as Search } from "src/../icons/search-black-18dp.svg";
+export { default as Setting } from "src/../icons/settings-black-18dp.svg";
+export { default as Home } from "src/../icons/home-black-18dp.svg";
