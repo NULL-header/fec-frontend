@@ -1,11 +1,5 @@
-import { makeStyles } from "@material-ui/core";
+import { makeStyles } from "src/util";
 
-interface Props {
-  isShown: boolean;
-}
-
-export const useStyles = makeStyles((theme) => ({
-  root: {
-    visibility: (props: Props) => (props.isShown ? "initial" : "hidden"),
-  },
-}));
+export const styles = makeStyles({
+  root: { visibility: "initial", "&-hidden": { visibility: "hidden" } },
+});

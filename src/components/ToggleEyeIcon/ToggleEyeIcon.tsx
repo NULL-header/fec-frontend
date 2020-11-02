@@ -1,7 +1,5 @@
 import React, { memo } from "react";
-import Eye from "@material-ui/icons/Visibility";
-import OffEye from "@material-ui/icons/VisibilityOff";
-import { IconButton } from "@material-ui/core";
+import { EyeIcon, ClosedEyeIcon } from "src/components/icons";
 
 import { ToggleDisplayContainer } from "src/components";
 
@@ -12,12 +10,12 @@ interface ToggleEyeIconProps extends BaseComponentProps {
 
 const NotYetToggleEyeIcon: React.FC<ToggleEyeIconProps> = (props) => {
   return (
-    <IconButton className={props.className} onClick={props.onClick}>
+    <div className={props.className} onClick={props.onClick}>
       <ToggleDisplayContainer isShownFirstChild={props.isShown}>
-        <Eye />
-        <OffEye />
+        <EyeIcon />
+        <ClosedEyeIcon />
       </ToggleDisplayContainer>
-    </IconButton>
+    </div>
   );
 };
 
