@@ -26,3 +26,11 @@ type GetRaisedData = () => RaisedData;
 type SetGetMethod = (f: GetRaisedData) => void;
 
 type RaisedRecord = Record<string, GetRaisedData>;
+
+declare module "*.svg" {
+  // eslint-disable-next-line no-unused-vars
+  const React = import("react");
+  type SvgrComponent = React.FC<React.SVGAttributes<SVGElement>>;
+  const value: SvgrComponent;
+  export default value;
+}
