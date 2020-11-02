@@ -20,8 +20,6 @@
     "test": "jest"
   },
   "devDependencies": {
-    "@material-ui/core": "^4.11.0",
-    "@material-ui/icons": "^4.9.1",
     "@null-header/react-test-util": "ssh://git@github.com:NULL-header/react-test-util.git#0.2.0",
     "@svgr/webpack": "^5.4.0",
     "@testing-library/dom": "^7.23.0",
