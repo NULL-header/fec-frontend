@@ -9,6 +9,7 @@ import {
   SwitchContainer,
   ActivateContainer,
 } from "src/components";
+import { Home, Search, Login, SignUp } from "src/components/icons";
 import { styles } from "./style";
 
 interface Props extends BaseComponentProps {
@@ -27,10 +28,18 @@ const Component: React.FC<Props> = (props) => {
   return (
     <div className={props.classes.root}>
       <SideBar className={props.classes.sidebar}>
-        <LinkButton to="/home">Home</LinkButton>
-        <LinkButton to="/search">Search</LinkButton>
-        <LinkButton to="/login">Log in</LinkButton>
-        <LinkButton to="/signup">Sign up</LinkButton>
+        <LinkButton to="/home">
+          <Home />
+        </LinkButton>
+        <LinkButton to="/search">
+          <Search />
+        </LinkButton>
+        <LinkButton to="/login">
+          <Login />
+        </LinkButton>
+        <LinkButton to="/signup">
+          <SignUp />
+        </LinkButton>
       </SideBar>
       <SwitchContainer components={components} />
     </div>
