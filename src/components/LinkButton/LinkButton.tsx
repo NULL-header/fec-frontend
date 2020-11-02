@@ -14,7 +14,7 @@ const Component: React.FC<Props> = (props) => {
   ]);
   return (
     <Link to={url}>
-      <button>{props.children}</button>
+      <div>{props.children}</div>
     </Link>
   );
 };
