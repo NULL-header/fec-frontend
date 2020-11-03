@@ -7,6 +7,7 @@ import {
   LinkButton,
   OptionContainer,
 } from "src/components";
+import { Home, Search, Notify, MyPage, Setting } from "src/components/icons";
 import { useVariable } from "src/util/customhook";
 import { styles } from "./style";
 
@@ -28,11 +29,21 @@ const Component: React.FC<Props> = (props) => {
   return (
     <div className={classes.root}>
       <SideBar className={classes.sidebar}>
-        <LinkButton to="/home">Home</LinkButton>
-        <LinkButton to="/search">Search</LinkButton>
-        <LinkButton to="/notify">Notify</LinkButton>
-        <LinkButton to="/mypage">MyPage</LinkButton>
-        <LinkButton to="/option">Option</LinkButton>
+        <LinkButton to="/home">
+          <Home />
+        </LinkButton>
+        <LinkButton to="/search">
+          <Search />
+        </LinkButton>
+        <LinkButton to="/notify">
+          <Notify />
+        </LinkButton>
+        <LinkButton to="/mypage">
+          <MyPage />
+        </LinkButton>
+        <LinkButton to="/option">
+          <Setting />
+        </LinkButton>
       </SideBar>
       <SwitchContainer components={components} />
     </div>

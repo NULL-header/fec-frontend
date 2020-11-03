@@ -1,25 +1,25 @@
 import React, { memo } from "react";
-import { EyeIcon, ClosedEyeIcon } from "src/components/icons";
+import { Eye, ClosedEye } from "src/components/icons";
 
 import { ToggleDisplayContainer } from "src/components";
 
-interface ToggleEyeIconProps extends BaseComponentProps {
+interface ToggleEyeProps extends BaseComponentProps {
   isShown: boolean;
   onClick: () => void;
 }
 
-const NotYetToggleEyeIcon: React.FC<ToggleEyeIconProps> = (props) => {
+const NotYetToggleEye: React.FC<ToggleEyeProps> = (props) => {
   return (
     <div className={props.className} onClick={props.onClick}>
       <ToggleDisplayContainer isShownFirstChild={props.isShown}>
-        <EyeIcon />
-        <ClosedEyeIcon />
+        <Eye />
+        <ClosedEye />
       </ToggleDisplayContainer>
     </div>
   );
 };
 
-const ToggleEyeIcon = memo(NotYetToggleEyeIcon);
-ToggleEyeIcon.displayName = "ToggleEyeIcon";
+const ToggleEye = memo(NotYetToggleEye);
+ToggleEye.displayName = "ToggleEye";
 
-export { ToggleEyeIcon };
+export { ToggleEye };
