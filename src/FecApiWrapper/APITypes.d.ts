@@ -5,7 +5,7 @@ interface BaseBody {
   message: string;
 }
 
-export interface BaseResponse {
+interface BaseResponse {
   status: Status;
   body: BaseBody;
   httpStatus: number;
@@ -17,13 +17,13 @@ interface APIError {
   code: null;
 }
 
-export interface BadResponse extends BaseResponse {
+interface BadResponse extends BaseResponse {
   status: BadStatus;
   body: null;
   errors: APIError[];
 }
 
-export interface GoodResponse extends BaseResponse {
+interface GoodResponse extends BaseResponse {
   status: "SUCCESS";
 }
 
@@ -36,12 +36,12 @@ interface AuthPostFBody extends BaseBody {
   token: Tokens;
 }
 
-export interface AuthPostResponse extends GoodResponse {
+interface AuthPostResponse extends GoodResponse {
   body: AuthPostFBody;
 }
 
-export type UsersPostResponse = GoodResponse;
+type UsersPostResponse = GoodResponse;
 
-export type ActivatePutResponse = GoodResponse;
+type ActivatePutResponse = GoodResponse;
 
-export type AuthDeleteResponse = GoodResponse;
+type AuthDeleteResponse = GoodResponse;

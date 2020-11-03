@@ -1,21 +1,5 @@
 import { TokenGuard } from "./TokenGuard";
 import { CONSTVALUES } from "src/config";
-import {
-  // eslint-disable-next-line no-unused-vars
-  AuthPostResponse,
-  // eslint-disable-next-line no-unused-vars
-  BadResponse,
-  // eslint-disable-next-line no-unused-vars
-  GoodResponse,
-  // eslint-disable-next-line no-unused-vars
-  UsersPostResponse,
-  // eslint-disable-next-line no-unused-vars
-  Tokens,
-  // eslint-disable-next-line no-unused-vars
-  ActivatePutResponse,
-  // eslint-disable-next-line no-unused-vars
-  AuthDeleteResponse,
-} from "./APITypes";
 
 const apiUrl = CONSTVALUES.baseUrl + CONSTVALUES.apiv1;
 const tokenGuard = new TokenGuard();
