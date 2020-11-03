@@ -1,21 +1,5 @@
 import { TokenGuard } from "./TokenGuard";
 import { CONSTVALUES } from "src/config";
-import {
-  // eslint-disable-next-line no-unused-vars
-  AuthPostResponse,
-  // eslint-disable-next-line no-unused-vars
-  BadResponse,
-  // eslint-disable-next-line no-unused-vars
-  GoodResponse,
-  // eslint-disable-next-line no-unused-vars
-  UsersPostResponse,
-  // eslint-disable-next-line no-unused-vars
-  Tokens,
-  // eslint-disable-next-line no-unused-vars
-  ActivatePutResponse,
-  // eslint-disable-next-line no-unused-vars
-  AuthDeleteResponse,
-} from "./APITypes";
 
 const apiUrl = CONSTVALUES.baseUrl + CONSTVALUES.apiv1;
 const tokenGuard = new TokenGuard();
@@ -30,6 +14,17 @@ export const isLogin = () => {
   console.log(tokenGuard.getMaster());
   return tokenGuard.getMaster() != null;
 };
+
+export const isGoodResponse = (
+  arg: GoodResponse | BadResponse | undefined
+): arg is GoodResponse => arg != null && !isBadResponse(arg);
+
+export const isOldTokenResponse = (arg: ApiResponse) =>
+  arg != null &&
+  isBadResponse(arg) &&
+  arg.errors.findIndex((e) =>
+    e.messages.includes("onetime token is too old")
+  ) != -1;
 
 const setTokensCache = ({ onetime, master }: Tokens) => {
   tokenGuard.setOntime(onetime);
