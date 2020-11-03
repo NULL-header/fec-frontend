@@ -17,12 +17,14 @@ export const isLogin = () => {
 
 export const isGoodResponse = (
   arg: GoodResponse | BadResponse | undefined
-): arg is GoodResponse => arg != null && isBadResponse(arg);
+): arg is GoodResponse => arg != null && !isBadResponse(arg);
 
 export const isOldTokenResponse = (arg: ApiResponse) =>
   arg != null &&
   isBadResponse(arg) &&
-  arg.errors.findIndex((e) => e.messages.includes("onetime token is too old"));
+  arg.errors.findIndex((e) =>
+    e.messages.includes("onetime token is too old")
+  ) != -1;
 
 const setTokensCache = ({ onetime, master }: Tokens) => {
   tokenGuard.setOntime(onetime);
