@@ -70,11 +70,12 @@ const Component: React.FC<BaseComponentProps> = (props) => {
       console.log(current.infos);
       const res = await api.createUser(current.infos);
       console.log({ res });
+      if (!isMounted()) return;
       const next = {
         isShownLabel: true,
         warningKey: getKeyFromRes(res),
       } as Current;
-      if (isMounted()) insertState(next);
+      insertState(next);
     },
     api,
     [current.infos]

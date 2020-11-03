@@ -5,7 +5,11 @@ import { useHistory } from "react-router-dom";
 import { AsyncReturnType } from "src/util/types";
 import { useCurrent } from "src/util/customhook";
 import { useApi } from "src/customhook";
-import { FecApiWrapper, isBadResponse } from "src/FecApiWrapper";
+import {
+  FecApiWrapper,
+  isGoodResponse,
+  isBadResponse,
+} from "src/FecApiWrapper";
 import { LoginStateContext } from "src/components/ContentContainer/context";
 
 // eslint-disable-next-line no-unused-vars
@@ -30,9 +34,9 @@ const defaultStates = [
   } as Current,
 ];
 
-type Responses = AsyncReturnType<typeof FecApiWrapper.prototype.login>;
+type Response = AsyncReturnType<typeof FecApiWrapper.prototype.login>;
 
-const getKeyFromRes = (res: Responses): warning => {
+const getKeyFromRes = (res: Response): warning => {
   let key: warning = "unknown";
   if (res == null) key = "noCommunicate";
   else if (isBadResponse(res)) key = "missAuth";
@@ -70,16 +74,16 @@ const Component: React.FC<BaseComponentProps> = (props) => {
       const res = await api.login(current.infos);
       console.log(res);
       if (!isMounted()) return;
-      if (res != null && isBadResponse(res)) {
+      if (isGoodResponse(res)) {
         loginState.setIsLogin(true);
         history.push("/home");
-      } else {
-        const next = {
-          isShownLabel: true,
-          warningKey: getKeyFromRes(res),
-        } as Current;
-        insertState(next);
+        return;
       }
+      const next = {
+        isShownLabel: true,
+        warningKey: getKeyFromRes(res),
+      } as Current;
+      insertState(next);
     },
     api,
     [current.infos]

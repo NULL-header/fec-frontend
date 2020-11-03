@@ -15,6 +15,15 @@ export const isLogin = () => {
   return tokenGuard.getMaster() != null;
 };
 
+export const isGoodResponse = (
+  arg: GoodResponse | BadResponse | undefined
+): arg is GoodResponse => arg != null && isBadResponse(arg);
+
+export const isOldTokenResponse = (arg: ApiResponse) =>
+  arg != null &&
+  isBadResponse(arg) &&
+  arg.errors.findIndex((e) => e.messages.includes("onetime token is too old"));
+
 const setTokensCache = ({ onetime, master }: Tokens) => {
   tokenGuard.setOntime(onetime);
   if (master == null) return;

@@ -1,5 +1,6 @@
 type Status = "SUCCESS" | "FAILED" | "OLD_TOKEN" | "ERROR";
 type BadStatus = "FAILED" | "OLD_TOKEN" | "ERROR";
+type ApiResponse = GoodResponse | BadResponse | undefined;
 
 interface BaseBody {
   message: string;
