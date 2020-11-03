@@ -69,14 +69,16 @@ const Component: React.FC<BaseComponentProps> = (props) => {
       insertState({ isShownLabel: false } as Current);
       const res = await api.login(current.infos);
       console.log(res);
-      const next = {
-        isShownLabel: true,
-        warningKey: getKeyFromRes(res),
-      } as Current;
-      if (isMounted()) {
-        insertState(next);
+      if (!isMounted()) return;
+      if (res != null && isBadResponse(res)) {
         loginState.setIsLogin(true);
         history.push("/home");
+      } else {
+        const next = {
+          isShownLabel: true,
+          warningKey: getKeyFromRes(res),
+        } as Current;
+        insertState(next);
       }
     },
     api,
