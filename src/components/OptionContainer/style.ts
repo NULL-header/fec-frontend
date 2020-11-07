@@ -1,6 +1,6 @@
-import { makeStyles } from "src/util";
+import { makeStyles } from "src/theme";
 
-export const styles = makeStyles({
+export const usestyles = makeStyles()({
   root: {
     "&>a": {},
   },

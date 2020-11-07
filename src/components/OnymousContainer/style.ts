@@ -1,11 +1,16 @@
-import { makeStyles } from "src/util";
+import { makeStyles } from "src/theme";
 
-export const styles = makeStyles({
+export const useStyles = makeStyles()((theme) => ({
   root: {
     display: "flex",
-  },
-  sidebar: {
     height: "100vh",
+  },
+  sidebar: {},
+  main: {
+    flexGrow: 1,
+  },
+  info: {
+    backgroundColor: theme.light.color.backGround,
     width: "100px",
   },
-});
+}));

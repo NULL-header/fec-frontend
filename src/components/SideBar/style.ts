@@ -1,16 +1,14 @@
-import { makeStyles } from "src/util";
+import { makeStyles } from "src/theme";
 
-export const styles = makeStyles({
+export const useStyles = makeStyles()((theme) => ({
   root: {
-    backgroundColor: "darkgreen",
+    backgroundColor: theme.light.color.primary,
     display: "flex",
     flexDirection: "column",
+    alignItems: "flex-end",
+    fontSize: "0",
     "&>a": {
-      margin: "30% 10%",
-
-      "&>button": {
-        width: "100%",
-      },
+      padding: "10px 5px",
     },
   },
-});
+}));

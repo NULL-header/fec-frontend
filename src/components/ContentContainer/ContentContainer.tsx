@@ -9,6 +9,7 @@ import { isLogin } from "src/FecApiWrapper";
 import { useCurrent } from "src/util/customhook";
 
 import { LoginStateContext } from "./context";
+import { useStyles } from "./style";
 
 interface Current {
   isLogin: boolean;
@@ -17,6 +18,7 @@ interface Current {
 const Component: React.FC<BaseComponentProps> = (props) => {
   const [states, setStates] = useState([{ isLogin: isLogin() } as Current]);
   const current = useCurrent(states);
+  const classes = useStyles();
 
   const insertState = useCallback(
     (arg: Current) => setStates([Object.assign({}, current, arg)]),

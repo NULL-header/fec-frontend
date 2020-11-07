@@ -1,21 +1,18 @@
 import React from "react";
-import withStyles from "react-jss";
-import { styles } from "./style";
+import { useStyles } from "./style";
 
 interface Props extends BaseComponentProps {
-  classes: Record<keyof typeof styles, string>;
   children: React.ReactElement[];
 }
 
 const Component: React.FC<Props> = (props) => {
+  const classes = useStyles();
   return (
-    <div className={props.classes.root + " " + props.className}>
-      {props.children}
-    </div>
+    <div className={classes.root + " " + props.className}>{props.children}</div>
   );
 };
 
-const SideBar = React.memo(withStyles(styles as any)(Component));
+const SideBar = React.memo(Component);
 SideBar.displayName = "SideBar";
 
 export { SideBar };

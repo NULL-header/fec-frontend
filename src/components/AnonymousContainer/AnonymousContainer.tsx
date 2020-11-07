@@ -1,5 +1,4 @@
 import React from "react";
-import withStyle from "react-jss";
 
 import {
   SideBar,
@@ -9,12 +8,9 @@ import {
   SwitchContainer,
   ActivateContainer,
 } from "src/components";
+import { useClassName } from "src/util/customhook";
 import { Home, Search, Login, SignUp } from "src/components/icons";
-import { styles } from "./style";
-
-interface Props extends BaseComponentProps {
-  classes: Record<keyof typeof styles, string>;
-}
+import { useStyles } from "./style";
 
 const components = {
   "/home": () => <div>Home</div>,
@@ -24,10 +20,21 @@ const components = {
   "/account/activate/": ActivateContainer,
 } as Record<string, React.FC<any>>;
 
+type Classes = Record<"root" | "sidebar" | "main" | "info", string>;
+
+interface Props {
+  classes?: Classes;
+}
+
 const Component: React.FC<Props> = (props) => {
+  const classes = useStyles();
+  const classRoot = useClassName(classes.root, props.classes?.root);
+  const classSidebar = useClassName(classes.sidebar, props.classes?.sidebar);
+  const classMain = useClassName(classes.main, props.classes?.sidebar);
+  const classInfo = useClassName(classes.info, props.classes?.info);
   return (
-    <div className={props.classes.root}>
-      <SideBar className={props.classes.sidebar}>
+    <div className={classRoot}>
+      <SideBar className={classSidebar}>
         <LinkButton to="/home">
           <Home />
         </LinkButton>
@@ -41,12 +48,15 @@ const Component: React.FC<Props> = (props) => {
           <SignUp />
         </LinkButton>
       </SideBar>
-      <SwitchContainer components={components} />
+      <div className={classMain}>
+        <SwitchContainer components={components} />
+      </div>
+      <div className={classInfo}>info</div>
     </div>
   );
 };
 
-const AnonymousContainer = React.memo(withStyle(styles as any)(Component));
+const AnonymousContainer = React.memo(Component);
 AnonymousContainer.displayName = "AnonymousContainer";
 
 export { AnonymousContainer };

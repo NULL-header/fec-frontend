@@ -1,9 +1,16 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useMemo, memo } from "react";
 
+interface ChildProps extends BaseComponentProps {
+  classes?: Record<string, string>;
+}
+
+type Child = React.ReactElement<ChildProps>;
+
 interface ToggleDisplayContainerProps extends BaseComponentProps {
   isShownFirstChild: boolean;
-  children: [BaseElement, BaseElement];
+  children: [Child, Child];
+  classes?: Record<string, string>;
 }
 
 const NotYetToggleDisplayContainer: React.FC<ToggleDisplayContainerProps> = (
@@ -13,7 +20,7 @@ const NotYetToggleDisplayContainer: React.FC<ToggleDisplayContainerProps> = (
     () =>
       React.cloneElement(
         props.isShownFirstChild ? props.children[0] : props.children[1],
-        { className: props.className }
+        { className: props.className, classes: props.classes }
       ),
     [props]
   );
