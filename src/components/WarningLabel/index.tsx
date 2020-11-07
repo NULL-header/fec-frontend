@@ -1,35 +1,31 @@
 import React, { useMemo, memo } from "react";
-import withStyles from "react-jss";
 
-import { styles } from "./style";
+import { createGetSuffix } from "src/util";
+import { useClassName } from "src/util/customhook";
+import { useStyles } from "./style";
 
 interface WarningLabelProps extends BaseComponentProps {
   isShown: boolean;
   children: BaseElement;
-  classes: Record<keyof typeof styles, string>;
 }
 
-const getStringFromNullable = (arg: string | undefined) =>
-  arg == null ? "" : " " + arg;
-
-const getSuffix = (arg: boolean) => (arg ? "" : "-hidden");
+const getSuffix = createGetSuffix("-hidden");
 
 const NotYetWarningLabel: React.FC<WarningLabelProps> = (props) => {
-  const className = useMemo(() => getStringFromNullable(props.className), [
-    props.className,
-  ]);
+  const classes = useStyles();
   const baseClassName = useMemo(
-    () => props.classes.root + getSuffix(props.isShown),
-    [props.classes.root, props.isShown]
+    () => classes.root + getSuffix(!props.isShown),
+    [classes.root, props.isShown]
   );
+  const className = useClassName(baseClassName, props.className);
   const label = React.cloneElement(props.children, {
-    className: baseClassName + className,
+    className: className,
   });
 
   return label;
 };
 
-const WarningLabel = memo(withStyles(styles as any)(NotYetWarningLabel));
+const WarningLabel = memo(NotYetWarningLabel);
 WarningLabel.displayName = "WarningLabel";
 
 export { WarningLabel };

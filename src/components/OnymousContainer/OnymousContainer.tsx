@@ -1,5 +1,4 @@
 import React from "react";
-import withStyle from "react-jss";
 
 import {
   SideBar,
@@ -7,13 +6,9 @@ import {
   LinkButton,
   OptionContainer,
 } from "src/components";
+import { useClassName } from "src/util/customhook";
 import { Home, Search, Notify, MyPage, Setting } from "src/components/icons";
-import { useVariable } from "src/util/customhook";
-import { styles } from "./style";
-
-interface Props extends BaseComponentProps {
-  classes: Record<keyof typeof styles, string>;
-}
+import { useStyles } from "./style";
 
 const components = {
   "/home": () => <div>Home</div>,
@@ -23,12 +18,22 @@ const components = {
   "/option": OptionContainer,
 } as Record<string, React.FC<any>>;
 
+type Classes = Record<"root" | "sidebar" | "main" | "info", string>;
+
+interface Props {
+  classes?: Classes;
+}
+
 const Component: React.FC<Props> = (props) => {
-  const classes = useVariable(props.classes);
+  const classes = useStyles();
+  const classRoot = useClassName(classes.root, props.classes?.root);
+  const classSidebar = useClassName(classes.sidebar, props.classes?.sidebar);
+  const classMain = useClassName(classes.main, props.classes?.main);
+  const classInfo = useClassName(classes.info, props.classes?.info);
 
   return (
-    <div className={classes.root}>
-      <SideBar className={classes.sidebar}>
+    <div className={classRoot}>
+      <SideBar className={classSidebar}>
         <LinkButton to="/home">
           <Home />
         </LinkButton>
@@ -45,12 +50,15 @@ const Component: React.FC<Props> = (props) => {
           <Setting />
         </LinkButton>
       </SideBar>
-      <SwitchContainer components={components} />
+      <div className={classMain}>
+        <SwitchContainer components={components} />
+      </div>
+      <div className={classInfo}>info</div>
     </div>
   );
 };
 
-const OnymousContainer = React.memo(withStyle(styles as any)(Component));
+const OnymousContainer = React.memo(Component);
 OnymousContainer.displayName = "OnymousContainer";
 
 export { OnymousContainer };

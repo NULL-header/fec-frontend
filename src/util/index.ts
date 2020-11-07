@@ -6,3 +6,7 @@ export * from "./passValueRef";
 export * from "./mapAttr";
 export * from "./getPropertyFromNullable";
 export * from "./makeStyles";
+export * from "./getCurrent";
+export * from "./getStringFromNullable";
+export * from "./createGetSuffix";
+export * from "./makeClassName";
