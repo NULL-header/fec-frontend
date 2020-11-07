@@ -5,3 +5,4 @@ export * from "./useIsMounted";
 export * from "./useOptionalVariable";
 export * from "./useAbortableEffect";
 export * from "./useQuery";
+export * from "./useClassName";
