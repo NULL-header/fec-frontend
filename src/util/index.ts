@@ -10,3 +10,4 @@ export * from "./getCurrent";
 export * from "./getStringFromNullable";
 export * from "./createGetSuffix";
 export * from "./makeClassName";
+export * from "./getObjKeys";
