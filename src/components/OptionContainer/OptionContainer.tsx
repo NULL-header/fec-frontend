@@ -4,11 +4,13 @@ import { useRouteMatch } from "react-router-dom";
 import { SwitchContainer } from "src/components";
 
 import { Account } from "./Account";
+import { Interface } from "./Interface";
 import { Topics } from "./Topics";
 import { usestyles } from "./style";
 
 const components = {
   "/account": Account,
+  "/theme": Interface,
   "/": Topics,
 } as Record<string, React.FC<any>>;
 
