@@ -1,8 +1,7 @@
 // eslint-disable-next-line no-unused-vars
-import { createContext, CSSProperties } from "react";
-import { createTheming } from "react-jss";
+import { CSSProperties } from "react";
 
-import { makeStyles } from "./util";
+import { createSwitchableTheme } from "src/util/SwitchableTheme";
 
 type ItemRecord<T> = Record<"primary" | "secondary" | "backGround", T>;
 
@@ -14,7 +13,7 @@ interface Theme {
 }
 
 const light: Theme = {
-  color: { primary: "darkgreen", secondary: "", backGround: "grey" },
+  color: { primary: "green", secondary: "", backGround: "grey" },
   text: {
     primary: {},
     secondary: {},
@@ -23,7 +22,7 @@ const light: Theme = {
 };
 
 const dark: Theme = {
-  color: { primary: "", secondary: "", backGround: "" },
+  color: { primary: "darkgreen", secondary: "", backGround: "green" },
   text: {
     primary: {},
     secondary: {},
@@ -31,14 +30,9 @@ const dark: Theme = {
   },
 };
 
-const themeTyping = {
-  light,
-  dark,
-};
+const themes = { light, dark };
+const { ThemeProvider, makeStyles, useThemeName } = createSwitchableTheme(
+  themes
+)("light");
 
-const themeContext = createContext(themeTyping);
-const theming = createTheming(themeContext);
-
-const passedTheming = makeStyles(theming);
-
-export { theming, passedTheming as makeStyles };
+export { ThemeProvider, makeStyles, useThemeName, themes };
