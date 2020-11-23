@@ -10,7 +10,7 @@ export const useStyles = makeStyles()((theme) => ({
     flexGrow: 1,
   },
   info: {
-    backgroundColor: theme.light.color.backGround,
+    backgroundColor: theme.color.backGround,
     width: "100px",
   },
 }));
