@@ -4,24 +4,25 @@ import update from "immutability-helper";
 
 import { makeStyles as CurriedMakeStyles, getCurrent } from "src/util";
 
-type UseContextValue<T> = [T, (arg: T) => void];
-
 export const createSwitchableTheme = function <Theme, ThemeName extends string>(
   themes: Record<ThemeName, Theme>
 ) {
-  return function (defaultThemeName: ThemeName) {
-    const ThemeContext = createContext({} as Theme);
-    const Theming = createTheming(ThemeContext);
-    const makeStyles = CurriedMakeStyles(Theming);
-    type UseThemeNameValue = UseContextValue<ThemeName>;
-    const ThemeNameContext = createContext({} as UseThemeNameValue);
+  const ThemeContext = createContext({} as Theme);
+  const Theming = createTheming(ThemeContext);
+  const makeStyles = CurriedMakeStyles(Theming);
+  type UseThemeNameValue = UseContextValue<ThemeName>;
+  const ThemeNameContext = createContext({} as UseThemeNameValue);
 
+  const createThemeProvider = (
+    defaultThemeName: ThemeName,
+    onChangeTheme?: (arg: ThemeName) => void
+  ) => {
     const Component: React.FC<{ children: React.ReactNode }> = (props) => {
       const [themeNames, setThemeNames] = useState([defaultThemeName]);
-      const setThemeName = ((arg) =>
-        setThemeNames(
-          update(themeNames, { $push: [arg] })
-        )) as UseThemeNameValue[1];
+      const setThemeName = ((arg) => {
+        if (onChangeTheme != null) onChangeTheme(arg);
+        setThemeNames(update(themeNames, { $push: [arg] }));
+      }) as UseThemeNameValue[1];
       const currentName = getCurrent(themeNames);
       const theme = themes[currentName];
       const themeContextValue = [
@@ -38,7 +39,8 @@ export const createSwitchableTheme = function <Theme, ThemeName extends string>(
       );
     };
     const ThemeProvider = React.memo(Component);
-    const useThemeName = () => useContext(ThemeNameContext);
-    return { ThemeProvider, makeStyles, useThemeName };
+    return ThemeProvider;
   };
+  const useThemeName = () => useContext(ThemeNameContext);
+  return { createThemeProvider, makeStyles, useThemeName };
 };

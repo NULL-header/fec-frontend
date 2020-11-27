@@ -2,7 +2,7 @@ import Dexie from "dexie";
 
 export class DbWrapper<
   T extends Record<string, string>,
-  U extends Record<keyof T, Dexie.Table<any, "current">>
+  U extends Record<keyof T, Dexie.Table<any, number>>
 > {
   constructor(
     private readonly tables: T = {} as T,
@@ -16,7 +16,7 @@ export class DbWrapper<
     const next = Object.assign({}, this.tables, schema);
     const oldType = this.tableTypes;
     const nextType = {} as typeof oldType &
-      { [Key in keyof typeof schema]: Dexie.Table<Entity, "current"> };
+      { [Key in keyof typeof schema]: Dexie.Table<Entity, number> };
     return new DbWrapper(next, nextType);
   }
 
