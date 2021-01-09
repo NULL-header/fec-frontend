@@ -1,16 +1,23 @@
 import React from "react";
 
-import { useThemeName, themes } from "src/theme";
+import { themes } from "src/theme";
+import { useSelector, useUpdate } from "src/globalState";
 import { getObjKeys } from "src/util";
 
 const themeNames = getObjKeys(themes);
 
 const useButtons = () => {
-  const [themeName, setThemeName] = useThemeName();
+  const themeName = useSelector((state) => state.themeName);
+  const dispatch = useUpdate();
   return themeNames
     .filter((e) => e != themeName)
     .map((e) => (
-      <button onClick={() => setThemeName(e)} key={e}>
+      <button
+        onClick={() =>
+          dispatch({ type: "UPDATE", nextState: { themeName: e } })
+        }
+        key={e}
+      >
         {e + " mode"}
       </button>
     ));
