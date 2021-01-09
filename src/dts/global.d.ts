@@ -11,6 +11,8 @@ type BaseComponent = React.FC<BaseComponentProps>;
 
 type BaseElement = React.ReactElement<BaseComponentProps>;
 
+type HavingChildComponent = React.FC<{ children: React.ReactElement }>;
+
 type KeyComponent = React.FC<KeyComponentProps>;
 
 type KeyElement = React.ReactElement<KeyComponentProps>;
