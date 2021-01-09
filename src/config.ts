@@ -5,4 +5,6 @@ export const CONSTVALUES = {
   auth: "auth",
   users: "users",
   activate: "account_activations",
+  themeNameCacheKey: "themeName",
+  defaultThemeName: "light",
 } as const;
