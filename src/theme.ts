@@ -1,6 +1,7 @@
 // eslint-disable-next-line no-unused-vars
 import { CSSProperties, useState } from "react";
-import { createSwitchableTheme } from "src/util/SwitchableTheme";
+// import { createSwitchableTheme } from "src/util/SwitchableTheme";
+import { createTheme } from "switchable-theme";
 
 type ItemRecord<T> = Record<"primary" | "secondary" | "backGround", T>;
 
@@ -29,19 +30,7 @@ const dark: Theme = {
   },
 };
 
-const loading: Theme = {
-  color: { primary: "", secondary: "", backGround: "" },
-  text: {
-    primary: {},
-    secondary: {},
-    backGround: {},
-  },
-};
+export const themes = { light, dark };
+export type ThemeNames = keyof typeof themes;
 
-export const themes = { light, dark, loading };
-
-export const {
-  createThemeProvider,
-  makeStyles,
-  useThemeName,
-} = createSwitchableTheme(themes);
+export const { useTheme, makeStyles } = createTheme(themes);
